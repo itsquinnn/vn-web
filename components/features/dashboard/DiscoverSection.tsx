@@ -1425,11 +1425,7 @@ export default function DiscoverSection({
 
               <motion.div
                 layout="position"
-                className="grid gap-5 auto-card-grid"
-                style={{
-                  gridTemplateColumns:
-                    "repeat(auto-fill, minmax(min(100%, 280px), 1fr))",
-                }}
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
               >
                 {filteredDestinations.map((d, index) => (
                   <motion.div
@@ -1537,11 +1533,7 @@ export default function DiscoverSection({
               {/* Destination Cards in Responsive Grid */}
               <motion.div
                 layout="position"
-                className="grid gap-5 auto-card-grid"
-                style={{
-                  gridTemplateColumns:
-                    "repeat(auto-fill, minmax(min(100%, 280px), 1fr))",
-                }}
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
               >
                 {filteredDestinations.map((d, index) => (
                   <motion.div
@@ -1654,11 +1646,7 @@ export default function DiscoverSection({
 
               <motion.div
                 layout="position"
-                className="grid gap-5 auto-card-grid"
-                style={{
-                  gridTemplateColumns:
-                    "repeat(auto-fill, minmax(min(100%, 280px), 1fr))",
-                }}
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
               >
                 {filteredDestinations.map((d, index) => (
                   <motion.div
