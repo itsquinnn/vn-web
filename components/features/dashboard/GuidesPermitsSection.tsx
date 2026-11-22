@@ -461,6 +461,7 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
   const [guideBookedBanner, setGuideBookedBanner] = useState<string | null>(null);
 
   // Butler inline detail state
+  const [butlerSearch, setButlerSearch] = useState('');
   const [selectedButler, setSelectedButler] = useState<Butler | null>(null);
   const [butlerProfileTab, setButlerProfileTab] = useState<'about' | 'services' | 'reviews'>('about');
   const [showButlerBooking, setShowButlerBooking] = useState(false);
@@ -1165,13 +1166,37 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
           ) : (
             /* ── GUIDES DIRECTORY LIST ── */
             <>
-              <div className="flex flex-col gap-1 pb-3 border-b border-slate-200/70">
-                <h2 className="font-[family-name:var(--font-quicksand)] text-2xl sm:text-3xl font-bold tracking-tight text-[#17212B]">
-                  Licensed Guides &amp; Sherpas
-                </h2>
-                <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs sm:text-sm text-[#4B5563]">
-                  Licensed guides are required on major Nepal trekking routes. Compare experience, languages, and verified traveler reviews.
-                </p>
+              {/* Header (left) + Search (right) */}
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-3 border-b border-slate-200/70">
+                <div>
+                  <h2 className="font-[family-name:var(--font-quicksand)] text-2xl sm:text-3xl font-bold tracking-tight text-[#17212B]">
+                    Licensed Guides &amp; Sherpas
+                  </h2>
+                  <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs sm:text-sm text-[#4B5563] mt-1">
+                    Licensed guides are required on major Nepal trekking routes. Compare experience, languages, and verified traveler reviews.
+                  </p>
+                </div>
+
+                <div className="relative w-full md:w-80 lg:w-96 shrink-0">
+                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                  <input
+                    type="text"
+                    value={guideSearch}
+                    onChange={(e) => setGuideSearch(e.target.value)}
+                    placeholder="Search by name, specialty, or language..."
+                    className="w-full bg-white border border-slate-200 rounded-full pl-10 pr-9 py-2.5 font-[family-name:var(--font-ibm-plex-sans)] text-xs sm:text-sm text-[#17212B] placeholder:text-slate-400 focus:outline-none focus:border-[#0552A2] transition-colors"
+                  />
+                  {guideSearch && (
+                    <button
+                      type="button"
+                      aria-label="Clear search"
+                      onClick={() => setGuideSearch('')}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
               </div>
 
               {guideBookedBanner && (
@@ -1181,48 +1206,7 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
                 </div>
               )}
 
-              <div className="flex flex-col gap-3">
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-                  <div className="relative flex-1 max-w-md">
-                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
-                    <input
-                      type="text"
-                      value={guideSearch}
-                      onChange={(e) => setGuideSearch(e.target.value)}
-                      placeholder="Search by name, specialty, or language..."
-                      className="w-full bg-white border border-slate-200/90 rounded-full pl-10 pr-9 py-2 text-xs text-[#17212B] placeholder:text-slate-400 focus:outline-none focus:border-[#0552A2] shadow-2xs transition-colors"
-                    />
-                    {guideSearch && (
-                      <button
-                        type="button"
-                        aria-label="Clear search"
-                        onClick={() => setGuideSearch('')}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
-                      >
-                        <X className="w-3.5 h-3.5" />
-                      </button>
-                    )}
-                  </div>
-
-                  <div className="flex items-center justify-between sm:justify-end gap-3">
-                    <span className="text-xs text-[#64748B]">
-                      Showing <strong className="text-[#0552A2]">{filteredGuides.length}</strong>{' '}
-                      {filteredGuides.length === 1 ? 'guide' : 'guides'}
-                    </span>
-                    <select
-                      aria-label="Sort guides"
-                      value={guideSort}
-                      onChange={(e) => setGuideSort(e.target.value as typeof guideSort)}
-                      className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-medium text-[#17212B] focus:outline-none focus:border-[#0552A2] cursor-pointer"
-                    >
-                      <option value="rating">Sort: Top Rated</option>
-                      <option value="experience">Sort: Most Experienced</option>
-                      <option value="price-asc">Price: Low to High</option>
-                      <option value="price-desc">Price: High to Low</option>
-                    </select>
-                  </div>
-                </div>
-
+              <div className="flex flex-wrap items-center justify-between gap-3">
                 <div className="flex flex-wrap items-center gap-1.5">
                   {GUIDE_SPECIALTIES.map((spec) => {
                     const isActive = guideSpecialty === spec;
@@ -1241,6 +1225,24 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
                       </button>
                     );
                   })}
+                </div>
+
+                <div className="flex items-center gap-3 shrink-0">
+                  <span className="text-xs text-[#64748B]">
+                    Showing <strong className="text-[#0552A2]">{filteredGuides.length}</strong>{' '}
+                    {filteredGuides.length === 1 ? 'guide' : 'guides'}
+                  </span>
+                  <select
+                    aria-label="Sort guides"
+                    value={guideSort}
+                    onChange={(e) => setGuideSort(e.target.value as typeof guideSort)}
+                    className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-medium text-[#17212B] focus:outline-none focus:border-[#0552A2] cursor-pointer"
+                  >
+                    <option value="rating">Sort: Top Rated</option>
+                    <option value="experience">Sort: Most Experienced</option>
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                  </select>
                 </div>
               </div>
 
@@ -1281,7 +1283,7 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
                             </div>
 
                             <div className="flex flex-col items-start gap-1 mt-1">
-                              <span className="text-[11px] font-semibold text-[#0552A2] bg-[#0552A2]/8 px-2 py-0.5 rounded-md">
+                              <span className="text-[11px] font-semibold text-white bg-[#0552A2] px-2.5 py-0.5 rounded-md">
                                 {guide.type}
                               </span>
                               <div className="flex items-center gap-1.5 text-[11px] text-[#64748B]">
@@ -1701,17 +1703,49 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
             </div>
           ) : (
             <>
-              <div className="flex flex-col gap-1 pb-3 border-b border-slate-200/70">
-                <h2 className="font-[family-name:var(--font-quicksand)] text-2xl sm:text-3xl font-bold tracking-tight text-[#17212B]">
-                  Personal Concierge &amp; Butlers
-                </h2>
-                <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs sm:text-sm text-[#4B5563]">
-                  Book local concierge support for TIA airport arrival, transit coordination, and lodge hospitality.
-                </p>
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-3 border-b border-slate-200/70">
+                <div>
+                  <h2 className="font-[family-name:var(--font-quicksand)] text-2xl sm:text-3xl font-bold tracking-tight text-[#17212B]">
+                    Personal Concierge &amp; Butlers
+                  </h2>
+                  <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs sm:text-sm text-[#4B5563] mt-1">
+                    Book local concierge support for TIA airport arrival, transit coordination, and lodge hospitality.
+                  </p>
+                </div>
+
+                <div className="relative w-full md:w-80 lg:w-96 shrink-0">
+                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                  <input
+                    type="text"
+                    value={butlerSearch}
+                    onChange={(e) => setButlerSearch(e.target.value)}
+                    placeholder="Search butlers, specialties, or languages..."
+                    className="w-full bg-white border border-slate-200 rounded-full pl-10 pr-9 py-2.5 font-[family-name:var(--font-ibm-plex-sans)] text-xs sm:text-sm text-[#17212B] placeholder:text-slate-400 focus:outline-none focus:border-[#0552A2] transition-colors"
+                  />
+                  {butlerSearch && (
+                    <button
+                      type="button"
+                      aria-label="Clear search"
+                      onClick={() => setButlerSearch('')}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                {BUTLERS.map((butler) => (
+                {BUTLERS.filter((b) => {
+                  const q = butlerSearch.trim().toLowerCase();
+                  if (!q) return true;
+                  return (
+                    b.name.toLowerCase().includes(q) ||
+                    b.specialty.toLowerCase().includes(q) ||
+                    b.bio.toLowerCase().includes(q) ||
+                    b.languages.some((l) => l.toLowerCase().includes(q))
+                  );
+                }).map((butler) => (
                   <div
                     key={butler.id}
                     onClick={() => setSelectedButler(butler)}
@@ -2567,14 +2601,14 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
                       <div className="flex justify-between items-start gap-4">
                         <div className="min-w-0">
                           <div className="flex flex-wrap items-center gap-2">
-                            <span className="font-[family-name:var(--font-ibm-plex-sans)] text-[11px] font-medium text-[#0552A2] bg-blue-50 px-2.5 py-0.5 rounded-full">
+                            <span className="font-[family-name:var(--font-ibm-plex-sans)] text-[11px] font-semibold text-white bg-[#0552A2] px-2.5 py-0.5 rounded-full">
                               {permit.type}
                             </span>
                             <span
-                              className={`font-[family-name:var(--font-ibm-plex-sans)] text-[11px] font-semibold px-2 py-0.5 rounded-full ${
+                              className={`font-[family-name:var(--font-ibm-plex-sans)] text-[11px] font-semibold px-2.5 py-0.5 rounded-full ${
                                 permit.status === 'Approved'
-                                  ? 'bg-emerald-50 text-emerald-700'
-                                  : 'bg-amber-50 text-amber-700'
+                                  ? 'bg-emerald-600 text-white'
+                                  : 'bg-amber-600 text-white'
                               }`}
                             >
                               {permit.status}

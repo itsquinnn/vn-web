@@ -969,36 +969,64 @@ export default function ActivitiesSection({ activeId, onNavigate }: ActivitiesSe
 
       {/* Main Directory View */}
       <div className="flex flex-col gap-5 max-w-[1440px] w-full mx-auto py-1">
-        {/* Header */}
-        <div className="pb-4 border-b border-slate-200/70">
-          <h1 className="font-[family-name:var(--font-quicksand)] text-2xl sm:text-3xl font-bold tracking-tight text-[#17212B]">
-            {meta.title}
-          </h1>
-          <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs sm:text-sm text-[#4B5563] mt-1 max-w-2xl">
-            {meta.subtitle}
-          </p>
-        </div>
+        {/* Header (left) + Search (right) */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-200/70">
+          <div>
+            <h1 className="font-[family-name:var(--font-quicksand)] text-2xl sm:text-3xl font-bold tracking-tight text-[#17212B]">
+              {meta.title}
+            </h1>
+            <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs sm:text-sm text-[#4B5563] mt-1 max-w-2xl">
+              {meta.subtitle}
+            </p>
+          </div>
 
-        {/* Search + Difficulty Filter */}
-        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
-          <div className="relative flex-1 min-w-[240px]">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+          <div className="relative w-full md:w-80 lg:w-96 shrink-0">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={`Search ${meta.title.toLowerCase()}, regions...`}
-              className="w-full pl-9 pr-8 py-2 text-xs bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-[#0552A2] transition-all"
+              className="w-full bg-white border border-slate-200 rounded-full pl-10 pr-9 py-2.5 font-[family-name:var(--font-ibm-plex-sans)] text-xs sm:text-sm text-[#17212B] placeholder:text-slate-400 focus:outline-none focus:border-[#0552A2] transition-colors"
             />
             {searchQuery && (
               <button
+                type="button"
+                aria-label="Clear search"
                 onClick={() => setSearchQuery('')}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
               >
-                <X className="h-3.5 w-3.5" />
+                <X className="h-4 w-4" />
               </button>
             )}
           </div>
+        </div>
+
+        {/* Sub-category Pills + Difficulty Filter */}
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          {categories.length > 2 ? (
+            <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none select-none max-w-full">
+              {categories.map((cat) => {
+                const isActive = selectedCategory === cat;
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`text-xs px-4 py-1.5 rounded-full font-semibold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${
+                      isActive
+                        ? 'bg-[#0552A2] text-white shadow-xs'
+                        : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 hover:border-slate-300'
+                    }`}
+                  >
+                    {cat === 'All' ? getSectionIcon(normalizedSection) : getCategoryIcon(cat, normalizedSection)}
+                    <span>{cat}</span>
+                  </button>
+                );
+              })}
+            </div>
+          ) : (
+            <div />
+          )}
 
           <div className="flex items-center gap-2 shrink-0">
             <SlidersHorizontal className="h-3.5 w-3.5 text-slate-400 hidden sm:block" />
@@ -1016,29 +1044,6 @@ export default function ActivitiesSection({ activeId, onNavigate }: ActivitiesSe
             </select>
           </div>
         </div>
-
-        {/* Sub-category Pills */}
-        {categories.length > 2 && (
-          <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none select-none">
-            {categories.map((cat) => {
-              const isActive = selectedCategory === cat;
-              return (
-                <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`text-xs px-4 py-1.5 rounded-full font-semibold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${
-                    isActive
-                      ? 'bg-[#0552A2] text-white shadow-xs'
-                      : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 hover:border-slate-300'
-                  }`}
-                >
-                  {cat === 'All' ? getSectionIcon(normalizedSection) : getCategoryIcon(cat, normalizedSection)}
-                  <span>{cat}</span>
-                </button>
-              );
-            })}
-          </div>
-        )}
 
         {/* Card Grid */}
         {filteredActivities.length === 0 ? (

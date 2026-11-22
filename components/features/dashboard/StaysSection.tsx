@@ -375,6 +375,7 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
   const [reviewPhotos, setReviewPhotos] = useState<string[]>([]);
 
   const [searchQuery, setSearchQuery] = useState('');
+  const [transportSearch, setTransportSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
 
   const containerVariants = {
@@ -1540,126 +1541,141 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
       )}
 
       {/* ── TRANSPORTATION VIEW ────────────────────────────────────────── */}
-      {activeId === 'transportation' && (
-        <div className="flex flex-col gap-6 max-w-[1440px] w-full mx-auto py-2">
-          <motion.div variants={itemVariants} className="flex flex-col gap-1.5">
-            <h2 className="font-[family-name:var(--font-quicksand)] text-2xl sm:text-3xl font-bold tracking-tight text-[#17212B]">
-              Transportation
-            </h2>
-            <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs sm:text-sm text-[#4B5563]">
-              Airport transfers, domestic mountain flights, cable cars, and private 4x4 vehicles.
-            </p>
-          </motion.div>
+      {activeId === 'transportation' && (() => {
+        const transportOptions = [
+          {
+            id: 't1',
+            tag: 'Premium Aerial',
+            title: 'Helicopter Summit Charter',
+            desc: 'Direct peak-to-peak transfer bypassing multi-day trails. Popular for Everest Base Camp and Langtang loops.',
+            price: '$1,200',
+            unit: '/ flight leg',
+            badge: 'Available Daily',
+            icon: Plane,
+          },
+          {
+            id: 't2',
+            tag: 'Overland Rugged',
+            title: 'Private 4x4 Mountain Jeep',
+            desc: 'Cross rugged canyon roads to Lo Manthang, Muktinath, or Pokhara in high-ground clearance expedition jeeps.',
+            price: '$180',
+            unit: '/ day (with driver)',
+            badge: 'Includes Fuel',
+            icon: Car,
+          },
+          {
+            id: 't3',
+            tag: 'Domestic Aviation',
+            title: 'Turboprop Mountain Flights',
+            desc: 'Scenic twin-engine flights connecting Kathmandu to Pokhara, Lukla, or Jomsom high-altitude airstrips.',
+            price: '$150',
+            unit: '/ traveler',
+            badge: '15kg Baggage',
+            icon: Plane,
+          },
+          {
+            id: 't4',
+            tag: 'Scenic Ropeway',
+            title: 'Chandragiri & Sarangkot Cable Car',
+            desc: 'Gliding gondolas ascending over subtropical pine forests for panoramic Himalayan views over Kathmandu & Pokhara.',
+            price: '$24',
+            unit: '/ round-trip',
+            badge: 'Express Entry',
+            icon: Compass,
+          },
+          {
+            id: 't5',
+            tag: 'Trail Porter Support',
+            title: 'Certified Sherpa Porter Services',
+            desc: 'Licensed and insured high-altitude porters adhering to strict ethical 20kg weight standards and welfare protocols.',
+            price: '$25',
+            unit: '/ day',
+            badge: 'IPPG Compliant',
+            icon: ShieldCheck,
+          },
+          {
+            id: 't6',
+            tag: 'VIP Arrival',
+            title: 'Kathmandu Airport Express Transfer',
+            desc: 'Air-conditioned hybrid sedan transfer directly from Tribhuvan International Airport to your hotel with cold towels.',
+            price: '$35',
+            unit: '/ transfer',
+            badge: 'Meet & Greet',
+            icon: Car,
+          },
+        ];
+        const tq = transportSearch.trim().toLowerCase();
+        const filteredTransport = transportOptions.filter(
+          (item) =>
+            !tq ||
+            item.title.toLowerCase().includes(tq) ||
+            item.tag.toLowerCase().includes(tq) ||
+            item.desc.toLowerCase().includes(tq)
+        );
 
-          <motion.div
-            layout="position"
-            className="grid gap-5 auto-card-grid"
-            style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))' }}
-          >
-            <div className="bg-white p-5 rounded-2xl border border-slate-200/90 flex flex-col justify-between gap-3 shadow-xs hover:border-[#0552A2]/50 hover:shadow-md transition-all">
+        return (
+          <div className="flex flex-col gap-6 max-w-[1440px] w-full mx-auto py-2">
+            <motion.div variants={itemVariants} className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-[9px] font-mono font-bold text-[#0552A2] uppercase bg-[#0552A2]/10 px-2 py-0.5 rounded-md">
-                    Premium Aerial
-                  </span>
-                  <Plane className="w-4 h-4 text-[#0552A2]" />
-                </div>
-                <h3 className="text-sm font-bold text-[#17212B]">Helicopter Summit Charter</h3>
-                <p className="text-xs text-[#475569] leading-relaxed mt-1">Direct peak-to-peak transfer bypassing multi-day trails. Popular for Everest Base Camp and Langtang loops.</p>
+                <h2 className="font-[family-name:var(--font-quicksand)] text-2xl sm:text-3xl font-bold tracking-tight text-[#17212B]">
+                  Transportation
+                </h2>
+                <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs sm:text-sm text-[#4B5563] mt-1">
+                  Airport transfers, domestic mountain flights, cable cars, and private 4x4 vehicles.
+                </p>
               </div>
-              <div className="border-t border-slate-100 pt-3 flex items-center justify-between">
-                <span className="text-xs font-mono font-bold text-[#0552A2]">$1,200 <span className="text-[10px] font-normal text-slate-500">/ flight leg</span></span>
-                <span className="text-[10px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">Available Daily</span>
+              <div className="relative w-full md:w-80 lg:w-96 shrink-0">
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                <input
+                  type="text"
+                  value={transportSearch}
+                  onChange={(e) => setTransportSearch(e.target.value)}
+                  placeholder="Search flights, jeeps, or transfers..."
+                  className="w-full bg-white border border-slate-200 rounded-full pl-10 pr-9 py-2.5 font-[family-name:var(--font-ibm-plex-sans)] text-xs sm:text-sm text-[#17212B] placeholder:text-slate-400 focus:outline-none focus:border-[#0552A2] transition-colors"
+                />
+                {transportSearch && (
+                  <button
+                    type="button"
+                    aria-label="Clear search"
+                    onClick={() => setTransportSearch('')}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
               </div>
-            </div>
+            </motion.div>
 
-            <div className="bg-white p-5 rounded-2xl border border-slate-200/90 flex flex-col justify-between gap-3 shadow-xs hover:border-[#0552A2]/50 hover:shadow-md transition-all">
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-[9px] font-mono font-bold text-[#0552A2] uppercase bg-[#0552A2]/10 px-2 py-0.5 rounded-md">
-                    Overland Rugged
-                  </span>
-                  <Car className="w-4 h-4 text-[#0552A2]" />
-                </div>
-                <h3 className="text-sm font-bold text-[#17212B]">Private 4x4 Mountain Jeep</h3>
-                <p className="text-xs text-[#475569] leading-relaxed mt-1">Cross rugged canyon roads to Lo Manthang, Muktinath, or Pokhara in high-ground clearance expedition jeeps.</p>
-              </div>
-              <div className="border-t border-slate-100 pt-3 flex items-center justify-between">
-                <span className="text-xs font-mono font-bold text-[#0552A2]">$180 <span className="text-[10px] font-normal text-slate-500">/ day (with driver)</span></span>
-                <span className="text-[10px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">Includes Fuel</span>
-              </div>
-            </div>
-
-            <div className="bg-white p-5 rounded-2xl border border-slate-200/90 flex flex-col justify-between gap-3 shadow-xs hover:border-[#0552A2]/50 hover:shadow-md transition-all">
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-[9px] font-mono font-bold text-[#0552A2] uppercase bg-[#0552A2]/10 px-2 py-0.5 rounded-md">
-                    Domestic Aviation
-                  </span>
-                  <Plane className="w-4 h-4 text-[#0552A2]" />
-                </div>
-                <h3 className="text-sm font-bold text-[#17212B]">Turboprop Mountain Flights</h3>
-                <p className="text-xs text-[#475569] leading-relaxed mt-1">Scenic twin-engine flights connecting Kathmandu to Pokhara, Lukla, or Jomsom high-altitude airstrips.</p>
-              </div>
-              <div className="border-t border-slate-100 pt-3 flex items-center justify-between">
-                <span className="text-xs font-mono font-bold text-[#0552A2]">$150 <span className="text-[10px] font-normal text-slate-500">/ traveler</span></span>
-                <span className="text-[10px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">15kg Baggage</span>
-              </div>
-            </div>
-
-            <div className="bg-white p-5 rounded-2xl border border-slate-200/90 flex flex-col justify-between gap-3 shadow-xs hover:border-[#0552A2]/50 hover:shadow-md transition-all">
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-[9px] font-mono font-bold text-[#0552A2] uppercase bg-[#0552A2]/10 px-2 py-0.5 rounded-md">
-                    Scenic Ropeway
-                  </span>
-                  <Compass className="w-4 h-4 text-[#0552A2]" />
-                </div>
-                <h3 className="text-sm font-bold text-[#17212B]">Chandragiri & Sarangkot Cable Car</h3>
-                <p className="text-xs text-[#475569] leading-relaxed mt-1">Gliding gondolas ascending over subtropical pine forests for panoramic Himalayan views over Kathmandu & Pokhara.</p>
-              </div>
-              <div className="border-t border-slate-100 pt-3 flex items-center justify-between">
-                <span className="text-xs font-mono font-bold text-[#0552A2]">$24 <span className="text-[10px] font-normal text-slate-500">/ round-trip</span></span>
-                <span className="text-[10px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">Express Entry</span>
-              </div>
-            </div>
-
-            <div className="bg-white p-5 rounded-2xl border border-slate-200/90 flex flex-col justify-between gap-3 shadow-xs hover:border-[#0552A2]/50 hover:shadow-md transition-all">
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-[9px] font-mono font-bold text-[#0552A2] uppercase bg-[#0552A2]/10 px-2 py-0.5 rounded-md">
-                    Trail Porter Support
-                  </span>
-                  <ShieldCheck className="w-4 h-4 text-[#0552A2]" />
-                </div>
-                <h3 className="text-sm font-bold text-[#17212B]">Certified Sherpa Porter Services</h3>
-                <p className="text-xs text-[#475569] leading-relaxed mt-1">Licensed and insured high-altitude porters adhering to strict ethical 20kg weight standards and welfare protocols.</p>
-              </div>
-              <div className="border-t border-slate-100 pt-3 flex items-center justify-between">
-                <span className="text-xs font-mono font-bold text-[#0552A2]">$25 <span className="text-[10px] font-normal text-slate-500">/ day</span></span>
-                <span className="text-[10px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">IPPG Compliant</span>
-              </div>
-            </div>
-
-            <div className="bg-white p-5 rounded-2xl border border-slate-200/90 flex flex-col justify-between gap-3 shadow-xs hover:border-[#0552A2]/50 hover:shadow-md transition-all">
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-[9px] font-mono font-bold text-[#0552A2] uppercase bg-[#0552A2]/10 px-2 py-0.5 rounded-md">
-                    VIP Arrival
-                  </span>
-                  <Car className="w-4 h-4 text-[#0552A2]" />
-                </div>
-                <h3 className="text-sm font-bold text-[#17212B]">Kathmandu Airport Express Transfer</h3>
-                <p className="text-xs text-[#475569] leading-relaxed mt-1">Air-conditioned hybrid sedan transfer directly from Tribhuvan International Airport to your hotel with cold towels.</p>
-              </div>
-              <div className="border-t border-slate-100 pt-3 flex items-center justify-between">
-                <span className="text-xs font-mono font-bold text-[#0552A2]">$35 <span className="text-[10px] font-normal text-slate-500">/ transfer</span></span>
-                <span className="text-[10px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">Meet & Greet</span>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      )}
+            <motion.div
+              layout="position"
+              className="grid gap-5 auto-card-grid"
+              style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))' }}
+            >
+              {filteredTransport.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div key={item.id} className="bg-white p-5 rounded-2xl border border-slate-200/90 flex flex-col justify-between gap-3 shadow-xs hover:border-[#0552A2]/50 hover:shadow-md transition-all">
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-[9px] font-mono font-bold text-white uppercase bg-[#0552A2] px-2 py-0.5 rounded-md">
+                          {item.tag}
+                        </span>
+                        <Icon className="w-4 h-4 text-[#0552A2]" />
+                      </div>
+                      <h3 className="text-sm font-bold text-[#17212B]">{item.title}</h3>
+                      <p className="text-xs text-[#475569] leading-relaxed mt-1">{item.desc}</p>
+                    </div>
+                    <div className="border-t border-slate-100 pt-3 flex items-center justify-between">
+                      <span className="text-xs font-mono font-bold text-[#0552A2]">{item.price} <span className="text-[10px] font-normal text-slate-500">{item.unit}</span></span>
+                      <span className="text-[10px] font-mono font-semibold text-white bg-emerald-600 px-2 py-0.5 rounded-md">{item.badge}</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </motion.div>
+          </div>
+        );
+      })()}
 
     </motion.div>
   );

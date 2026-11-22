@@ -18,6 +18,8 @@ import {
   UserCheck,
   ClipboardList,
   User,
+  Search,
+  X,
 } from "lucide-react";
 
 interface DiscoverSectionProps {
@@ -108,6 +110,17 @@ export default function DiscoverSection({
   >("posts");
   const [copied, setCopied] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
+  const [discoverSearch, setDiscoverSearch] = useState("");
+
+  const filteredDestinations = DESTINATIONS.filter((d) => {
+    const q = discoverSearch.trim().toLowerCase();
+    if (!q) return true;
+    return (
+      d.name.toLowerCase().includes(q) ||
+      d.region.toLowerCase().includes(q) ||
+      d.description.toLowerCase().includes(q)
+    );
+  });
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -1377,15 +1390,37 @@ export default function DiscoverSection({
             <div className="flex flex-col gap-6 max-w-[1440px] w-full mx-auto py-4">
               <motion.div
                 variants={itemVariants}
-                className="flex flex-col gap-1.5"
+                className="flex flex-col md:flex-row md:items-center justify-between gap-4"
               >
-                <h2 className="text-2xl font-black tracking-tight text-[#17212B]">
-                  Discover Curated Havens
-                </h2>
-                <p className="text-xs text-[#475569]">
-                  Select from our handpicked destinations to see local altitude
-                  grids and travel stories.
-                </p>
+                <div>
+                  <h2 className="text-2xl font-black tracking-tight text-[#17212B]">
+                    Discover Curated Havens
+                  </h2>
+                  <p className="text-xs text-[#475569] mt-1">
+                    Select from our handpicked destinations to see local altitude
+                    grids and travel stories.
+                  </p>
+                </div>
+                <div className="relative w-full md:w-80 lg:w-96 shrink-0">
+                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                  <input
+                    type="text"
+                    value={discoverSearch}
+                    onChange={(e) => setDiscoverSearch(e.target.value)}
+                    placeholder="Search destinations or regions..."
+                    className="w-full bg-white border border-slate-200 rounded-full pl-10 pr-9 py-2.5 text-xs sm:text-sm text-[#17212B] placeholder:text-slate-400 focus:outline-none focus:border-[#0552A2] transition-colors"
+                  />
+                  {discoverSearch && (
+                    <button
+                      type="button"
+                      aria-label="Clear search"
+                      onClick={() => setDiscoverSearch("")}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
               </motion.div>
 
               <motion.div
@@ -1396,7 +1431,7 @@ export default function DiscoverSection({
                     "repeat(auto-fill, minmax(min(100%, 280px), 1fr))",
                 }}
               >
-                {DESTINATIONS.map((d, index) => (
+                {filteredDestinations.map((d, index) => (
                   <motion.div
                     key={d.id}
                     layout="position"
@@ -1466,15 +1501,37 @@ export default function DiscoverSection({
             <div className="flex flex-col gap-6 max-w-[1440px] w-full mx-auto py-4">
               <motion.div
                 variants={itemVariants}
-                className="flex flex-col gap-1.5"
+                className="flex flex-col md:flex-row md:items-center justify-between gap-4"
               >
-                <h2 className="text-2xl font-black tracking-tight text-[#17212B]">
-                  Popular Journeys
-                </h2>
-                <p className="text-xs text-[#475569]">
-                  Most loved paths by worldwide travelers seeking adventure,
-                  peace, and culture.
-                </p>
+                <div>
+                  <h2 className="text-2xl font-black tracking-tight text-[#17212B]">
+                    Popular Journeys
+                  </h2>
+                  <p className="text-xs text-[#475569] mt-1">
+                    Most loved paths by worldwide travelers seeking adventure,
+                    peace, and culture.
+                  </p>
+                </div>
+                <div className="relative w-full md:w-80 lg:w-96 shrink-0">
+                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                  <input
+                    type="text"
+                    value={discoverSearch}
+                    onChange={(e) => setDiscoverSearch(e.target.value)}
+                    placeholder="Search popular journeys or regions..."
+                    className="w-full bg-white border border-slate-200 rounded-full pl-10 pr-9 py-2.5 text-xs sm:text-sm text-[#17212B] placeholder:text-slate-400 focus:outline-none focus:border-[#0552A2] transition-colors"
+                  />
+                  {discoverSearch && (
+                    <button
+                      type="button"
+                      aria-label="Clear search"
+                      onClick={() => setDiscoverSearch("")}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
               </motion.div>
 
               {/* Destination Cards in Responsive Grid */}
@@ -1486,7 +1543,7 @@ export default function DiscoverSection({
                     "repeat(auto-fill, minmax(min(100%, 280px), 1fr))",
                 }}
               >
-                {DESTINATIONS.map((d, index) => (
+                {filteredDestinations.map((d, index) => (
                   <motion.div
                     key={d.id}
                     layout="position"
@@ -1562,15 +1619,37 @@ export default function DiscoverSection({
             <div className="flex flex-col gap-6 max-w-[1440px] w-full mx-auto py-4">
               <motion.div
                 variants={itemVariants}
-                className="flex flex-col gap-1.5"
+                className="flex flex-col md:flex-row md:items-center justify-between gap-4"
               >
-                <h2 className="text-2xl font-black tracking-tight text-[#17212B]">
-                  Iconic Landmarks
-                </h2>
-                <p className="text-xs text-[#475569]">
-                  The spiritual monuments, ancient valleys, and high glaciers
-                  defining our geography.
-                </p>
+                <div>
+                  <h2 className="text-2xl font-black tracking-tight text-[#17212B]">
+                    Iconic Landmarks
+                  </h2>
+                  <p className="text-xs text-[#475569] mt-1">
+                    The spiritual monuments, ancient valleys, and high glaciers
+                    defining our geography.
+                  </p>
+                </div>
+                <div className="relative w-full md:w-80 lg:w-96 shrink-0">
+                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                  <input
+                    type="text"
+                    value={discoverSearch}
+                    onChange={(e) => setDiscoverSearch(e.target.value)}
+                    placeholder="Search landmarks or regions..."
+                    className="w-full bg-white border border-slate-200 rounded-full pl-10 pr-9 py-2.5 text-xs sm:text-sm text-[#17212B] placeholder:text-slate-400 focus:outline-none focus:border-[#0552A2] transition-colors"
+                  />
+                  {discoverSearch && (
+                    <button
+                      type="button"
+                      aria-label="Clear search"
+                      onClick={() => setDiscoverSearch("")}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
               </motion.div>
 
               <motion.div
@@ -1581,7 +1660,7 @@ export default function DiscoverSection({
                     "repeat(auto-fill, minmax(min(100%, 280px), 1fr))",
                 }}
               >
-                {DESTINATIONS.map((d, index) => (
+                {filteredDestinations.map((d, index) => (
                   <motion.div
                     key={d.id}
                     layout="position"
