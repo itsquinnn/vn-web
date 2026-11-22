@@ -18,6 +18,9 @@ import {
   Heart,
   FileCheck,
   UserCheck,
+  UserPlus,
+  Building2,
+  MapPinPlus,
   X,
 } from 'lucide-react';
 import {
@@ -135,6 +138,23 @@ export default function ProfileSection({ onNavigate }: ProfileSectionProps) {
   const [showAllDrafts, setShowAllDrafts] = useState(false);
   const [showAllActivity, setShowAllActivity] = useState(false);
 
+  // Partner & Hosting state
+  const [activeHostTab, setActiveHostTab] = useState<'becomehost' | 'listproperty' | 'listattraction' | 'listpermit'>('becomehost');
+  const [hostName, setHostName] = useState('');
+  const [hostCategory, setHostCategory] = useState('Certified Mountain Guide');
+  const [hostContact, setHostContact] = useState('');
+  const [propertyName, setPropertyName] = useState('');
+  const [propertyLocation, setPropertyLocation] = useState('');
+  const [propertyRate, setPropertyRate] = useState('');
+  const [attractionName, setAttractionName] = useState('');
+  const [attractionRegion, setAttractionRegion] = useState('');
+  const [attractionDesc, setAttractionDesc] = useState('');
+  const [authorityName, setAuthorityName] = useState('');
+  const [authorityCode, setAuthorityCode] = useState('');
+  const [submittedApplications, setSubmittedApplications] = useState<
+    { id: string; category: string; title: string; subtitle: string; status: string }[]
+  >([]);
+
   const fullName = currentUser?.name || 'Alex Mercer';
   const roleLabel = currentUser?.role || 'Traveler';
   const emailLabel = currentUser?.email || 'alex.mercer@visitnepal.com';
@@ -158,6 +178,70 @@ export default function ProfileSection({ onNavigate }: ProfileSectionProps) {
 
   const handleDestinationClick = (slug: string) => {
     onNavigate?.(slug);
+  };
+
+  const handleHostSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const id = `app-${Date.now()}`;
+    if (activeHostTab === 'becomehost') {
+      setSubmittedApplications((prev) => [
+        {
+          id,
+          category: 'Host Application',
+          title: hostName,
+          subtitle: `${hostCategory}${hostContact ? ` · ${hostContact}` : ''}`,
+          status: 'Under Review',
+        },
+        ...prev,
+      ]);
+      showToast(`Host application submitted for ${hostName}`);
+      setHostName('');
+      setHostContact('');
+    } else if (activeHostTab === 'listproperty') {
+      setSubmittedApplications((prev) => [
+        {
+          id,
+          category: 'Property Listing',
+          title: propertyName,
+          subtitle: `${propertyLocation} · $${propertyRate}/night`,
+          status: 'Under Review',
+        },
+        ...prev,
+      ]);
+      showToast(`Property listing submitted for ${propertyName}`);
+      setPropertyName('');
+      setPropertyLocation('');
+      setPropertyRate('');
+    } else if (activeHostTab === 'listattraction') {
+      setSubmittedApplications((prev) => [
+        {
+          id,
+          category: 'Attraction Listing',
+          title: attractionName,
+          subtitle: `${attractionRegion}${attractionDesc ? ` · ${attractionDesc}` : ''}`,
+          status: 'Under Review',
+        },
+        ...prev,
+      ]);
+      showToast(`Attraction submitted: ${attractionName}`);
+      setAttractionName('');
+      setAttractionRegion('');
+      setAttractionDesc('');
+    } else {
+      setSubmittedApplications((prev) => [
+        {
+          id,
+          category: 'Permit Authority',
+          title: authorityName,
+          subtitle: `Registry Code: ${authorityCode}`,
+          status: 'Verification Pending',
+        },
+        ...prev,
+      ]);
+      showToast(`Permit authority registered: ${authorityName}`);
+      setAuthorityName('');
+      setAuthorityCode('');
+    }
   };
 
   const filteredUpcomingTrips = useMemo(() => {
@@ -655,6 +739,230 @@ export default function ProfileSection({ onNavigate }: ProfileSectionProps) {
                 );
               })}
             </div>
+          </div>
+
+          {/* Partner & Hosting Tools */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
+            <div className="mb-4">
+              <h3 className="text-sm font-bold font-[family-name:var(--font-quicksand)] text-[#17212B]">
+                Partner &amp; Hosting
+              </h3>
+              <p className="text-xs text-[#64748B] mt-0.5">
+                Register as a host, list a stay or landmark, or connect a permit issuing office.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2 mb-4">
+              {[
+                { id: 'becomehost' as const, label: 'Become a Host', icon: UserPlus },
+                { id: 'listproperty' as const, label: 'List Your Property', icon: Building2 },
+                { id: 'listattraction' as const, label: 'List an Attraction', icon: MapPinPlus },
+                { id: 'listpermit' as const, label: 'Permit Authority', icon: ShieldCheck },
+              ].map((tab) => {
+                const Icon = tab.icon;
+                const isActive = activeHostTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    onClick={() => setActiveHostTab(tab.id)}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-xl border text-xs font-semibold transition-colors cursor-pointer text-left ${
+                      isActive
+                        ? 'bg-[#0552A2] text-white border-[#0552A2]'
+                        : 'bg-slate-50/70 text-[#334155] border-slate-200/80 hover:border-[#0552A2]/40'
+                    }`}
+                  >
+                    <Icon className="w-3.5 h-3.5 shrink-0" />
+                    <span className="truncate">{tab.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            <form onSubmit={handleHostSubmit} className="space-y-3 text-xs border-t border-slate-100 pt-4">
+              {activeHostTab === 'becomehost' && (
+                <>
+                  <div className="flex flex-col gap-1">
+                    <label className="font-semibold text-[#17212B]">Full Name</label>
+                    <input
+                      type="text"
+                      value={hostName}
+                      onChange={(e) => setHostName(e.target.value)}
+                      placeholder="Pasang Sherpa"
+                      required
+                      className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-[#17212B] focus:outline-none focus:border-[#0552A2]"
+                    />
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <div className="flex flex-col gap-1">
+                      <label className="font-semibold text-[#17212B]">Host Role</label>
+                      <select
+                        value={hostCategory}
+                        onChange={(e) => setHostCategory(e.target.value)}
+                        className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-[#17212B] focus:outline-none focus:border-[#0552A2]"
+                      >
+                        <option value="Certified Mountain Guide">Certified Mountain Guide</option>
+                        <option value="Lodge & Homestay Host">Lodge &amp; Homestay Host</option>
+                        <option value="Personal Butler / Concierge">Personal Butler / Concierge</option>
+                        <option value="Transport & Jeep Operator">Transport &amp; Jeep Operator</option>
+                      </select>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <label className="font-semibold text-[#17212B]">Phone or Email</label>
+                      <input
+                        type="text"
+                        value={hostContact}
+                        onChange={(e) => setHostContact(e.target.value)}
+                        placeholder="+977-9800000000"
+                        className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-[#17212B] focus:outline-none focus:border-[#0552A2]"
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {activeHostTab === 'listproperty' && (
+                <>
+                  <div className="flex flex-col gap-1">
+                    <label className="font-semibold text-[#17212B]">Property Name</label>
+                    <input
+                      type="text"
+                      value={propertyName}
+                      onChange={(e) => setPropertyName(e.target.value)}
+                      placeholder="Everest View Eco Lodge"
+                      required
+                      className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-[#17212B] focus:outline-none focus:border-[#0552A2]"
+                    />
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <div className="flex flex-col gap-1">
+                      <label className="font-semibold text-[#17212B]">Location</label>
+                      <input
+                        type="text"
+                        value={propertyLocation}
+                        onChange={(e) => setPropertyLocation(e.target.value)}
+                        placeholder="Namche Bazaar, Khumbu"
+                        required
+                        className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-[#17212B] focus:outline-none focus:border-[#0552A2]"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <label className="font-semibold text-[#17212B]">Nightly Rate (USD)</label>
+                      <input
+                        type="number"
+                        min={1}
+                        value={propertyRate}
+                        onChange={(e) => setPropertyRate(e.target.value)}
+                        placeholder="140"
+                        required
+                        className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-[#17212B] focus:outline-none focus:border-[#0552A2]"
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {activeHostTab === 'listattraction' && (
+                <>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <div className="flex flex-col gap-1">
+                      <label className="font-semibold text-[#17212B]">Attraction Name</label>
+                      <input
+                        type="text"
+                        value={attractionName}
+                        onChange={(e) => setAttractionName(e.target.value)}
+                        placeholder="Chhomrong Sky Caves"
+                        required
+                        className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-[#17212B] focus:outline-none focus:border-[#0552A2]"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <label className="font-semibold text-[#17212B]">Region / District</label>
+                      <input
+                        type="text"
+                        value={attractionRegion}
+                        onChange={(e) => setAttractionRegion(e.target.value)}
+                        placeholder="Upper Mustang"
+                        required
+                        className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-[#17212B] focus:outline-none focus:border-[#0552A2]"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <label className="font-semibold text-[#17212B]">Brief Description</label>
+                    <input
+                      type="text"
+                      value={attractionDesc}
+                      onChange={(e) => setAttractionDesc(e.target.value)}
+                      placeholder="Ancient cliffside meditation caves overlooking Kali Gandaki."
+                      className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-[#17212B] focus:outline-none focus:border-[#0552A2]"
+                    />
+                  </div>
+                </>
+              )}
+
+              {activeHostTab === 'listpermit' && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <div className="flex flex-col gap-1">
+                    <label className="font-semibold text-[#17212B]">Issuing Agency / Office</label>
+                    <input
+                      type="text"
+                      value={authorityName}
+                      onChange={(e) => setAuthorityName(e.target.value)}
+                      placeholder="NTB TIMS Desk Pokhara"
+                      required
+                      className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-[#17212B] focus:outline-none focus:border-[#0552A2]"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <label className="font-semibold text-[#17212B]">Registration / License Code</label>
+                    <input
+                      type="text"
+                      value={authorityCode}
+                      onChange={(e) => setAuthorityCode(e.target.value)}
+                      placeholder="NTB-PKR-204"
+                      required
+                      className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-[#17212B] focus:outline-none focus:border-[#0552A2]"
+                    />
+                  </div>
+                </div>
+              )}
+
+              <button
+                type="submit"
+                className="w-full bg-[#0552A2] hover:bg-[#044080] text-white font-semibold py-2.5 rounded-xl transition-colors cursor-pointer"
+              >
+                {activeHostTab === 'becomehost' && 'Submit Host Application'}
+                {activeHostTab === 'listproperty' && 'Submit Property Listing'}
+                {activeHostTab === 'listattraction' && 'Submit Attraction'}
+                {activeHostTab === 'listpermit' && 'Register Permit Authority'}
+              </button>
+            </form>
+
+            {submittedApplications.length > 0 && (
+              <div className="mt-4 pt-3 border-t border-slate-100 space-y-2">
+                <span className="text-[11px] font-semibold text-[#64748B] block">
+                  Submitted Applications ({submittedApplications.length})
+                </span>
+                {submittedApplications.map((app) => (
+                  <div
+                    key={app.id}
+                    className="flex items-center justify-between gap-2 p-2.5 rounded-xl bg-slate-50 border border-slate-200/70 text-xs"
+                  >
+                    <div className="min-w-0">
+                      <span className="text-[10px] font-semibold text-[#0552A2] block">
+                        {app.category}
+                      </span>
+                      <span className="font-bold text-[#17212B] block truncate">{app.title}</span>
+                      <span className="text-[11px] text-[#64748B] block truncate">{app.subtitle}</span>
+                    </div>
+                    <span className="text-[10px] font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full shrink-0">
+                      {app.status}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

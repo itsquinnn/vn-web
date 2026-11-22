@@ -13,7 +13,6 @@ import InfoDetailPanel from '@/components/features/info/InfoDetailPanel';
 import StaysSection from '@/components/features/dashboard/StaysSection';
 import GuidesPermitsSection from '@/components/features/dashboard/GuidesPermitsSection';
 import AccountSection from '@/components/features/dashboard/AccountSection';
-import HostSection from '@/components/features/dashboard/HostSection';
 import { useTravelStore } from '@/store/useTravelStore';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -35,10 +34,6 @@ import {
   UserCheck,
   ConciergeBell,
   TicketCheck,
-  UserPlus,
-  Building2,
-  MapPinPlus,
-  ShieldCheck,
   MessageSquare,
   LucideIcon,
 } from 'lucide-react';
@@ -89,15 +84,6 @@ const NAV_GROUPS: NavGroup[] = [
       { id: 'guides', label: 'Guides', icon: UserCheck },
       { id: 'butler', label: 'Butler', icon: ConciergeBell },
       { id: 'permits', label: 'Permits', icon: TicketCheck },
-    ],
-  },
-  {
-    title: 'Host & List',
-    items: [
-      { id: 'becomehost', label: 'Become a Host', icon: UserPlus },
-      { id: 'listproperty', label: 'List Your Property', icon: Building2 },
-      { id: 'listattraction', label: 'List an Attraction', icon: MapPinPlus },
-      { id: 'listpermit', label: 'Permit Authority', icon: ShieldCheck },
     ],
   },
 ];
@@ -288,9 +274,6 @@ export default function DashboardPage() {
     }
     if (['login', 'bookings', 'pasttrips', 'messages', 'customize'].includes(active)) {
       return <AccountSection activeId={active} />;
-    }
-    if (['becomehost', 'listproperty', 'listattraction', 'listpermit'].includes(active)) {
-      return <HostSection activeId={active} />;
     }
     return <DashboardHome onNavigate={handleActiveChange} />;
   };

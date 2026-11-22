@@ -18,6 +18,13 @@ import {
   BadgeCheck,
   Briefcase,
   Camera,
+  FileText,
+  Building2,
+  Clock,
+  QrCode,
+  ChevronDown,
+  ChevronUp,
+  Download,
 } from 'lucide-react';
 
 function getGuideProfileMedia(type: string) {
@@ -254,26 +261,159 @@ const ROUTE_OPTIONS = [
   'Chitwan / Pokhara / Kathmandu',
 ];
 
-const PERMIT_PRESETS = [
-  { label: 'Annapurna Conservation (ACAP) + TIMS', fee: 30, type: 'Trekking' as const, docs: 'Passport + 2 photos' },
-  { label: 'Sagarmatha National Park + Khumbu Fee', fee: 40, type: 'National Park' as const, docs: 'Passport + cash NPR' },
-  { label: 'Langtang National Park + TIMS', fee: 30, type: 'Trekking' as const, docs: 'Passport + 2 photos' },
-  { label: 'Upper Mustang Restricted Area (RAP)', fee: 500, type: 'Trekking' as const, docs: 'Passport + 2 photos + licensed guide' },
-  { label: 'Chitwan / Bardia National Park Entry', fee: 20, type: 'National Park' as const, docs: 'Passport at gate' },
-  { label: 'NMA Trekking Peak Permit (Island / Mera)', fee: 250, type: 'Mountaineering' as const, docs: 'Passport + agency endorsement' },
+interface PermitCatalogItem {
+  id: string;
+  label: string;
+  type: 'Trekking' | 'Mountaineering' | 'National Park' | 'Special Restricted';
+  fee: number;
+  feeDetail: string;
+  authority: string;
+  issuingLocations: string;
+  processingTime: string;
+  validity: string;
+  guideRequired: string;
+  docs: string[];
+  notes: string;
+}
+
+const PERMIT_CATALOG: PermitCatalogItem[] = [
+  {
+    id: 'acap-tims',
+    label: 'Annapurna Conservation Area (ACAP) + TIMS',
+    type: 'Trekking',
+    fee: 30,
+    feeDetail: 'NPR 3,000 ACAP + NPR 2,000 TIMS (~$30)',
+    authority: 'Nepal Tourism Board (NTB) & NTNC',
+    issuingLocations: 'Bhrikutimandap (Kathmandu) or Damside (Pokhara)',
+    processingTime: 'Same day (15–30 mins)',
+    validity: 'Single entry for trek duration',
+    guideRequired: 'Mandatory (licensed guide required for TIMS)',
+    docs: ['Original passport (6+ months validity)', '2–4 passport-size photos', 'Trekking itinerary & guide license'],
+    notes: 'Required for Annapurna Base Camp, Annapurna Circuit, Ghorepani Poon Hill, and Mardi Himal.',
+  },
+  {
+    id: 'sagarmatha',
+    label: 'Sagarmatha National Park + Khumbu Fee',
+    type: 'National Park',
+    fee: 40,
+    feeDetail: 'NPR 3,000 Park + NPR 2,000 Khumbu Rural (~$40)',
+    authority: 'Dept. of National Parks & Khumbu Pasang Lhamu',
+    issuingLocations: 'Monjo Entry Gate, Lukla, or NTB Kathmandu',
+    processingTime: 'Instant at entry checkpoint',
+    validity: 'Single entry for Everest region trek',
+    guideRequired: 'Recommended (mandatory for restricted side valleys)',
+    docs: ['Original passport', 'Cash in NPR (cards not accepted at Monjo)', '2 passport photos (if registering TIMS)'],
+    notes: 'Covers Everest Base Camp, Gokyo Lakes, and Three Passes. Keep receipts for trail checkpoints.',
+  },
+  {
+    id: 'langtang-tims',
+    label: 'Langtang National Park + TIMS',
+    type: 'Trekking',
+    fee: 30,
+    feeDetail: 'NPR 3,000 Park + TIMS (~$30)',
+    authority: 'Nepal Tourism Board & DNPWC',
+    issuingLocations: 'NTB Kathmandu or Dhunche Checkpoint',
+    processingTime: 'Same day',
+    validity: 'Single entry for Langtang / Gosainkunda',
+    guideRequired: 'Mandatory for TIMS card',
+    docs: ['Original passport', '2 passport-size photos', 'Licensed guide registration'],
+    notes: 'Covers Langtang Valley, Kyanjin Ri, and Gosainkunda Alpine Lakes.',
+  },
+  {
+    id: 'upper-mustang',
+    label: 'Upper Mustang Restricted Area (RAP)',
+    type: 'Special Restricted',
+    fee: 500,
+    feeDetail: '$500 for first 10 days (+$50 per extra day)',
+    authority: 'Department of Immigration, Nepal',
+    issuingLocations: 'Kalikasthan (Kathmandu) via registered agency',
+    processingTime: '1–2 business days',
+    validity: '10 days minimum (extendable per day)',
+    guideRequired: 'Mandatory (minimum 2 trekkers + licensed guide)',
+    docs: ['Original passport & valid Nepal visa', '2 passport-size photos', 'Registered agency application & ACAP permit'],
+    notes: 'Restricted border zone north of Kagbeni. Solo trekking permits are not issued.',
+  },
+  {
+    id: 'manaslu',
+    label: 'Manaslu Conservation & Restricted Area (MCAP + RAP)',
+    type: 'Special Restricted',
+    fee: 100,
+    feeDetail: '$100 (Sep–Nov) / $75 (Dec–Aug) + NPR 3,000 MCAP',
+    authority: 'Department of Immigration & NTNC',
+    issuingLocations: 'Kalikasthan & Bhrikutimandap (Kathmandu)',
+    processingTime: '1–2 business days',
+    validity: '7 days base (extendable per extra day)',
+    guideRequired: 'Mandatory (minimum 2 trekkers + licensed guide)',
+    docs: ['Original passport & Nepal visa', '2 passport-size photos', 'Agency endorsement & MCAP/ACAP permits'],
+    notes: 'Required for Manaslu Circuit and Larkya La Pass. Includes Annapurna exit zone.',
+  },
+  {
+    id: 'chitwan-bardia',
+    label: 'Chitwan / Bardia National Park Entry',
+    type: 'National Park',
+    fee: 20,
+    feeDetail: 'NPR 2,000 per day (~$20)',
+    authority: 'Dept. of National Parks & Wildlife Conservation',
+    issuingLocations: 'Sauraha / Kasara (Chitwan) or Thakurdwara (Bardia)',
+    processingTime: 'Instant at park gate',
+    validity: '1 day per ticket (renewable)',
+    guideRequired: 'Mandatory for walking safaris inside core park',
+    docs: ['Original passport or photocopy at counter', 'Cash in NPR'],
+    notes: 'Required for jungle jeep safaris, canoeing, and guided wildlife walks.',
+  },
+  {
+    id: 'nma-peak',
+    label: 'NMA Trekking Peak Permit (Island / Mera)',
+    type: 'Mountaineering',
+    fee: 250,
+    feeDetail: '$250 (Spring) / $125 (Autumn) / $70 (Winter/Summer)',
+    authority: 'Nepal Mountaineering Association (NMA)',
+    issuingLocations: 'NMA Secretariat, Nagpokhari, Kathmandu',
+    processingTime: '2–3 business days',
+    validity: '30 days climbing window',
+    guideRequired: 'Mandatory (NMA-certified climbing guide)',
+    docs: ['Original passport & Nepal visa', 'High-altitude rescue & medical insurance', 'Agency endorsement & garbage deposit'],
+    notes: 'Covers Group B trekking peaks including Island Peak (Imja Tse), Mera Peak, and Lobuche East.',
+  },
 ];
 
 export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionProps) {
   const { guides, permits, addPermit, addBooking } = useTravelStore();
 
   // Permits Form states
+  const [permitStep, setPermitStep] = useState<1 | 2 | 3>(1);
+  const [permitPaymentMethod, setPermitPaymentMethod] = useState<'esewa' | 'card' | 'counter'>('esewa');
+  const [paymentRefInput, setPaymentRefInput] = useState('');
+  const [selectedPermitId, setSelectedPermitId] = useState(PERMIT_CATALOG[0].id);
   const [applicantName, setApplicantName] = useState('Alex Mercer');
   const [passportNumber, setPassportNumber] = useState('NPL-9988221A');
-  const [permitType, setPermitType] = useState<'Trekking' | 'Mountaineering' | 'National Park'>('Trekking');
-  const [zone, setZone] = useState('Annapurna Conservation Area (ACAP)');
+  const [nationality, setNationality] = useState('United States');
+  const [permitType, setPermitType] = useState<'Trekking' | 'Mountaineering' | 'National Park' | 'Special Restricted'>(PERMIT_CATALOG[0].type);
+  const [zone, setZone] = useState(PERMIT_CATALOG[0].label);
   const [startDate, setStartDate] = useState('2026-06-05');
   const [endDate, setEndDate] = useState('2026-06-15');
+  const [docsConfirmed, setDocsConfirmed] = useState(false);
+  const [expandedPermitId, setExpandedPermitId] = useState<string | null>(null);
   const [permitSubmittedMsg, setPermitSubmittedMsg] = useState<string | null>(null);
+
+  const selectedPermitMeta = useMemo(
+    () => PERMIT_CATALOG.find((p) => p.id === selectedPermitId) || PERMIT_CATALOG[0],
+    [selectedPermitId]
+  );
+
+  const permitDurationDays = useMemo(() => {
+    const start = new Date(`${startDate}T00:00:00`);
+    const end = new Date(`${endDate}T00:00:00`);
+    if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) return 10;
+    return Math.max(1, Math.round((end.getTime() - start.getTime()) / 86400000) + 1);
+  }, [startDate, endDate]);
+
+  const computedPermitFee = useMemo(() => {
+    if (selectedPermitMeta.id === 'upper-mustang') {
+      return 500 + Math.max(0, permitDurationDays - 10) * 50;
+    }
+    return selectedPermitMeta.fee;
+  }, [selectedPermitMeta, permitDurationDays]);
 
   // Guides search, filter, sort, inline detail & reviews state
   const [guideSearch, setGuideSearch] = useState('');
@@ -349,10 +489,6 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
 
   const handleApplyPermit = (e: React.FormEvent) => {
     e.preventDefault();
-    const matchedPreset = PERMIT_PRESETS.find((p) =>
-      zone.toLowerCase().includes(p.label.split(' ')[0].toLowerCase())
-    );
-    const costMap = { Trekking: 30, Mountaineering: 250, 'National Park': 20 };
     addPermit({
       type: permitType,
       zone,
@@ -360,10 +496,86 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
       passportNumber,
       startDate,
       endDate,
-      cost: matchedPreset?.fee ?? costMap[permitType] ?? 30,
+      cost: computedPermitFee,
     });
-    setPermitSubmittedMsg(`Permit request saved for ${zone}.`);
-    setTimeout(() => setPermitSubmittedMsg(null), 3500);
+    setDocsConfirmed(false);
+    setPermitStep(1);
+    setPaymentRefInput('');
+    const methodLabel =
+      permitPaymentMethod === 'esewa'
+        ? 'eSewa / Khalti'
+        : permitPaymentMethod === 'card'
+          ? 'Card'
+          : 'NTB Counter';
+    setPermitSubmittedMsg(`Submitted ${zone} (${nationality}) · $${computedPermitFee} via ${methodLabel}. Added to Your Permits.`);
+    setTimeout(() => setPermitSubmittedMsg(null), 4000);
+  };
+
+  const handleDownloadPermit = (permit: {
+    id: string;
+    type: string;
+    zone: string;
+    applicantName: string;
+    passportNumber: string;
+    startDate: string;
+    endDate: string;
+    status: string;
+    qrCode: string;
+    cost: number;
+  }) => {
+    const html = `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Nepal Trekking & Park Permit - ${permit.zone}</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #17212B; background: #f8fafc; margin: 0; padding: 32px; }
+    .card { max-width: 640px; margin: 0 auto; background: #fff; border: 1px solid #cbd5e1; border-radius: 16px; padding: 28px; }
+    .header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid #e2e8f0; padding-bottom: 16px; margin-bottom: 20px; }
+    .title { font-size: 20px; font-weight: 700; margin: 0; color: #0552A2; }
+    .sub { font-size: 12px; color: #64748B; margin-top: 4px; }
+    .badge { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: #ecfdf5; color: #047857; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; font-size: 13px; }
+    .label { font-size: 11px; color: #64748B; display: block; margin-bottom: 2px; }
+    .val { font-weight: 600; color: #17212B; }
+    .footer { margin-top: 22px; padding-top: 16px; border-top: 1px solid #e2e8f0; font-size: 12px; color: #475569; display: flex; justify-content: space-between; align-items: center; }
+    .ref { font-family: monospace; font-weight: 700; color: #0552A2; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="header">
+      <div>
+        <h1 class="title">Visit Nepal — Trekking &amp; Park Permit</h1>
+        <div class="sub">${permit.type} · ${permit.zone}</div>
+      </div>
+      <span class="badge">${permit.status}</span>
+    </div>
+    <div class="grid">
+      <div><span class="label">Applicant Name</span><span class="val">${permit.applicantName}</span></div>
+      <div><span class="label">Passport Number</span><span class="val">${permit.passportNumber}</span></div>
+      <div><span class="label">Entry Date</span><span class="val">${permit.startDate}</span></div>
+      <div><span class="label">Exit Date</span><span class="val">${permit.endDate}</span></div>
+      <div><span class="label">Permit Fee</span><span class="val">$${permit.cost}</span></div>
+      <div><span class="label">Checkpoint Reference</span><span class="val ref">${permit.qrCode}</span></div>
+    </div>
+    <div class="footer">
+      <span>Present this pass with your original passport at trailhead checkpoints.</span>
+      <span class="ref">ID: ${permit.id}</span>
+    </div>
+  </div>
+</body>
+</html>`;
+
+    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `nepal-permit-${permit.id}.html`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
   const handleHireGuide = (guide: Guide, days = hireDays) => {
@@ -1533,7 +1745,7 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
               Trekking &amp; Park Permits
             </h2>
             <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs sm:text-sm text-[#4B5563]">
-              Prepare your TIMS card, Conservation Area, National Park, and Restricted Area permit applications. Issued in Kathmandu (Bhrikutimandap) or Pokhara (Damside) — bring your passport and 2–4 passport photos.
+              Complete the 3-step permit application on the left and track your active passes on the right.
             </p>
           </div>
 
@@ -1544,148 +1756,467 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
             </div>
           )}
 
-          {/* Quick Permit Presets */}
-          <div className="flex flex-wrap gap-2">
-            {PERMIT_PRESETS.map((preset) => (
-              <button
-                key={preset.label}
-                type="button"
-                onClick={() => {
-                  setZone(preset.label);
-                  setPermitType(preset.type);
-                }}
-                className={`text-xs px-3 py-1.5 rounded-full border transition-colors cursor-pointer ${
-                  zone === preset.label
-                    ? 'bg-[#0552A2] text-white border-[#0552A2] font-semibold'
-                    : 'bg-white text-[#475569] border-slate-200 hover:bg-slate-50'
-                }`}
-              >
-                {preset.label} (${preset.fee})
-              </button>
-            ))}
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-            {/* Form */}
-            <div className="bg-white border border-slate-200/90 p-5 sm:p-6 rounded-2xl flex flex-col gap-4 shadow-xs">
-              <h3 className="font-[family-name:var(--font-quicksand)] text-base font-bold text-[#17212B] border-b border-slate-100 pb-2.5">
-                New Permit Application
-              </h3>
-
-              <form onSubmit={handleApplyPermit} className="flex flex-col gap-3.5 text-xs text-left">
-                <div className="flex flex-col gap-1">
-                  <label className="font-semibold text-[#17212B]">Applicant Full Name (as on Passport)</label>
-                  <input
-                    type="text"
-                    value={applicantName}
-                    onChange={(e) => setApplicantName(e.target.value)}
-                    className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs focus:outline-none focus:border-[#0552A2] text-[#17212B]"
-                    required
-                  />
-                </div>
-                <div className="flex flex-col gap-1">
-                  <label className="font-semibold text-[#17212B]">Passport Number</label>
-                  <input
-                    type="text"
-                    value={passportNumber}
-                    onChange={(e) => setPassportNumber(e.target.value)}
-                    className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs focus:outline-none focus:border-[#0552A2] text-[#17212B]"
-                    required
-                  />
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="flex flex-col gap-1">
-                    <label className="font-semibold text-[#17212B]">Permit Category</label>
-                    <select
-                      value={permitType}
-                      onChange={(e) =>
-                        setPermitType(e.target.value as 'Trekking' | 'Mountaineering' | 'National Park')
-                      }
-                      className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs focus:outline-none focus:border-[#0552A2] text-[#17212B]"
+          {/* Left: 3-Step Permit Application | Right: Your Permits */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            {/* Left: Step-wise Permit Form */}
+            <div className="lg:col-span-7 bg-white border border-slate-200/90 p-5 sm:p-6 rounded-2xl flex flex-col gap-5 shadow-xs">
+              {/* Step Indicator */}
+              <div className="grid grid-cols-3 gap-2 border-b border-slate-100 pb-4">
+                {[
+                  { step: 1 as const, label: 'Permit Type' },
+                  { step: 2 as const, label: 'Applicant Details' },
+                  { step: 3 as const, label: 'Payment' },
+                ].map((s) => {
+                  const isCurrent = permitStep === s.step;
+                  const isDone = permitStep > s.step;
+                  const canJump = s.step < permitStep;
+                  return (
+                    <button
+                      key={s.step}
+                      type="button"
+                      disabled={!canJump && !isCurrent}
+                      onClick={() => canJump && setPermitStep(s.step)}
+                      className={`flex items-center gap-2 px-3 py-2 rounded-xl border text-left transition-colors ${
+                        isCurrent
+                          ? 'bg-[#0552A2]/8 border-[#0552A2] text-[#0552A2]'
+                          : isDone
+                            ? 'bg-emerald-50/70 border-emerald-200 text-emerald-800 cursor-pointer'
+                            : 'bg-slate-50/70 border-slate-200/70 text-slate-400 cursor-default'
+                      }`}
                     >
-                      <option value="Trekking">Trekking / Conservation (TIMS / ACAP)</option>
-                      <option value="Mountaineering">Mountaineering Peak</option>
-                      <option value="National Park">National Park Entry</option>
-                    </select>
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <label className="font-semibold text-[#17212B]">Region / Conservation Area</label>
-                    <input
-                      type="text"
-                      value={zone}
-                      onChange={(e) => setZone(e.target.value)}
-                      className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs focus:outline-none focus:border-[#0552A2] text-[#17212B]"
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="flex flex-col gap-1">
-                    <label className="font-semibold text-[#17212B]">Entry Date</label>
-                    <input
-                      type="date"
-                      value={startDate}
-                      onChange={(e) => setStartDate(e.target.value)}
-                      className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs focus:outline-none focus:border-[#0552A2] text-[#17212B]"
-                    />
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <label className="font-semibold text-[#17212B]">Exit Date</label>
-                    <input
-                      type="date"
-                      value={endDate}
-                      onChange={(e) => setEndDate(e.target.value)}
-                      className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs focus:outline-none focus:border-[#0552A2] text-[#17212B]"
-                    />
-                  </div>
-                </div>
-
-                <button
-                  type="submit"
-                  className="bg-[#0552A2] hover:bg-[#044080] text-white py-3 rounded-xl font-semibold mt-1 cursor-pointer transition-colors text-xs shadow-2xs"
-                >
-                  Save Permit Application
-                </button>
-              </form>
-            </div>
-
-            {/* Active Permits List */}
-            <div className="flex flex-col gap-4">
-              <h3 className="font-[family-name:var(--font-quicksand)] text-base font-bold text-[#17212B] border-b border-slate-100 pb-2">
-                Your Permits ({permits.length})
-              </h3>
-
-              <div className="flex flex-col gap-3">
-                {permits.map((permit) => (
-                  <div
-                    key={permit.id}
-                    className="bg-white border border-slate-200/90 p-4 rounded-2xl flex justify-between items-center shadow-xs"
-                  >
-                    <div>
-                      <span className="text-[11px] font-semibold text-[#0552A2] bg-blue-50 px-2.5 py-0.5 rounded-full">
-                        {permit.type}
-                      </span>
-                      <h4 className="font-[family-name:var(--font-quicksand)] text-sm font-bold mt-1.5 text-[#17212B]">
-                        {permit.zone}
-                      </h4>
-                      <p className="text-xs text-[#475569] mt-0.5">
-                        Passport: {permit.passportNumber} · {permit.startDate} to {permit.endDate}
-                      </p>
-                    </div>
-                    <div className="text-right flex flex-col gap-1 text-xs shrink-0">
                       <span
-                        className={`font-semibold ${
-                          permit.status === 'Approved' ? 'text-emerald-600' : 'text-amber-600'
+                        className={`w-5 h-5 rounded-full text-[11px] font-bold flex items-center justify-center shrink-0 ${
+                          isCurrent
+                            ? 'bg-[#0552A2] text-white'
+                            : isDone
+                              ? 'bg-emerald-600 text-white'
+                              : 'bg-slate-200 text-slate-600'
                         }`}
                       >
-                        {permit.status}
+                        {isDone ? '✓' : s.step}
                       </span>
-                      <span className="font-[family-name:var(--font-quicksand)] font-bold text-[#17212B]">
-                        ${permit.cost}
+                      <span className="text-xs font-semibold truncate">{s.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Step 1: Choose Permit Type & View Official Info */}
+              {permitStep === 1 && (
+                <div className="flex flex-col gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    {PERMIT_CATALOG.map((item) => {
+                      const isSelected = selectedPermitId === item.id;
+                      return (
+                        <button
+                          key={item.id}
+                          type="button"
+                          onClick={() => {
+                            setSelectedPermitId(item.id);
+                            setZone(item.label);
+                            setPermitType(item.type);
+                          }}
+                          className={`text-left p-3.5 rounded-xl border transition-all cursor-pointer flex flex-col justify-between gap-2 ${
+                            isSelected
+                              ? 'bg-[#0552A2]/[0.05] border-[#0552A2] shadow-2xs'
+                              : 'bg-white border-slate-200/90 hover:border-[#0552A2]/40'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="text-[10px] font-semibold text-[#0552A2] bg-[#0552A2]/10 px-2 py-0.5 rounded-full">
+                              {item.type}
+                            </span>
+                            <span className="font-[family-name:var(--font-quicksand)] text-sm font-bold text-[#17212B]">
+                              ${item.fee}
+                            </span>
+                          </div>
+                          <h4 className="font-[family-name:var(--font-quicksand)] text-xs font-bold text-[#17212B] leading-snug">
+                            {item.label}
+                          </h4>
+                          <span className="text-[11px] text-[#64748B] flex items-center gap-1">
+                            <Clock className="w-3 h-3 text-[#0552A2] shrink-0" />
+                            {item.processingTime}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Selected Permit Official Details */}
+                  <div className="pt-3 border-t border-slate-100 space-y-2.5 text-xs">
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <h4 className="font-[family-name:var(--font-quicksand)] text-sm font-bold text-[#17212B]">
+                          {selectedPermitMeta.label}
+                        </h4>
+                        <p className="text-[11px] text-[#475569] mt-0.5 leading-relaxed">
+                          {selectedPermitMeta.notes}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2 border-t border-slate-200/70 text-[11px]">
+                      <div className="flex items-start gap-2">
+                        <Building2 className="w-3.5 h-3.5 text-[#0552A2] shrink-0 mt-0.5" />
+                        <div>
+                          <span className="font-semibold text-[#17212B] block">Issuing Authority</span>
+                          <span className="text-[#475569]">{selectedPermitMeta.authority}</span>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <ShieldCheck className="w-3.5 h-3.5 text-[#0552A2] shrink-0 mt-0.5" />
+                        <div>
+                          <span className="font-semibold text-[#17212B] block">Guide Policy</span>
+                          <span className="text-[#475569]">{selectedPermitMeta.guideRequired}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-2 border-t border-slate-200/70 text-[11px]">
+                      <span className="font-semibold text-[#17212B] block mb-1">Required Documents</span>
+                      <div className="flex flex-wrap gap-x-4 gap-y-1 text-[#475569]">
+                        {selectedPermitMeta.docs.map((doc) => (
+                          <span key={doc} className="inline-flex items-center gap-1">
+                            <CheckCircle2 className="w-3 h-3 text-emerald-600 shrink-0" />
+                            {doc}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+                    <div className="text-xs">
+                      <span className="text-[#64748B] block text-[11px]">Base Fee</span>
+                      <span className="font-[family-name:var(--font-quicksand)] text-base font-bold text-[#0552A2]">
+                        ${selectedPermitMeta.fee}
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setPermitStep(2)}
+                      className="bg-[#0552A2] hover:bg-[#044080] text-white text-xs font-semibold px-5 py-2.5 rounded-xl transition-colors cursor-pointer inline-flex items-center gap-1.5"
+                    >
+                      <span>Continue to Details</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Step 2: Applicant & Trip Details */}
+              {permitStep === 2 && (
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    setPermitStep(3);
+                  }}
+                  className="flex flex-col gap-3.5 text-xs text-left"
+                >
+                  <div className="flex items-center justify-between pb-2.5 border-b border-slate-100">
+                    <div>
+                      <span className="text-[10px] font-semibold text-[#0552A2] block">Selected Permit</span>
+                      <span className="font-bold text-[#17212B]">{zone}</span>
+                    </div>
+                    <span className="text-[11px] text-[#64748B]">
+                      {permitDurationDays} {permitDurationDays === 1 ? 'day' : 'days'}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="flex flex-col gap-1">
+                      <label className="font-semibold text-[#17212B]">Applicant Full Name (as on Passport)</label>
+                      <input
+                        type="text"
+                        value={applicantName}
+                        onChange={(e) => setApplicantName(e.target.value)}
+                        className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs focus:outline-none focus:border-[#0552A2] text-[#17212B]"
+                        required
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <label className="font-semibold text-[#17212B]">Passport Number</label>
+                      <input
+                        type="text"
+                        value={passportNumber}
+                        onChange={(e) => setPassportNumber(e.target.value)}
+                        className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs focus:outline-none focus:border-[#0552A2] text-[#17212B]"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="flex flex-col gap-1">
+                      <label className="font-semibold text-[#17212B]">Nationality</label>
+                      <input
+                        type="text"
+                        value={nationality}
+                        onChange={(e) => setNationality(e.target.value)}
+                        className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs focus:outline-none focus:border-[#0552A2] text-[#17212B]"
+                        required
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <label className="font-semibold text-[#17212B]">Region / Conservation Area</label>
+                      <input
+                        type="text"
+                        value={zone}
+                        onChange={(e) => setZone(e.target.value)}
+                        className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs focus:outline-none focus:border-[#0552A2] text-[#17212B]"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="flex flex-col gap-1">
+                      <label className="font-semibold text-[#17212B]">Entry Date</label>
+                      <input
+                        type="date"
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
+                        className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs focus:outline-none focus:border-[#0552A2] text-[#17212B]"
+                        required
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <label className="font-semibold text-[#17212B]">Exit Date</label>
+                      <input
+                        type="date"
+                        value={endDate}
+                        onChange={(e) => setEndDate(e.target.value)}
+                        className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs focus:outline-none focus:border-[#0552A2] text-[#17212B]"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <label className="flex items-start gap-2.5 pt-1 cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      checked={docsConfirmed}
+                      onChange={(e) => setDocsConfirmed(e.target.checked)}
+                      required
+                      className="mt-0.5 rounded border-slate-300 text-[#0552A2] focus:ring-[#0552A2]"
+                    />
+                    <span className="text-[11px] text-[#475569] leading-relaxed">
+                      I confirm my passport details are accurate and I will carry original passport, visa, and required photos to the checkpoint.
+                    </span>
+                  </label>
+
+                  <div className="flex items-center justify-between pt-3 border-t border-slate-100">
+                    <button
+                      type="button"
+                      onClick={() => setPermitStep(1)}
+                      className="text-xs font-semibold text-[#475569] hover:text-[#17212B] px-3 py-2 rounded-lg cursor-pointer"
+                    >
+                      Back
+                    </button>
+                    <button
+                      type="submit"
+                      className="bg-[#0552A2] hover:bg-[#044080] text-white px-5 py-2.5 rounded-xl font-semibold cursor-pointer transition-colors text-xs"
+                    >
+                      Continue to Payment
+                    </button>
+                  </div>
+                </form>
+              )}
+
+              {/* Step 3: Payment & Submit */}
+              {permitStep === 3 && (
+                <form onSubmit={handleApplyPermit} className="flex flex-col gap-4 text-xs text-left">
+                  {/* Application Summary */}
+                  <div className="pb-3 border-b border-slate-100 space-y-2">
+                    <div className="flex justify-between gap-2">
+                      <span className="text-[#64748B]">Permit</span>
+                      <span className="font-semibold text-[#17212B] text-right">{zone}</span>
+                    </div>
+                    <div className="flex justify-between gap-2">
+                      <span className="text-[#64748B]">Applicant</span>
+                      <span className="font-medium text-[#17212B]">
+                        {applicantName} ({passportNumber})
+                      </span>
+                    </div>
+                    <div className="flex justify-between gap-2">
+                      <span className="text-[#64748B]">Validity</span>
+                      <span className="font-medium text-[#17212B]">
+                        {startDate} to {endDate} ({permitDurationDays}d)
+                      </span>
+                    </div>
+                    <div className="flex justify-between gap-2 pt-2 border-t border-slate-200/80">
+                      <span className="font-semibold text-[#17212B]">Total Permit Fee</span>
+                      <span className="font-[family-name:var(--font-quicksand)] text-base font-bold text-[#0552A2]">
+                        ${computedPermitFee}
                       </span>
                     </div>
                   </div>
-                ))}
+
+                  {/* Payment Method Selection */}
+                  <div className="space-y-2">
+                    <span className="font-semibold text-[#17212B] block">Select Payment Method</span>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                      {[
+                        { id: 'esewa' as const, label: 'eSewa / Khalti', sub: 'Instant QR / Wallet' },
+                        { id: 'card' as const, label: 'Visa / Mastercard', sub: 'International Card' },
+                        { id: 'counter' as const, label: 'NTB Counter', sub: 'Pay NPR at Desk' },
+                      ].map((m) => (
+                        <button
+                          key={m.id}
+                          type="button"
+                          onClick={() => setPermitPaymentMethod(m.id)}
+                          className={`p-3 rounded-xl border text-left transition-colors cursor-pointer ${
+                            permitPaymentMethod === m.id
+                              ? 'bg-[#0552A2]/[0.05] border-[#0552A2]'
+                              : 'bg-white border-slate-200 hover:border-slate-300'
+                          }`}
+                        >
+                          <span className="font-semibold text-[#17212B] block">{m.label}</span>
+                          <span className="text-[11px] text-[#64748B]">{m.sub}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {permitPaymentMethod === 'esewa' && (
+                    <div className="flex flex-col gap-1">
+                      <label className="font-semibold text-[#17212B]">eSewa / Khalti Mobile ID</label>
+                      <input
+                        type="text"
+                        value={paymentRefInput}
+                        onChange={(e) => setPaymentRefInput(e.target.value)}
+                        placeholder="98XXXXXXXX"
+                        required
+                        className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs focus:outline-none focus:border-[#0552A2] text-[#17212B]"
+                      />
+                    </div>
+                  )}
+
+                  {permitPaymentMethod === 'card' && (
+                    <div className="flex flex-col gap-1">
+                      <label className="font-semibold text-[#17212B]">Card Number</label>
+                      <input
+                        type="text"
+                        value={paymentRefInput}
+                        onChange={(e) => setPaymentRefInput(e.target.value)}
+                        placeholder="4242 •••• •••• 4242"
+                        required
+                        className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs focus:outline-none focus:border-[#0552A2] text-[#17212B]"
+                      />
+                    </div>
+                  )}
+
+                  {permitPaymentMethod === 'counter' && (
+                    <p className="text-[11px] text-[#475569] bg-slate-50 border border-slate-200/80 rounded-xl p-3 leading-relaxed">
+                      Your application will be queued for payment in NPR cash at {selectedPermitMeta.issuingLocations}.
+                    </p>
+                  )}
+
+                  <div className="flex items-center justify-between pt-3 border-t border-slate-100">
+                    <button
+                      type="button"
+                      onClick={() => setPermitStep(2)}
+                      className="text-xs font-semibold text-[#475569] hover:text-[#17212B] px-3 py-2 rounded-lg cursor-pointer"
+                    >
+                      Back
+                    </button>
+                    <button
+                      type="submit"
+                      className="bg-[#0552A2] hover:bg-[#044080] text-white px-5 py-2.5 rounded-xl font-semibold cursor-pointer transition-colors text-xs shadow-2xs"
+                    >
+                      {permitPaymentMethod === 'counter'
+                        ? 'Submit Application'
+                        : `Pay $${computedPermitFee} & Submit`}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+
+            {/* Right: Your Permits */}
+            <div className="lg:col-span-5 flex flex-col gap-3">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                <h3 className="font-[family-name:var(--font-quicksand)] text-base font-bold text-[#17212B]">
+                  Your Permits ({permits.length})
+                </h3>
+              </div>
+
+              <div className="flex flex-col gap-3">
+                {permits.map((permit) => {
+                  const isExpanded = expandedPermitId === permit.id;
+                  return (
+                    <div
+                      key={permit.id}
+                      className="bg-white border border-slate-200/90 p-4 rounded-2xl shadow-xs flex flex-col gap-3"
+                    >
+                      <div className="flex justify-between items-start gap-3">
+                        <div className="min-w-0">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="text-[11px] font-semibold text-[#0552A2] bg-blue-50 px-2.5 py-0.5 rounded-full">
+                              {permit.type}
+                            </span>
+                            <span
+                              className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${
+                                permit.status === 'Approved'
+                                  ? 'bg-emerald-50 text-emerald-700'
+                                  : 'bg-amber-50 text-amber-700'
+                              }`}
+                            >
+                              {permit.status}
+                            </span>
+                          </div>
+                          <h4 className="font-[family-name:var(--font-quicksand)] text-sm font-bold mt-2 text-[#17212B]">
+                            {permit.zone}
+                          </h4>
+                          <p className="text-xs text-[#475569] mt-0.5">
+                            {permit.applicantName} · Passport: {permit.passportNumber}
+                          </p>
+                          <p className="text-[11px] text-[#64748B] mt-0.5">
+                            Valid: {permit.startDate} to {permit.endDate}
+                          </p>
+                        </div>
+
+                        <div className="text-right flex flex-col items-end gap-2 shrink-0">
+                          <span className="font-[family-name:var(--font-quicksand)] text-base font-bold text-[#17212B]">
+                            ${permit.cost}
+                          </span>
+                          <div className="flex items-center gap-3">
+                            <button
+                              type="button"
+                              onClick={() => handleDownloadPermit(permit)}
+                              className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#475569] hover:text-[#0552A2] cursor-pointer"
+                            >
+                              <Download className="w-3.5 h-3.5" />
+                              <span>Download</span>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setExpandedPermitId(isExpanded ? null : permit.id)}
+                              className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#0552A2] hover:underline cursor-pointer"
+                            >
+                              <span>{isExpanded ? 'Hide Pass' : 'Pass Details'}</span>
+                              {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      {isExpanded && (
+                        <div className="border-t border-slate-100 pt-3 flex items-center justify-between gap-3 text-xs bg-slate-50/70 rounded-xl p-3">
+                          <div className="flex items-center gap-2.5">
+                            <QrCode className="w-8 h-8 text-[#0552A2] shrink-0" />
+                            <div>
+                              <span className="text-[11px] text-[#64748B] block">Checkpoint Reference</span>
+                              <span className="font-mono font-semibold text-[#17212B]">{permit.qrCode}</span>
+                            </div>
+                          </div>
+                          <span className="text-[11px] text-[#475569] text-right">
+                            Present with original passport at trailhead
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>

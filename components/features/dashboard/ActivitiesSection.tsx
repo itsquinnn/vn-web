@@ -19,8 +19,12 @@ import {
   Trees,
   Landmark,
   Wind,
+  Waves,
+  Bike,
   Coffee,
   Check,
+  Leaf,
+  Binoculars,
 } from 'lucide-react';
 
 interface ActivitiesSectionProps {
@@ -823,6 +827,46 @@ export default function ActivitiesSection({ activeId, onNavigate }: ActivitiesSe
     }
   };
 
+  const getCategoryIcon = (category: string, fallbackSection: ActivityItem['section']) => {
+    switch (category) {
+      case 'Aerial':
+        return <Wind className="h-3.5 w-3.5" />;
+      case 'Adventure':
+        return <Zap className="h-3.5 w-3.5" />;
+      case 'Water':
+        return <Waves className="h-3.5 w-3.5" />;
+      case 'Cycling':
+        return <Bike className="h-3.5 w-3.5" />;
+      case 'Classic Trek':
+      case 'Circuit Trek':
+      case 'Valley Trek':
+      case 'Short Trek':
+        return <Mountain className="h-3.5 w-3.5" />;
+      case 'Restricted Area':
+        return <Compass className="h-3.5 w-3.5" />;
+      case 'Trekking Peak':
+      case 'Expedition Peak':
+        return <Zap className="h-3.5 w-3.5" />;
+      case 'UNESCO Park':
+      case 'Wilderness':
+        return <Trees className="h-3.5 w-3.5" />;
+      case 'Birding & Wetlands':
+        return <Binoculars className="h-3.5 w-3.5" />;
+      case 'UNESCO World Heritage':
+      case 'Pilgrimage':
+      case 'Pilgrimage & Art':
+      case 'Sacred Circuit':
+        return <Landmark className="h-3.5 w-3.5" />;
+      case 'Tea & Nature':
+        return <Coffee className="h-3.5 w-3.5" />;
+      case 'Community Tourism':
+      case 'Slow Travel':
+        return <Leaf className="h-3.5 w-3.5" />;
+      default:
+        return getSectionIcon(fallbackSection);
+    }
+  };
+
   const meta = SECTION_META[activeId] || SECTION_META[normalizedSection];
 
   return (
@@ -988,7 +1032,7 @@ export default function ActivitiesSection({ activeId, onNavigate }: ActivitiesSe
                       : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 hover:border-slate-300'
                   }`}
                 >
-                  {cat === 'All' && getSectionIcon(normalizedSection)}
+                  {cat === 'All' ? getSectionIcon(normalizedSection) : getCategoryIcon(cat, normalizedSection)}
                   <span>{cat}</span>
                 </button>
               );
@@ -1040,7 +1084,7 @@ export default function ActivitiesSection({ activeId, onNavigate }: ActivitiesSe
 
                   <div className="absolute top-3.5 left-3.5">
                     <span className="bg-white/95 backdrop-blur-md px-2.5 py-0.5 rounded-full text-[11px] font-semibold text-[#0552A2] flex items-center gap-1">
-                      {getSectionIcon(act.section)}
+                      {getCategoryIcon(act.category, act.section)}
                       <span>{act.category}</span>
                     </span>
                   </div>

@@ -43,15 +43,6 @@ export const NAV_GROUPS: NavGroup[] = [
       { id: 'permits', label: 'Permits', icon: 'M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z' },
     ],
   },
-  {
-    title: 'Host & List',
-    items: [
-      { id: 'becomehost',     label: 'Become a Host',        icon: 'M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z' },
-      { id: 'listproperty',   label: 'List Your Property',   icon: 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z' },
-      { id: 'listattraction', label: 'List an Attraction',   icon: 'M12 22s-8-4.5-8-11.8A8 8 0 0112 2a8 8 0 018 8.2c0 7.3-8 11.8-8 11.8z' },
-      { id: 'listpermit',     label: 'Permit Authority',     icon: 'M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z' },
-    ],
-  }
 ];
 
 // ─── HIGH-FIDELITY LOCAL DATABASE REGISTRY ───────────────────────────────────
