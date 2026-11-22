@@ -798,15 +798,15 @@ export default function ActivitiesSection({ activeId, onNavigate }: ActivitiesSe
 
   const getDifficultyBadge = (difficulty: string) => {
     if (difficulty.includes('Technical') || difficulty.includes('Extreme')) {
-      return 'bg-rose-50 text-rose-700 border-rose-200';
+      return 'bg-rose-600 text-white border-rose-600';
     }
     if (difficulty.includes('Challenging')) {
-      return 'bg-amber-50 text-amber-700 border-amber-200';
+      return 'bg-amber-600 text-white border-amber-600';
     }
     if (difficulty.includes('Moderate')) {
-      return 'bg-blue-50 text-[#0552A2] border-blue-200';
+      return 'bg-[#0552A2] text-white border-[#0552A2]';
     }
-    return 'bg-emerald-50 text-emerald-700 border-emerald-200';
+    return 'bg-emerald-600 text-white border-emerald-600';
   };
 
   const getSectionIcon = (section: ActivityItem['section']) => {
