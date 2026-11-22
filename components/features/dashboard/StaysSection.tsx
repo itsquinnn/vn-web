@@ -32,23 +32,12 @@ const CATEGORIES = [
   { id: 'Homestay', label: 'Heritage Homestay' },
 ];
 
-const REGIONS = [
-  { id: 'all', label: 'All Regions' },
-  { id: 'Kathmandu', label: 'Kathmandu' },
-  { id: 'Everest', label: 'Everest' },
-  { id: 'Pokhara', label: 'Pokhara' },
-  { id: 'Mustang', label: 'Mustang' },
-  { id: 'Chitwan', label: 'Chitwan' },
-  { id: 'Langtang', label: 'Langtang' },
-];
-
 export default function StaysSection({ activeId }: StaysSectionProps) {
   const { stays, addBooking } = useTravelStore();
   const [selectedStay, setSelectedStay] = useState<Stay | null>(null);
   const [bookingSuccess, setBookingSuccess] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [selectedRegion, setSelectedRegion] = useState('all');
 
   const containerVariants: any = {
     hidden: { opacity: 0, y: 15 },
@@ -64,13 +53,10 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
     visible: { opacity: 1, y: 0, transition: { duration: 0.3 } }
   };
 
-  // Filter stays based on category, region, and search query
+  // Filter stays based on category and search query
   const filteredStays = useMemo(() => {
     return stays.filter((stay) => {
       const matchesCategory = selectedCategory === 'all' || stay.type === selectedCategory;
-      const matchesRegion = 
-        selectedRegion === 'all' || 
-        stay.location.toLowerCase().includes(selectedRegion.toLowerCase());
       const matchesSearch = 
         !searchQuery.trim() ||
         stay.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -78,9 +64,9 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
         stay.features.some(f => f.toLowerCase().includes(searchQuery.toLowerCase())) ||
         stay.description.toLowerCase().includes(searchQuery.toLowerCase());
 
-      return matchesCategory && matchesRegion && matchesSearch;
+      return matchesCategory && matchesSearch;
     });
-  }, [stays, selectedCategory, selectedRegion, searchQuery]);
+  }, [stays, selectedCategory, searchQuery]);
 
   const handleBook = (stay: Stay, roomName: string, price: number) => {
     const invNo = `INV-STAY-${Math.floor(1000 + Math.random() * 9000)}`;
@@ -115,11 +101,6 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
         <div className="flex flex-col gap-6 max-w-[1440px] w-full mx-auto py-2">
           {/* Header */}
           <motion.div variants={itemVariants} className="flex flex-col gap-1.5">
-            <div className="flex items-center gap-2">
-              <span className="text-[10px] font-mono font-bold tracking-widest text-[#0552A2] uppercase bg-[#0552A2]/10 px-2.5 py-0.5 rounded-full">
-                Boutique Lodging & Mountain Havens
-              </span>
-            </div>
             <h2 className="text-2xl font-black tracking-tight text-[#17212B]">
               Hotels & Eco-Stays
             </h2>
@@ -177,28 +158,6 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
                 );
               })}
             </div>
-
-            {/* Region Filter Pills */}
-            <div className="flex flex-wrap items-center gap-1.5 pt-1">
-              <span className="text-[10px] font-mono uppercase text-slate-400 font-bold mr-1">Region:</span>
-              {REGIONS.map((reg) => {
-                const isActive = selectedRegion === reg.id;
-                return (
-                  <button
-                    key={reg.id}
-                    type="button"
-                    onClick={() => setSelectedRegion(reg.id)}
-                    className={`text-[10px] font-mono px-2.5 py-0.5 rounded-md border transition-all cursor-pointer ${
-                      isActive
-                        ? 'bg-[#0552A2]/10 text-[#0552A2] border-[#0552A2] font-bold'
-                        : 'bg-white text-slate-500 border-slate-200 hover:border-slate-300'
-                    }`}
-                  >
-                    {reg.label}
-                  </button>
-                );
-              })}
-            </div>
           </motion.div>
 
           {/* Responsive Auto-Fill Grid (3+ Columns on larger viewports, automatically adjusting) */}
@@ -221,7 +180,7 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
                 onClick={() => setSelectedStay(stay)}
                 className="group bg-white border border-slate-200/90 rounded-2xl overflow-hidden hover:border-[#0552A2]/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] shadow-xs cursor-pointer active:scale-[0.985] flex flex-col justify-between transform-gpu will-change-transform"
               >
-                <div>
+                <div className="flex-1 flex flex-col">
                   {/* Image Banner */}
                   <div className="relative h-36 sm:h-40 overflow-hidden bg-slate-900">
                     <img
@@ -233,13 +192,13 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent pointer-events-none" />
 
-                    {/* Top Badges */}
+                    {/* Top Rating & Type Badges */}
                     <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-xs text-[10px] font-mono font-bold text-[#0552A2] px-2.5 py-0.5 rounded-full border border-slate-200 shadow-xs flex items-center gap-1">
                       <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
                       <span>{stay.rating.toFixed(1)}</span>
                     </div>
 
-                    <div className="absolute top-3 right-3 bg-[#0552A2] text-white font-mono text-[9px] font-bold px-2 py-0.5 rounded-full shadow-xs">
+                    <div className="absolute top-3 right-3 bg-[#0552A2] text-white font-mono text-[9px] font-bold px-2.5 py-0.5 rounded-full shadow-xs">
                       {stay.type}
                     </div>
 
@@ -251,19 +210,21 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
                   </div>
 
                   {/* Body Content */}
-                  <div className="p-4 flex flex-col gap-1.5">
-                    <h3 className="text-sm sm:text-base font-bold text-[#17212B] group-hover:text-[#0552A2] transition-colors leading-snug line-clamp-1">
-                      {stay.name}
-                    </h3>
-                    <p className="text-xs text-[#475569] leading-relaxed line-clamp-2">
-                      {stay.description}
-                    </p>
+                  <div className="p-4 flex-1 flex flex-col justify-between gap-2.5">
+                    <div className="flex flex-col gap-1.5">
+                      <h3 className="text-sm sm:text-base font-bold text-[#17212B] group-hover:text-[#0552A2] transition-colors leading-snug line-clamp-1">
+                        {stay.name}
+                      </h3>
+                      <p className="text-xs text-[#475569] leading-relaxed line-clamp-2 min-h-[2.4rem]">
+                        {stay.description}
+                      </p>
+                    </div>
 
-                    {/* Feature Chips */}
-                    <div className="flex flex-wrap gap-1 mt-1">
+                    {/* Feature Notes (no dots) */}
+                    <div className="flex flex-wrap items-center gap-1.5">
                       {stay.features.slice(0, 2).map((f, idx) => (
-                        <span key={idx} className="text-[9px] font-mono text-[#475569] bg-slate-50 border border-slate-200/80 px-2 py-0.5 rounded-md line-clamp-1">
-                          • {f}
+                        <span key={idx} className="text-[10px] font-mono text-[#475569] bg-slate-50 border border-slate-200/80 px-2 py-0.5 rounded-md line-clamp-1">
+                          {f}
                         </span>
                       ))}
                     </div>
@@ -294,9 +255,9 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
             <div className="bg-white border border-dashed border-slate-300 rounded-2xl p-10 text-center flex flex-col items-center justify-center gap-2">
               <Hotel className="w-8 h-8 text-slate-400" />
               <h4 className="text-sm font-bold text-[#17212B]">No properties matched your criteria</h4>
-              <p className="text-xs text-[#64748B]">Try clearing your search query or selecting a different category or region filter.</p>
+              <p className="text-xs text-[#64748B]">Try clearing your search query or selecting a different category filter.</p>
               <button
-                onClick={() => { setSearchQuery(''); setSelectedCategory('all'); setSelectedRegion('all'); }}
+                onClick={() => { setSearchQuery(''); setSelectedCategory('all'); }}
                 className="mt-2 text-xs font-mono font-bold text-[#0552A2] hover:underline"
               >
                 Reset All Filters
@@ -310,9 +271,6 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
       {activeId === 'transportation' && (
         <div className="flex flex-col gap-6 max-w-[1440px] w-full mx-auto py-2">
           <motion.div variants={itemVariants} className="flex flex-col gap-1.5">
-            <span className="text-[10px] font-mono font-bold tracking-widest text-[#0552A2] uppercase bg-[#0552A2]/10 px-2.5 py-0.5 rounded-full w-fit">
-              Himalayan Transit Systems
-            </span>
             <h2 className="text-2xl font-black tracking-tight text-[#17212B]">Himalayan Transportation</h2>
             <p className="text-xs text-[#475569]">Airport shuttles, high-speed charter flights, cable ropeways, and private rugged 4x4 overland vehicles.</p>
           </motion.div>
