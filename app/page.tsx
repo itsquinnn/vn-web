@@ -34,10 +34,10 @@ export default function LandingPage() {
       {/* Premium Floating Navigation */}
       <Navigation />
 
-      {/* Hero Section — Somewhere Between Earth and Heaven */}
+      {/* Hero Section - Somewhere Between Earth and Heaven */}
       <HeroSection />
 
-      {/* Nepal Storytelling — More Than a Destination. A Feeling That Stays. */}
+      {/* Nepal Storytelling - More Than a Destination. A Feeling That Stays. */}
       <StorytellingSection />
 
       {/* Editorial Destinations Layout */}

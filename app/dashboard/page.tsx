@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import DiscoverSection from '@/components/features/dashboard/DiscoverSection';
 import DashboardHome from '@/components/features/dashboard/DashboardHome';
+import ProfileSection from '@/components/features/dashboard/ProfileSection';
 import ActivitiesSection from '@/components/features/dashboard/ActivitiesSection';
 import LeftSidebar from '@/components/features/dashboard/LeftSidebar';
 import RightSidebar from '@/components/features/dashboard/RightSidebar';
@@ -155,7 +156,7 @@ export default function DashboardPage() {
   const [expandedChannelId, setExpandedChannelId] = useState<string | null>(null);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
 
-  const [rightSidebarTab, setRightSidebarTab] = useState<'telemetry' | 'chat'>('telemetry');
+  const [rightSidebarTab, setRightSidebarTab] = useState<'telemetry' | 'chat' | 'notices'>('telemetry');
   const [chatViewState, setChatViewState] = useState<'inbox' | 'conversation'>('inbox');
   const [chatInput, setChatInput] = useState('');
 
@@ -230,6 +231,9 @@ export default function DashboardPage() {
   }
 
   const getActiveItemDetails = () => {
+    if (active === 'profile') {
+      return { groupTitle: 'Account', itemLabel: 'Profile' };
+    }
     for (const group of NAV_GROUPS) {
       const found = group.items.find(item => item.id === active);
       if (found) {
@@ -287,6 +291,9 @@ export default function DashboardPage() {
     if (active === 'home') {
       return <DashboardHome onNavigate={handleActiveChange} />;
     }
+    if (active === 'profile') {
+      return <ProfileSection onNavigate={handleActiveChange} />;
+    }
     if (['explore', 'popular', 'attractions', 'top5'].includes(active)) {
       return <DiscoverSection activeId={active} onNavigate={handleActiveChange} />;
     }
@@ -330,11 +337,7 @@ export default function DashboardPage() {
               <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-emerald-500 border-2 border-white" />
             </div>
             <div className="flex-1 min-w-0">
-              <h4 className="text-xs font-bold text-[#17212B] truncate leading-tight">{activeChan.name}</h4>
-              <span className="text-[9px] font-mono text-emerald-600 font-semibold flex items-center gap-1 mt-0.5">
-                <span className="h-1.5 w-1.5 bg-emerald-500 rounded-full animate-ping shrink-0" />
-                <span className="truncate">Active Link</span>
-              </span>
+              <h4 className="font-[family-name:var(--font-quicksand)] text-xs font-bold text-[#17212B] truncate leading-tight">{activeChan.name}</h4>
             </div>
           </div>
 
@@ -577,52 +580,83 @@ export default function DashboardPage() {
         </div>
 
         {/* Global Controls & Traveler Gateway */}
-        <div className="flex items-center gap-3 relative">
-          {/* Chat / Dispatches button */}
+        <div className="flex items-center gap-3.5 relative">
+          {/* Notifications Bell button */}
           <button
             onClick={() => {
-              if (!rightCollapsed && rightSidebarTab === 'chat') {
+              if (rightSidebarTab === 'notices') {
+                setRightSidebarTab('telemetry');
+                setRightCollapsed(true);
+              } else {
+                setRightSidebarTab('notices');
+                setRightCollapsed(false);
+              }
+            }}
+            className={`p-1.5 transition-colors cursor-pointer relative flex items-center justify-center ${
+              rightSidebarTab === 'notices'
+                ? 'text-[#0552A2]'
+                : 'text-slate-500 hover:text-[#0552A2]'
+            }`}
+            title="Notices"
+            aria-label="Notices"
+          >
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+            </svg>
+            <span className="absolute -top-0.5 -right-0.5 h-2 w-2 bg-[#EC1F27] rounded-full ring-2 ring-white" />
+          </button>
+
+          {/* Chat / Messages button */}
+          <button
+            onClick={() => {
+              if (rightSidebarTab === 'chat') {
+                setRightSidebarTab('telemetry');
                 setRightCollapsed(true);
               } else {
                 setRightSidebarTab('chat');
                 setRightCollapsed(false);
               }
             }}
-            className={`p-2 rounded-xl transition-colors cursor-pointer relative flex items-center justify-center ${rightSidebarTab === 'chat' && !rightCollapsed
-              ? 'bg-[#0552A2]/10 text-[#0552A2]'
-              : 'text-slate-500 hover:text-[#0552A2] hover:bg-slate-50'
-              }`}
+            className={`p-1.5 transition-colors cursor-pointer relative flex items-center justify-center ${
+              rightSidebarTab === 'chat'
+                ? 'text-[#0552A2]'
+                : 'text-slate-500 hover:text-[#0552A2]'
+            }`}
             title="Messages"
+            aria-label="Messages"
           >
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
             </svg>
-            <span className="absolute -top-0.5 -right-0.5 h-4 w-4 bg-[#EC1F27] rounded-full text-[9px] font-mono font-bold text-white flex items-center justify-center shadow-xs">
+            <span className="absolute -top-1 -right-1 h-4 w-4 bg-[#EC1F27] rounded-full text-[9px] font-bold text-white flex items-center justify-center shadow-xs">
               3
             </span>
           </button>
 
           {/* Profile Gateway Button */}
           <div className="flex items-center gap-2 pl-2 border-l border-slate-200">
-            <div className="text-right hidden sm:block">
-              <span className="block text-xs font-bold text-[#17212B] leading-none">
-                {currentUser ? currentUser.name : 'Alex Mercer'}
-              </span>
-              <span className="block text-[10px] font-mono uppercase tracking-wider text-[#0552A2] mt-0.5">
-                {currentUser ? currentUser.role : 'Traveler'}
-              </span>
-            </div>
-
             <button
               onClick={() => setProfileDropdownOpen(open => !open)}
-              className="h-9 w-9 rounded-full overflow-hidden border-2 border-[#0552A2]/40 hover:border-[#0552A2] transition-colors cursor-pointer shadow-xs flex items-center justify-center relative"
+              className="flex items-center gap-2.5 cursor-pointer group text-right"
               title="Account Menu"
             >
-              <img
-                src={currentUser?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400'}
-                alt={currentUser?.name || 'Traveler'}
-                className="h-full w-full object-cover"
-              />
+              <div className="hidden sm:block">
+                <span className="font-[family-name:var(--font-quicksand)] block text-xs font-bold text-[#17212B] leading-none group-hover:text-[#0552A2] transition-colors">
+                  {currentUser ? currentUser.name : 'Alex Mercer'}
+                </span>
+                <span className="block text-[11px] font-medium text-[#0552A2] mt-0.5">
+                  {currentUser ? currentUser.role : 'Traveler'}
+                </span>
+              </div>
+
+              <div className="h-9 w-9 rounded-full overflow-hidden border-2 border-[#0552A2]/30 group-hover:border-[#0552A2] transition-colors shadow-xs flex items-center justify-center relative shrink-0">
+                <img
+                  src={currentUser?.avatar || '/pictures/mustang_tk_people-1624440754.jpeg'}
+                  alt={currentUser?.name || 'Traveler'}
+                  className="h-full w-full object-cover"
+                />
+              </div>
             </button>
           </div>
 
@@ -630,13 +664,24 @@ export default function DashboardPage() {
           {profileDropdownOpen && (
             <div className="absolute top-12 right-0 w-60 py-2 z-50 bg-white border border-slate-200 rounded-2xl shadow-xl flex flex-col animate-in fade-in zoom-in-95 duration-150">
               <div className="px-4 py-2.5 border-b border-slate-100 mb-1 text-left">
-                <span className="text-xs font-bold text-[#17212B] block">
+                <span className="font-[family-name:var(--font-quicksand)] text-xs font-bold text-[#17212B] block">
                   {currentUser ? currentUser.name : 'Alex Mercer'}
                 </span>
-                <span className="text-[10px] font-mono text-slate-400 block mt-0.5">
+                <span className="text-[11px] text-slate-400 block mt-0.5">
                   {currentUser ? currentUser.email : 'alex.mercer@visitnepal.com'}
                 </span>
               </div>
+
+              <button
+                onClick={() => { setActive('profile'); setProfileDropdownOpen(false); }}
+                className="px-4 py-2 text-left text-xs hover:bg-slate-50 text-slate-700 hover:text-[#0552A2] transition-colors flex items-center gap-2.5 font-medium cursor-pointer"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+                <span>My Profile</span>
+              </button>
 
               <button
                 onClick={() => { setActive('customize'); setProfileDropdownOpen(false); }}
@@ -784,22 +829,20 @@ export default function DashboardPage() {
           )}
         </AnimatePresence>
 
-        {/* Edge Toggle Tab to reopen Right Sidebar when collapsed on desktop & mobile */}
+        {/* Mobile-only floating button to open Right Sidebar (< xl screens) */}
         {rightCollapsed && (
           <button
             onClick={() => {
               setRightCollapsed(false);
               setRightSidebarTab('telemetry');
             }}
-            className="flex fixed right-0 top-1/2 -translate-y-1/2 z-40 bg-white border border-slate-200 border-r-0 rounded-l-xl px-2 py-3 shadow-md hover:shadow-lg hover:bg-blue-50/50 text-[#0552A2] transition-all cursor-pointer flex-col items-center gap-1.5 group select-none animate-in fade-in slide-in-from-right-2 duration-200 active:scale-95"
-            title="Open Himalayan Intel & Weather (Ctrl+I)"
+            className="xl:hidden flex fixed right-4 bottom-20 z-40 bg-white border border-slate-200 rounded-full px-3.5 py-2 shadow-md hover:shadow-lg hover:bg-blue-50/50 text-[#0552A2] transition-all cursor-pointer items-center gap-2 select-none active:scale-95"
+            title="Open Himalayan Intel & Weather"
             aria-label="Open Himalayan Intel & Weather"
           >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover:-translate-x-0.5 transition-transform text-[#0552A2]">
-              <polyline points="15 18 9 12 15 6" />
-            </svg>
-            <span className="text-[9px] font-mono font-bold uppercase tracking-widest text-[#0552A2] [writing-mode:vertical-lr] rotate-180">
-              Intel
+            <span className="h-2 w-2 rounded-full bg-emerald-500" />
+            <span className="font-[family-name:var(--font-quicksand)] text-xs font-bold text-[#17212B]">
+              Intel &amp; Map
             </span>
           </button>
         )}
@@ -943,30 +986,6 @@ export default function DashboardPage() {
             })()}
           </div>
         ) : null}
-
-        <button
-          onClick={() => {
-            setFloatingChatOpen(!floatingChatOpen);
-            setRightCollapsed(false);
-          }}
-          className="hidden sm:flex h-12 w-12 items-center justify-center rounded-full bg-[#0552A2] text-white shadow-xl hover:bg-[#044080] transition-all cursor-pointer relative"
-          title="Expedition Messenger"
-        >
-          {floatingChatOpen ? (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
-          ) : (
-            <div className="relative flex items-center justify-center">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-              </svg>
-              <span className="absolute -top-2.5 -right-2.5 h-4.5 w-4.5 bg-[#EC1F27] rounded-full text-[9px] font-bold text-white flex items-center justify-center border-2 border-white shadow-xs font-mono">
-                3
-              </span>
-            </div>
-          )}
-        </button>
       </div>
 
       {/* ── MOBILE BOTTOM NAVIGATION ───────────────────────────────────────── */}

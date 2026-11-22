@@ -182,7 +182,7 @@ export default function ExperiencesSection() {
               Ways to Experience Nepal
             </h2>
             <p className="font-[family-name:var(--font-ibm-plex-sans)] text-sm sm:text-[15px] text-[#4B5563] mt-2 leading-relaxed">
-              Choose your calling — from 8,000-meter alpine passes and quiet
+              Choose your calling - from 8,000-meter alpine passes and quiet
               monasteries to subtropical river safaris.
             </p>
           </div>
@@ -200,11 +200,10 @@ export default function ExperiencesSection() {
               <button
                 key={exp.id}
                 onClick={() => setSelectedExperience(exp)}
-                className={`shrink-0 pb-3 text-left transition-colors cursor-pointer border-b-2 -mb-px flex items-baseline gap-2 ${
-                  isSelected
+                className={`shrink-0 pb-3 text-left transition-colors cursor-pointer border-b-2 -mb-px flex items-baseline gap-2 ${isSelected
                     ? "border-[#0552A2] text-[#0552A2]"
                     : "border-transparent text-[#64748B] hover:text-[#17212B]"
-                }`}
+                  }`}
               >
                 <span className="text-[11px] font-mono opacity-70">
                   {String(idx + 1).padStart(2, "0")}

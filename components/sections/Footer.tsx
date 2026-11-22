@@ -29,7 +29,7 @@ export default function Footer() {
 
       <div className="container relative z-10">
         {/* Main Footer Row */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-10 border-b border-zinc-200/70">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-8">
           {/* Brand & Mission Column */}
           <div className="lg:col-span-4 flex flex-col gap-4">
             <Link
@@ -201,8 +201,7 @@ export default function Footer() {
         {/* Bottom Sub-Footer Bar */}
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-[#5A6578] gap-4 font-[family-name:var(--font-ibm-plex-sans)]">
           <p>
-            © {new Date().getFullYear()} Nepal Tourism Board. Government of
-            Nepal. All rights reserved.
+            © {new Date().getFullYear()} Visitnepal. All rights reserved.
           </p>
           <a
             href="#hero"

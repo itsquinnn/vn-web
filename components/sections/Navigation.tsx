@@ -83,69 +83,69 @@ export default function Navigation() {
     preview?: { title: string; region: string; img: string }[];
     columns?: { heading: string; items: string[] }[];
   }[] = [
-    { label: 'Discover', href: '#storytelling' },
-    {
-      label: 'Places to go',
-      href: '#destinations',
-      preview: [
-        { title: 'Everest Region', region: 'Solukhumbu', img: '/pictures/Everest_tk_trekker_(5)-1630474503.jpg' },
-        { title: 'Pokhara & Phewa', region: 'Kaski', img: '/pictures/Pokhara_ss_lt_(4)-1624818140.jpg' },
-        { title: 'Kathmandu Valley', region: 'Bagmati', img: '/pictures/Kathmandu_Durbar_Square___Susheel_Shrestha-1629279698.jpg' },
-        { title: 'Chitwan Safari', region: 'Terai', img: '/pictures/Chitwan_ss_lt_(17)-1624813756.jpg' },
-        { title: 'Lumbini Garden', region: 'Rupandehi', img: '/pictures/Lumbini_tk_pilgrimage_(3)-1624819677.jpg' },
-        { title: 'Upper Mustang', region: 'Dhaulagiri', img: '/pictures/mustang_tk_people-1624440754.jpeg' },
-      ],
-      columns: [
-        {
-          heading: 'Himalayan Regions',
-          items: ['Solukhumbu & Khumbu', 'Annapurna Sanctuary', 'Langtang & Gosaikunda', 'Manaslu Circuit', 'Rara & Khaptad'],
-        },
-        {
-          heading: 'Heritage & Lowlands',
-          items: ['Bardiya National Park', 'Janakpurdham (Mithila)', 'Ilam Tea Gardens', 'Bandipur & Ghale Gaon', 'Shey Phoksundo'],
-        },
-      ],
-    },
-    {
-      label: 'Things to do',
-      href: '#experiences',
-      preview: [
-        { title: 'Trekking & Trails', region: 'Alpine', img: '/pictures/poonhill_pg_adventure-1624431033.jpeg' },
-        { title: 'Mountaineering', region: '8,000m Peaks', img: '/pictures/everest_(1)-1624869402.jpg' },
-        { title: 'Cultural Journeys', region: 'Heritage', img: '/pictures/Bhaktapur_ss_lt_(2)-1629279885.jpg' },
-        { title: 'Wildlife Safari', region: 'Jungle', img: '/pictures/Chitwan_ss_jungleactivities-1630491399.JPG' },
-        { title: 'Spiritual Retreats', region: 'Mindfulness', img: '/pictures/Swayambhu_ss_lt_(3)-1624820456.jpg' },
-        { title: 'Air & River Sports', region: 'Adventure', img: '/pictures/Pokhara_oy_lt_(2)-1624817867.jpg' },
-      ],
-      columns: [
-        {
-          heading: 'Outdoor & Alpine',
-          items: ['Everest Base Camp', 'Annapurna Circuit', 'Paragliding in Pokhara', 'White-Water Rafting', 'Scenic 4×4 Road Trips'],
-        },
-        {
-          heading: 'Culture & Wellness',
-          items: ['Newari Gastronomy', 'Monastery Meditation', 'Village Homestays', 'UNESCO Heritage Walks', 'Photography Tours'],
-        },
-      ],
-    },
-    {
-      label: 'Culture',
-      href: '#culture',
-      preview: [
-        { title: 'Kathmandu Square', region: 'UNESCO 1979', img: '/pictures/Kathmandu_Durbar_Square___Susheel_Shrestha-1629279698.jpg' },
-        { title: 'Boudhanath Stupa', region: 'UNESCO 1979', img: '/pictures/boudha-1624805151.jpg' },
-        { title: 'Bhaktapur Square', region: 'UNESCO 1979', img: '/pictures/Bhaktapur_ss_lt_(2)-1629279885.jpg' },
-        { title: 'Lumbini Garden', region: 'UNESCO 1997', img: '/pictures/lumbini-1624821139.jpg' },
-      ],
-      columns: [
-        {
-          heading: 'Festivals & Traditions',
-          items: ['Dashain (Sep–Oct)', 'Tihar · Lights (Oct–Nov)', 'Holi · Colors (Mar)', 'Indra Jatra (Sep)', 'Living Heritage Sites'],
-        },
-      ],
-    },
-    { label: 'Plan your trip', href: '#plan-your-trip' },
-  ];
+      { label: 'Discover', href: '#storytelling' },
+      {
+        label: 'Places to go',
+        href: '#destinations',
+        preview: [
+          { title: 'Everest Region', region: 'Solukhumbu', img: '/pictures/Everest_tk_trekker_(5)-1630474503.jpg' },
+          { title: 'Pokhara & Phewa', region: 'Kaski', img: '/pictures/Pokhara_ss_lt_(4)-1624818140.jpg' },
+          { title: 'Kathmandu Valley', region: 'Bagmati', img: '/pictures/Kathmandu_Durbar_Square___Susheel_Shrestha-1629279698.jpg' },
+          { title: 'Chitwan Safari', region: 'Terai', img: '/pictures/Chitwan_ss_lt_(17)-1624813756.jpg' },
+          { title: 'Lumbini Garden', region: 'Rupandehi', img: '/pictures/Lumbini_tk_pilgrimage_(3)-1624819677.jpg' },
+          { title: 'Upper Mustang', region: 'Dhaulagiri', img: '/pictures/mustang_tk_people-1624440754.jpeg' },
+        ],
+        columns: [
+          {
+            heading: 'Himalayan Regions',
+            items: ['Solukhumbu & Khumbu', 'Annapurna Sanctuary', 'Langtang & Gosaikunda', 'Manaslu Circuit', 'Rara & Khaptad'],
+          },
+          {
+            heading: 'Heritage & Lowlands',
+            items: ['Bardiya National Park', 'Janakpurdham (Mithila)', 'Ilam Tea Gardens', 'Bandipur & Ghale Gaon', 'Shey Phoksundo'],
+          },
+        ],
+      },
+      {
+        label: 'Things to do',
+        href: '#experiences',
+        preview: [
+          { title: 'Trekking & Trails', region: 'Alpine', img: '/pictures/poonhill_pg_adventure-1624431033.jpeg' },
+          { title: 'Mountaineering', region: '8,000m Peaks', img: '/pictures/everest_(1)-1624869402.jpg' },
+          { title: 'Cultural Journeys', region: 'Heritage', img: '/pictures/Bhaktapur_ss_lt_(2)-1629279885.jpg' },
+          { title: 'Wildlife Safari', region: 'Jungle', img: '/pictures/Chitwan_ss_jungleactivities-1630491399.JPG' },
+          { title: 'Spiritual Retreats', region: 'Mindfulness', img: '/pictures/Swayambhu_ss_lt_(3)-1624820456.jpg' },
+          { title: 'Air & River Sports', region: 'Adventure', img: '/pictures/Pokhara_oy_lt_(2)-1624817867.jpg' },
+        ],
+        columns: [
+          {
+            heading: 'Outdoor & Alpine',
+            items: ['Everest Base Camp', 'Annapurna Circuit', 'Paragliding in Pokhara', 'White-Water Rafting', 'Scenic 4×4 Road Trips'],
+          },
+          {
+            heading: 'Culture & Wellness',
+            items: ['Newari Gastronomy', 'Monastery Meditation', 'Village Homestays', 'UNESCO Heritage Walks', 'Photography Tours'],
+          },
+        ],
+      },
+      {
+        label: 'Culture',
+        href: '#culture',
+        preview: [
+          { title: 'Kathmandu Square', region: 'UNESCO 1979', img: '/pictures/Kathmandu_Durbar_Square___Susheel_Shrestha-1629279698.jpg' },
+          { title: 'Boudhanath Stupa', region: 'UNESCO 1979', img: '/pictures/boudha-1624805151.jpg' },
+          { title: 'Bhaktapur Square', region: 'UNESCO 1979', img: '/pictures/Bhaktapur_ss_lt_(2)-1629279885.jpg' },
+          { title: 'Lumbini Garden', region: 'UNESCO 1997', img: '/pictures/lumbini-1624821139.jpg' },
+        ],
+        columns: [
+          {
+            heading: 'Festivals & Traditions',
+            items: ['Dashain (Sep–Oct)', 'Tihar · Lights (Oct–Nov)', 'Holi · Colors (Mar)', 'Indra Jatra (Sep)', 'Living Heritage Sites'],
+          },
+        ],
+      },
+      { label: 'Plan your trip', href: '#plan-your-trip' },
+    ];
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
@@ -166,15 +166,13 @@ export default function Navigation() {
     <>
       <header
         onMouseLeave={() => setOpenMenu(null)}
-        className={`fixed top-0 left-0 right-0 z-50 transition-[background-color,padding,box-shadow,border-color] duration-300 ease-in-out ${
-          openMenu
+        className={`fixed top-0 left-0 right-0 z-50 transition-[background-color,padding,box-shadow,border-color] duration-300 ease-in-out ${openMenu
             ? 'bg-white py-3'
             : scrolled || mobileMenuOpen
-              ? `bg-white/98 backdrop-blur-md shadow-[0_4px_24px_rgba(5,82,162,0.08)] py-3 ${
-                  !mobileMenuOpen ? 'border-b border-[#0552A2]/10' : ''
-                }`
+              ? `bg-white/98 backdrop-blur-md shadow-[0_4px_24px_rgba(5,82,162,0.08)] py-3 ${!mobileMenuOpen ? 'border-b border-[#0552A2]/10' : ''
+              }`
               : 'bg-transparent py-5 sm:py-6'
-        }`}
+          }`}
       >
         <div className="w-full px-3.5 sm:px-6 md:px-8 flex items-center justify-between">
           {/* Logo with official Visit Nepal identity */}
@@ -205,7 +203,7 @@ export default function Navigation() {
             </div>
           </Link>
 
-          {/* Desktop Navigation Links — NTB-style clean Quicksand links */}
+          {/* Desktop Navigation Links - NTB-style clean Quicksand links */}
           <nav className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => {
               const isOpen = openMenu === link.label;
@@ -217,15 +215,13 @@ export default function Navigation() {
                   <a
                     href={link.href}
                     onClick={(e) => handleNavClick(e, link.href)}
-                    className={`font-[family-name:var(--font-quicksand)] text-[14px] font-bold tracking-normal transition-colors duration-200 relative group py-2 inline-flex items-center gap-1 ${
-                      isOpen ? 'text-[#0552A2]' : 'text-[#17212B] hover:text-[#0552A2]'
-                    }`}
+                    className={`font-[family-name:var(--font-quicksand)] text-[14px] font-bold tracking-normal transition-colors duration-200 relative group py-2 inline-flex items-center gap-1 ${isOpen ? 'text-[#0552A2]' : 'text-[#17212B] hover:text-[#0552A2]'
+                      }`}
                   >
                     <span>{link.label}</span>
                     <span
-                      className={`absolute bottom-1 left-0 w-full h-[2px] bg-[#0552A2] origin-left transition-transform duration-300 ${
-                        isOpen ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
-                      }`}
+                      className={`absolute bottom-1 left-0 w-full h-[2px] bg-[#0552A2] origin-left transition-transform duration-300 ${isOpen ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+                        }`}
                     />
                   </a>
                 </div>

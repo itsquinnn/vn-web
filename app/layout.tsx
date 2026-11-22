@@ -1,77 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import {
-  Oswald,
-  Noto_Sans,
-  Roboto_Condensed,
-  Dancing_Script,
-  Poppins,
-  Quicksand,
-  IBM_Plex_Sans,
-} from "next/font/google";
 import "./globals.css";
-
-const oswald = Oswald({
-  variable: "--font-oswald",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["400", "600", "700"],
-  preload: true,
-  adjustFontFallback: true,
-});
-
-const notoSans = Noto_Sans({
-  variable: "--font-noto-sans",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["400", "500", "600", "700"],
-  preload: true,
-  adjustFontFallback: true,
-});
-
-const robotoCondensed = Roboto_Condensed({
-  variable: "--font-roboto-condensed",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["400", "700"],
-  preload: true,
-  adjustFontFallback: true,
-});
-
-const dancingScript = Dancing_Script({
-  variable: "--font-script",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["600", "700"],
-  preload: true,
-  adjustFontFallback: true,
-});
-
-const poppins = Poppins({
-  variable: "--font-poppins",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["700", "800"],
-  preload: true,
-  adjustFontFallback: true,
-});
-
-const quicksand = Quicksand({
-  variable: "--font-quicksand",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["500", "600", "700"],
-  preload: true,
-  adjustFontFallback: true,
-});
-
-const ibmPlexSans = IBM_Plex_Sans({
-  variable: "--font-ibm-plex-sans",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["400", "500", "600", "700"],
-  preload: true,
-  adjustFontFallback: true,
-});
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -97,10 +25,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${oswald.variable} ${notoSans.variable} ${robotoCondensed.variable} ${dancingScript.variable} ${poppins.variable} ${quicksand.variable} ${ibmPlexSans.variable} h-full antialiased scroll-smooth`}
-    >
+    <html lang="en" className="h-full antialiased scroll-smooth">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Oswald:wght@400;600;700&family=Poppins:wght@700;800&family=Quicksand:wght@500;600;700&family=Roboto+Condensed:wght@400;700&display=swap"
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-[#FFFFFF] text-[#17212B] font-sans selection:bg-[#0552A2] selection:text-white">
         {children}
       </body>

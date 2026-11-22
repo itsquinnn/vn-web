@@ -32,7 +32,7 @@ export const UPCOMING_TRIPS: UpcomingTrip[] = [
     status: 'Upcoming',
     elevation: '4,130m',
     countdown: 'In 21 Days',
-    imageUrl: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=1200&auto=format&fit=crop',
+    imageUrl: '/pictures/annapurna-1624804396.jpg',
     highlights: ['Poon Hill Sunrise', 'Machhapuchhre View', 'Jhinu Hot Springs', 'Teahouse Lodging'],
     bookingRef: 'EXP-ABC-9402',
   },
@@ -48,7 +48,7 @@ export const UPCOMING_TRIPS: UpcomingTrip[] = [
     status: 'Confirmed',
     elevation: '822m',
     countdown: 'In 34 Days',
-    imageUrl: 'https://images.unsplash.com/photo-1486916856992-e4db22c8df33?q=80&w=1200&auto=format&fit=crop',
+    imageUrl: '/pictures/Pokhara_ss_lt_(4)-1624818140.jpg',
     highlights: ['Phewa Sunrise Cruise', 'Sarangkot Paragliding', 'World Peace Pagoda'],
     bookingRef: 'BK-PKR-1184',
   },
@@ -64,7 +64,7 @@ export const UPCOMING_TRIPS: UpcomingTrip[] = [
     status: 'Confirmed',
     elevation: '5,357m',
     countdown: 'In 50 Days',
-    imageUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop',
+    imageUrl: '/pictures/Everest_tk_trekker_(5)-1630474503.jpg',
     highlights: ['Gokyo Turquoise Lakes', 'Kala Patthar Vista', 'Ngozumpa Glacier', 'Tengboche Monastery'],
     bookingRef: 'EXP-EBC-7721',
   },
@@ -80,7 +80,7 @@ export const UPCOMING_TRIPS: UpcomingTrip[] = [
     status: 'Upcoming',
     elevation: '4,380m',
     countdown: 'In 75 Days',
-    imageUrl: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200&auto=format&fit=crop',
+    imageUrl: '/pictures/Dhaulagiri_1626729219-1635169360.jpeg',
     highlights: ['Kyanjin Gompa', 'Holy Gosainkunda Lake', 'Tamang Heritage Trail', 'Yak Cheese Factory'],
     bookingRef: 'EXP-LTG-3319',
   },
@@ -96,7 +96,7 @@ export const UPCOMING_TRIPS: UpcomingTrip[] = [
     status: 'Upcoming',
     elevation: '150m',
     countdown: 'In 101 Days',
-    imageUrl: 'https://images.unsplash.com/photo-1534177616072-ef7dc120449d?q=80&w=1200&auto=format&fit=crop',
+    imageUrl: '/pictures/Bardiya_ss_lt_(12)-1624817484.jpg',
     highlights: ['Karnali River Raft Safari', 'Foot Tiger Tracking', 'Tharu Cultural Night', 'Crocodile Breeding Center'],
     bookingRef: 'SAF-BD-5041',
   },
@@ -120,7 +120,7 @@ export const DRAFT_TRIPS: DraftTrip[] = [
     progress: 65,
     lastEdited: 'Yesterday at 4:20 PM',
     statusSummary: '3 of 5 Days Planned · 2 Stays Selected',
-    imageUrl: 'https://images.unsplash.com/photo-1605649487212-47bdab064df7?q=80&w=600&auto=format&fit=crop',
+    imageUrl: '/pictures/Kathmandu_Durbar_Square___Susheel_Shrestha-1629279698.jpg',
   },
   {
     id: 'draft-mustang',
@@ -129,7 +129,7 @@ export const DRAFT_TRIPS: DraftTrip[] = [
     progress: 35,
     lastEdited: '3 days ago',
     statusSummary: 'Permit Application Drafted · Route Selected',
-    imageUrl: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=600&auto=format&fit=crop',
+    imageUrl: '/pictures/mustang_tk_people-1624440754.jpeg',
   },
   {
     id: 'draft-ebc',
@@ -138,7 +138,7 @@ export const DRAFT_TRIPS: DraftTrip[] = [
     progress: 80,
     lastEdited: '5 days ago',
     statusSummary: 'Lukla Flights Confirmed · Guide Assigned',
-    imageUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=600&auto=format&fit=crop',
+    imageUrl: '/pictures/everest_(1)-1624869402.jpg',
   },
   {
     id: 'draft-manaslu',
@@ -147,7 +147,7 @@ export const DRAFT_TRIPS: DraftTrip[] = [
     progress: 50,
     lastEdited: '1 week ago',
     statusSummary: 'Larkya La Pass Selected · 2 Checkpoints Remaining',
-    imageUrl: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=600&auto=format&fit=crop',
+    imageUrl: '/pictures/Manaslu_View_from_Lho-1624808940.jpg',
   },
   {
     id: 'draft-rara-road',
@@ -156,7 +156,7 @@ export const DRAFT_TRIPS: DraftTrip[] = [
     progress: 25,
     lastEdited: '2 weeks ago',
     statusSummary: 'Karnali Highway Route Mapped · 4x4 Vehicle Reserved',
-    imageUrl: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=600&auto=format&fit=crop',
+    imageUrl: '/pictures/Khaptad_taan_trekker_(6)-1624819036.jpg',
   },
   {
     id: 'draft-helambu',
@@ -165,7 +165,7 @@ export const DRAFT_TRIPS: DraftTrip[] = [
     progress: 90,
     lastEdited: '3 weeks ago',
     statusSummary: 'Homestays Confirmed · Awaiting Weather Window',
-    imageUrl: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=600&auto=format&fit=crop',
+    imageUrl: '/pictures/Ghale_Gaon_Photo_001-1634812841.jpg',
   },
 ];
 
@@ -191,7 +191,7 @@ export const RECOMMENDED_DESTINATIONS: RecommendedDestination[] = [
     duration: '5–10 Days',
     description: 'A rain-shadow desert of ochre cliffs, cave dwellings carved thousands of years ago, and fortified medieval palaces.',
     elevation: '3,840m',
-    imageUrl: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop',
+    imageUrl: '/pictures/mustang_tk_people-1624440754.jpeg',
   },
   {
     id: 'rec-rara',
@@ -202,7 +202,7 @@ export const RECOMMENDED_DESTINATIONS: RecommendedDestination[] = [
     duration: '4–7 Days',
     description: 'Nepal’s deepest high-altitude azure lake, surrounded by silent blue pine forests and snow-capped Himalayan ridges.',
     elevation: '2,990m',
-    imageUrl: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=800&auto=format&fit=crop',
+    imageUrl: '/pictures/shey-1626727697.jpeg',
   },
   {
     id: 'rec-everest',
@@ -213,7 +213,7 @@ export const RECOMMENDED_DESTINATIONS: RecommendedDestination[] = [
     duration: '12–16 Days',
     description: 'The roof of the world, home to towering Himalayan giants, ancient Sherpa monasteries, and trails walked by legends.',
     elevation: '5,364m Base Camp',
-    imageUrl: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=800&auto=format&fit=crop',
+    imageUrl: '/pictures/Everest_tk_trekker_(5)-1630474503.jpg',
   },
   {
     id: 'rec-chitwan',
@@ -224,7 +224,7 @@ export const RECOMMENDED_DESTINATIONS: RecommendedDestination[] = [
     duration: '3–4 Days',
     description: 'Dense subtropical sal forests where endangered one-horned rhinos roam free and Bengal tigers stalk riverbanks.',
     elevation: '150m Terai',
-    imageUrl: 'https://images.unsplash.com/photo-1534177616072-ef7dc120449d?q=80&w=800&auto=format&fit=crop',
+    imageUrl: '/pictures/Chitwan_ss_lt_(17)-1624813756.jpg',
   },
   {
     id: 'rec-bandipur',
@@ -235,7 +235,7 @@ export const RECOMMENDED_DESTINATIONS: RecommendedDestination[] = [
     duration: '2–3 Days',
     description: 'A living museum of 18th-century Newari architecture, slate courtyards, and sweeping Himalayan panoramas without vehicle noise.',
     elevation: '1,030m',
-    imageUrl: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=800&auto=format&fit=crop',
+    imageUrl: '/pictures/Ghale_Gaon_Photo_001-1634812841.jpg',
   },
   {
     id: 'rec-ilam',
@@ -246,7 +246,7 @@ export const RECOMMENDED_DESTINATIONS: RecommendedDestination[] = [
     duration: '3–5 Days',
     description: 'Verdant terraced tea gardens shrouded in morning mists, organic orthodox tea estates, and views of Mount Kanchenjunga.',
     elevation: '1,673m',
-    imageUrl: 'https://images.unsplash.com/photo-1551632811-561732d1e306?q=80&w=800&auto=format&fit=crop',
+    imageUrl: '/pictures/Illam-1631441491.jpg',
   },
   {
     id: 'rec-phoksundo',
@@ -257,7 +257,7 @@ export const RECOMMENDED_DESTINATIONS: RecommendedDestination[] = [
     duration: '8–14 Days',
     description: 'An ethereal turquoise jewel nestled inside jagged cliffs in the mystical trans-Himalayan Bon-Buddhist kingdom of Upper Dolpo.',
     elevation: '3,611m',
-    imageUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800&auto=format&fit=crop',
+    imageUrl: '/pictures/shey-1626727697.jpeg',
   },
   {
     id: 'rec-ghandruk',
@@ -268,7 +268,7 @@ export const RECOMMENDED_DESTINATIONS: RecommendedDestination[] = [
     duration: '2–4 Days',
     description: 'A traditional Gurung settlement built of cut stone, famous for traditional slate-roofed homestays beneath Annapurna South.',
     elevation: '1,940m',
-    imageUrl: 'https://images.unsplash.com/photo-1486916856992-e4db22c8df33?q=80&w=800&auto=format&fit=crop',
+    imageUrl: '/pictures/poonhill_pg_adventure-1624431033.jpeg',
   },
   {
     id: 'rec-tsho-rolpa',
@@ -279,7 +279,7 @@ export const RECOMMENDED_DESTINATIONS: RecommendedDestination[] = [
     duration: '7–10 Days',
     description: 'One of the largest glacial moraine lakes in the Himalayas, framed by the intimidating sheer granite faces of Gauri Shankar.',
     elevation: '4,580m',
-    imageUrl: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=800&auto=format&fit=crop',
+    imageUrl: '/pictures/Choyou_1626729673-1635169288.jpeg',
   },
   {
     id: 'rec-khaptad',
@@ -290,7 +290,7 @@ export const RECOMMENDED_DESTINATIONS: RecommendedDestination[] = [
     duration: '5–8 Days',
     description: 'Rolling green alpine meadows, moorlands, and ancient sacred hermitage trails in remote western Nepal.',
     elevation: '3,100m',
-    imageUrl: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=800&auto=format&fit=crop',
+    imageUrl: '/pictures/Khaptad_taan_trekker_(6)-1624819036.jpg',
   },
   {
     id: 'rec-bardia',
@@ -301,7 +301,7 @@ export const RECOMMENDED_DESTINATIONS: RecommendedDestination[] = [
     duration: '4–6 Days',
     description: 'The largest undisturbed wilderness in the Terai, renowned for premier walking safaris and exceptional Royal Bengal Tiger sightings.',
     elevation: '152m',
-    imageUrl: 'https://images.unsplash.com/photo-1581888227599-779811939961?q=80&w=800&auto=format&fit=crop',
+    imageUrl: '/pictures/Bardiya_ss_lt_(12)-1624817484.jpg',
   },
   {
     id: 'rec-janakpur',
@@ -312,7 +312,7 @@ export const RECOMMENDED_DESTINATIONS: RecommendedDestination[] = [
     duration: '2–3 Days',
     description: 'The majestic marble Janaki Mandir palace, vibrant Mithila folk art courtyards, and hundreds of sacred pilgrimage ponds.',
     elevation: '74m Terai',
-    imageUrl: 'https://images.unsplash.com/photo-1605649487212-47bdab064df7?q=80&w=800&auto=format&fit=crop',
+    imageUrl: '/pictures/Janakpur_ss_pilgrimage_(1)-1624818475.jpg',
   },
 ];
 
@@ -549,7 +549,7 @@ export const INITIAL_WISHLIST: WishlistItem[] = [
     slug: 'mustang',
     location: 'Gandaki Province',
     category: 'Ancient Kingdom',
-    imageUrl: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=400&auto=format&fit=crop',
+    imageUrl: '/pictures/mustang_tk_people-1624440754.jpeg',
   },
   {
     id: 'w-rara',
@@ -557,7 +557,7 @@ export const INITIAL_WISHLIST: WishlistItem[] = [
     slug: 'rara',
     location: 'Karnali Province',
     category: 'Alpine Lake',
-    imageUrl: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=400&auto=format&fit=crop',
+    imageUrl: '/pictures/shey-1626727697.jpeg',
   },
   {
     id: 'w-boudha',
@@ -565,7 +565,7 @@ export const INITIAL_WISHLIST: WishlistItem[] = [
     slug: 'kathmandu',
     location: 'Kathmandu Valley',
     category: 'UNESCO Sacred Heritage',
-    imageUrl: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=400&auto=format&fit=crop',
+    imageUrl: '/pictures/boudha-1624805151.jpg',
   },
   {
     id: 'w-chitwan',
@@ -573,7 +573,7 @@ export const INITIAL_WISHLIST: WishlistItem[] = [
     slug: 'chitwan',
     location: 'Bagmati Province',
     category: 'Wildlife & Safari',
-    imageUrl: 'https://images.unsplash.com/photo-1534177616072-ef7dc120449d?q=80&w=400&auto=format&fit=crop',
+    imageUrl: '/pictures/Chitwan_ss_lt_(17)-1624813756.jpg',
   },
   {
     id: 'w-phoksundo',
@@ -581,7 +581,7 @@ export const INITIAL_WISHLIST: WishlistItem[] = [
     slug: 'phoksundo',
     location: 'Dolpo · Karnali',
     category: 'Turquoise Gem',
-    imageUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=400&auto=format&fit=crop',
+    imageUrl: '/pictures/shey-1626727697.jpeg',
   },
   {
     id: 'w-bandipur',
@@ -589,7 +589,7 @@ export const INITIAL_WISHLIST: WishlistItem[] = [
     slug: 'bandipur',
     location: 'Tanahun · Gandaki',
     category: 'Newari Architecture',
-    imageUrl: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=400&auto=format&fit=crop',
+    imageUrl: '/pictures/Ghale_Gaon_Photo_001-1634812841.jpg',
   },
   {
     id: 'w-tsho-rolpa',
@@ -597,7 +597,7 @@ export const INITIAL_WISHLIST: WishlistItem[] = [
     slug: 'tsho-rolpa',
     location: 'Dolakha · Bagmati',
     category: 'High Altitude Glacial',
-    imageUrl: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=400&auto=format&fit=crop',
+    imageUrl: '/pictures/Choyou_1626729673-1635169288.jpeg',
   },
   {
     id: 'w-ilam',
@@ -605,6 +605,6 @@ export const INITIAL_WISHLIST: WishlistItem[] = [
     slug: 'ilam',
     location: 'Ilam · Koshi',
     category: 'Emerald Tea Gardens',
-    imageUrl: 'https://images.unsplash.com/photo-1551632811-561732d1e306?q=80&w=400&auto=format&fit=crop',
+    imageUrl: '/pictures/Illam-1631441491.jpg',
   },
 ];

@@ -38,7 +38,7 @@ export const EXPEDITION_BLUEPRINTS: ExpeditionBlueprint[] = [
     difficulty: 'Challenging',
     budgetTier: 'premium',
     costEstimate: 1450,
-    imageUrl: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=800',
+    imageUrl: '/pictures/Everest_tk_trekker_(5)-1630474503.jpg',
     bestSeason: 'Oct–Dec & Mar–May',
     highlights: [
       'Scenic Lukla Mountain Flight',
@@ -206,7 +206,7 @@ export const EXPEDITION_BLUEPRINTS: ExpeditionBlueprint[] = [
     difficulty: 'Moderate',
     budgetTier: 'budget',
     costEstimate: 890,
-    imageUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800',
+    imageUrl: '/pictures/annapurna-1624804396.jpg',
     bestSeason: 'Oct–Nov & Mar–Apr',
     highlights: [
       'Poon Hill 360° Sunrise over Dhaulagiri & Annapurna',
@@ -332,7 +332,7 @@ export const EXPEDITION_BLUEPRINTS: ExpeditionBlueprint[] = [
     difficulty: 'Moderate',
     budgetTier: 'luxury',
     costEstimate: 1850,
-    imageUrl: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800',
+    imageUrl: '/pictures/mustang_tk_people-1624440754.jpeg',
     bestSeason: 'May–Oct (Monsoon-Free Rain Shadow)',
     highlights: [
       'Walled Medieval City of Lo Manthang Palace',
@@ -478,7 +478,7 @@ export const EXPEDITION_BLUEPRINTS: ExpeditionBlueprint[] = [
     difficulty: 'Moderate',
     budgetTier: 'budget',
     costEstimate: 680,
-    imageUrl: 'https://images.unsplash.com/photo-1486916856992-e4db22c8df33?q=80&w=800',
+    imageUrl: '/pictures/poonhill_pg_adventure-1624431033.jpeg',
     bestSeason: 'Mar–May & Oct–Nov',
     highlights: [
       'Authentic Kyanjin Gompa Artisanal Yak Cheese Dairy',
@@ -584,7 +584,7 @@ export const EXPEDITION_BLUEPRINTS: ExpeditionBlueprint[] = [
     difficulty: 'Challenging',
     budgetTier: 'premium',
     costEstimate: 1380,
-    imageUrl: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80&w=800',
+    imageUrl: '/pictures/Manaslu_View_from_Lho-1624808940.jpg',
     bestSeason: 'Sep–Nov & Mar–May',
     highlights: [
       'Crossing Larkya La Pass (5,160m) under Mount Manaslu (8,163m)',
@@ -751,7 +751,7 @@ export const EXPEDITION_BLUEPRINTS: ExpeditionBlueprint[] = [
     difficulty: 'Easy',
     budgetTier: 'premium',
     costEstimate: 1150,
-    imageUrl: 'https://images.unsplash.com/photo-1561731216-c3a4d99437d5?q=80&w=800',
+    imageUrl: '/pictures/shey-1626727697.jpeg',
     bestSeason: 'Apr–Jun & Sep–Nov',
     highlights: [
       'Glistening Blue Waters of Rara Lake (Nepal’s Largest Lake)',

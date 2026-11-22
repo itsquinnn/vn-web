@@ -4,13 +4,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTravelStore } from '@/store/useTravelStore';
 import Post from '@/components/features/post/PostCard';
-import { 
-  Search, 
-  Sparkles, 
-  MapPin, 
-  Calendar, 
-  Compass, 
-  Activity, 
+import {
+  Search,
+  Sparkles,
+  MapPin,
+  Calendar,
+  Compass,
+  Activity,
   ArrowRight,
   TrendingUp,
   Cpu,
@@ -31,7 +31,7 @@ export default function HomeSection() {
   const [searchDest, setSearchDest] = useState('');
   const [searchDuration, setSearchDuration] = useState('10');
   const [searchRegion, setSearchRegion] = useState('Everest');
-  
+
   // AI Floating Chat state
   const [chatOpen, setChatOpen] = useState(false);
   const [chatInput, setChatInput] = useState('');
@@ -64,7 +64,7 @@ export default function HomeSection() {
   const handleSendAiChat = (e: React.FormEvent) => {
     e.preventDefault();
     if (!chatInput.trim()) return;
-    
+
     // Send user message
     sendMessage('ch-ai', chatInput, 'user');
     const userMsg = chatInput;
@@ -74,7 +74,7 @@ export default function HomeSection() {
     setTimeout(() => {
       let reply = "I've processed your query. Let me look at our active satellite coordinates for Nepal...";
       const query = userMsg.toLowerCase();
-      
+
       if (query.includes('weather') || query.includes('rain') || query.includes('snow')) {
         reply = "My telemetry monitors reveal clear skies over Gandaki and Everest, perfect for mountaineering this week. Some high altitude snow is projected for Manang.";
       } else if (query.includes('permit') || query.includes('apply')) {
@@ -117,7 +117,7 @@ export default function HomeSection() {
 
   return (
     <div className="relative flex flex-col gap-12 pb-16">
-      
+
       {/* Background Meteor Shower */}
       <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
         <div className="absolute h-[1px] w-[1px] bg-white animate-meteor left-1/4 top-1/4"></div>
@@ -127,7 +127,7 @@ export default function HomeSection() {
 
       {/* Cinematic Hero Landing Header */}
       <section className="relative flex flex-col items-center justify-center text-center py-8 lg:py-16">
-        
+
         {/* Glowing badge */}
         <div className="inline-flex items-center gap-2 rounded-full bg-cyan-500/10 px-4 py-1.5 text-xs font-bold text-cyan-400 border border-cyan-500/30 mb-6 animate-pulse">
           <Sparkles className="h-4 w-4 animate-spin-slow text-cyan-400" />
@@ -140,14 +140,14 @@ export default function HomeSection() {
             Never Before
           </span>
         </h1>
-        
+
         <p className="mt-6 max-w-2xl text-sm leading-6 text-zinc-400 md:text-base font-mono">
           Integrate AI pathfinders, direct high-altitude satellite link, and luxury glass stays. Experience a premium next-gen ecosystem of adrenaline, culture, and ancient spiritual retreats.
         </p>
 
         {/* Action CTAs */}
         <div className="mt-8 flex flex-wrap justify-center gap-4">
-          <button 
+          <button
             onClick={() => setActiveSection('customizer')}
             className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 px-6 py-3.5 text-sm font-bold text-white shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all active:scale-95"
           >
@@ -155,8 +155,8 @@ export default function HomeSection() {
             <span>Launch AI Trip Engine</span>
             <ArrowRight className="h-4 w-4" />
           </button>
-          
-          <button 
+
+          <button
             onClick={() => setActiveSection('explore')}
             className="flex items-center gap-2 rounded-xl bg-white/5 border border-zinc-800 hover:bg-white/10 px-6 py-3.5 text-sm font-bold text-white transition-all active:scale-95"
           >
@@ -168,7 +168,7 @@ export default function HomeSection() {
 
       {/* Floating High-Tech Search Dock */}
       <section className="mx-auto w-full max-w-4xl px-4">
-        <form 
+        <form
           onSubmit={handleSearchSubmit}
           className="rounded-2xl glass-panel p-4 md:p-6 neon-border-cyan grid grid-cols-1 md:grid-cols-4 gap-4 items-end shadow-2xl"
         >
@@ -176,7 +176,7 @@ export default function HomeSection() {
             <label className="text-[10px] uppercase font-mono tracking-widest text-cyan-400 flex items-center gap-1.5">
               <MapPin className="h-3.5 w-3.5" /> Destination Region
             </label>
-            <select 
+            <select
               value={searchRegion}
               onChange={(e) => setSearchRegion(e.target.value)}
               className="w-full bg-zinc-950/80 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400"
@@ -193,7 +193,7 @@ export default function HomeSection() {
             <label className="text-[10px] uppercase font-mono tracking-widest text-purple-400 flex items-center gap-1.5">
               <Calendar className="h-3.5 w-3.5" /> Duration (Days)
             </label>
-            <input 
+            <input
               type="number"
               value={searchDuration}
               onChange={(e) => setSearchDuration(e.target.value)}
@@ -206,7 +206,7 @@ export default function HomeSection() {
             <label className="text-[10px] uppercase font-mono tracking-widest text-amber-400 flex items-center gap-1.5">
               <Activity className="h-3.5 w-3.5" /> Altitude Preference
             </label>
-            <select 
+            <select
               className="w-full bg-zinc-950/80 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400"
             >
               <option value="high">High Altitude (3000m+)</option>
@@ -215,7 +215,7 @@ export default function HomeSection() {
             </select>
           </div>
 
-          <button 
+          <button
             type="submit"
             className="w-full rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-bold text-xs py-2.5 flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer shadow-[0_0_10px_rgba(6,182,212,0.3)] h-[38px]"
           >
@@ -227,7 +227,7 @@ export default function HomeSection() {
 
       {/* Cybernetic Telemetry Live Stats Grid */}
       <section className="grid grid-cols-2 md:grid-cols-4 gap-4 px-4 max-w-[1536px] mx-auto w-full">
-        
+
         <div className="glass-panel p-4 rounded-xl neon-border-purple text-center relative overflow-hidden group">
           <div className="absolute top-0 right-0 h-10 w-10 bg-purple-500/5 rounded-full blur-xl group-hover:bg-purple-500/10"></div>
           <p className="text-[9px] uppercase font-mono tracking-widest text-zinc-500">Live Active Travelers</p>
@@ -282,7 +282,7 @@ export default function HomeSection() {
             <TrendingUp className="h-5 w-5 text-purple-400" />
             <h2 className="text-xl font-bold tracking-wider text-white">Trending High-Tech Adventures</h2>
           </div>
-          <button 
+          <button
             onClick={() => setActiveSection('explore')}
             className="text-xs font-mono text-cyan-400 hover:text-cyan-300 flex items-center gap-1"
           >
@@ -294,7 +294,7 @@ export default function HomeSection() {
         {/* Adventures Bento Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {trendingDestinations.map((dest, idx) => (
-            <div 
+            <div
               key={idx}
               onClick={() => {
                 const slug = dest.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
@@ -304,13 +304,13 @@ export default function HomeSection() {
             >
               {/* Image box with overlay gradient */}
               <div className="relative h-48 w-full overflow-hidden">
-                <img 
+                <img
                   src={dest.image}
                   alt={dest.name}
                   className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent"></div>
-                
+
                 {/* Float badges */}
                 <span className="absolute top-3 left-3 bg-zinc-950/90 text-cyan-400 text-[9px] font-bold font-mono tracking-widest px-2.5 py-1 rounded-full border border-cyan-900">
                   {dest.difficulty}
@@ -327,7 +327,7 @@ export default function HomeSection() {
                 </div>
                 <div className="flex items-center justify-between border-t border-zinc-900 pt-3 mt-3">
                   <span className="text-xs font-mono text-purple-400">{dest.stat}</span>
-                  <button 
+                  <button
                     onClick={(e) => {
                       e.stopPropagation();
                       setCustomPreference('preferredRegion', dest.name);
@@ -366,7 +366,7 @@ export default function HomeSection() {
             <textarea
               value={postContent}
               onChange={e => setPostContent(e.target.value)}
-              placeholder="Share your Nepal experience — a trek, a temple, a sunrise…"
+              placeholder="Share your Nepal experience - a trek, a temple, a sunrise…"
               rows={3}
               className="flex-1 bg-zinc-900/70 border border-zinc-800 focus:border-cyan-500/60 rounded-xl px-4 py-3 text-xs text-white placeholder-zinc-500 focus:outline-none resize-none font-sans leading-5 transition-colors"
             />
@@ -418,7 +418,7 @@ export default function HomeSection() {
 
       {/* Floating AI Chat Assistant Widget */}
       <div className="fixed bottom-24 right-6 z-50">
-        
+
         {/* Floating Trigger Button */}
         {!chatOpen && (
           <button
@@ -433,7 +433,7 @@ export default function HomeSection() {
         {/* AI Assistant Chat Frame */}
         {chatOpen && (
           <div className="w-[340px] md:w-[380px] h-[450px] glass-panel-heavy rounded-2xl neon-border-cyan shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-6 duration-300">
-            
+
             {/* Header */}
             <div className="bg-gradient-to-r from-zinc-950 via-zinc-900 to-zinc-950 p-4 border-b border-zinc-800 flex items-center justify-between">
               <div className="flex items-center gap-2.5">
@@ -450,7 +450,7 @@ export default function HomeSection() {
                   </p>
                 </div>
               </div>
-              <button 
+              <button
                 onClick={() => setChatOpen(false)}
                 className="text-zinc-400 hover:text-white p-1 hover:bg-white/5 rounded-lg"
               >
@@ -460,22 +460,21 @@ export default function HomeSection() {
 
             {/* Message Stream */}
             <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 font-sans text-xs">
-              
+
               {/* Retrieve messages from AI channel */}
               {channels.find(ch => ch.id === 'ch-ai')?.messages.map((msg) => {
                 const isAi = msg.sender === 'ai';
                 return (
-                  <div 
+                  <div
                     key={msg.id}
                     className={`flex flex-col max-w-[80%] ${isAi ? 'self-start' : 'self-end items-end'}`}
                   >
-                    <div className={`p-3 rounded-xl ${
-                      isAi 
-                        ? 'bg-zinc-900 text-zinc-200 border border-zinc-800/80 rounded-tl-none' 
+                    <div className={`p-3 rounded-xl ${isAi
+                        ? 'bg-zinc-900 text-zinc-200 border border-zinc-800/80 rounded-tl-none'
                         : 'bg-gradient-to-r from-cyan-600 to-cyan-500 text-black font-semibold rounded-tr-none'
-                    }`}>
+                      }`}>
                       <p>{msg.text}</p>
-                      
+
                       {msg.translatedText && (
                         <div className="mt-2 pt-1 border-t border-cyan-800/20 text-[10px] text-cyan-900 font-mono italic">
                           {msg.translatedText}
@@ -490,18 +489,18 @@ export default function HomeSection() {
             </div>
 
             {/* Form Input */}
-            <form 
+            <form
               onSubmit={handleSendAiChat}
               className="p-3 border-t border-zinc-800 bg-zinc-950/60 flex items-center gap-2"
             >
-              <input 
+              <input
                 type="text"
                 value={chatInput}
                 onChange={(e) => setChatInput(e.target.value)}
                 placeholder="Ask about weather, hotels, or permits..."
                 className="flex-1 bg-zinc-900 border border-zinc-800 focus:border-cyan-500 rounded-xl px-3 py-2 text-xs text-white focus:outline-none"
               />
-              <button 
+              <button
                 type="submit"
                 className="h-8 w-8 bg-cyan-500 hover:bg-cyan-400 text-black rounded-xl flex items-center justify-center transition-all cursor-pointer"
               >

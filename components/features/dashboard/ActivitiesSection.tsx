@@ -62,7 +62,7 @@ const ACTIVITIES_LIST: ActivityItem[] = [
     region: 'Annapurna & Gandaki',
     season: 'Oct–Dec & Mar–May',
     estimatedCost: 850,
-    image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=800',
+    image: '/pictures/annapurna-1624804396.jpg',
     description: 'Walk pristine trails through ancient rhododendron forests into the sacred glacial amphitheater surrounded by towering 7,000m and 8,000m peaks.',
     highlights: [
       'Poon Hill sunrise panoramic view of Dhaulagiri & Annapurna',
@@ -83,7 +83,7 @@ const ACTIVITIES_LIST: ActivityItem[] = [
     region: 'Khumbu (Everest)',
     season: 'April–May & Oct–Nov',
     estimatedCost: 4200,
-    image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800',
+    image: '/pictures/Everest_tk_trekker_(5)-1630474503.jpg',
     description: 'Technical alpine ridge climbing on the "Matterhorn of the Himalayas", accompanied by master Sherpa pathfinders with high-altitude oxygen telemetry.',
     highlights: [
       'Exhilarating knife-edge granite and ice ridge climbing',
@@ -104,7 +104,7 @@ const ACTIVITIES_LIST: ActivityItem[] = [
     region: 'Terai Lowlands',
     season: 'October – April',
     estimatedCost: 380,
-    image: 'https://images.unsplash.com/photo-1581888227599-779811939961?q=80&w=800',
+    image: '/pictures/Chitwan_ss_jungleactivities-1630491399.JPG',
     description: 'Track endangered Royal Bengal tigers, one-horned rhinos, and wild elephant herds on foot and by silent canoe down pristine river corridors.',
     highlights: [
       'Guided on-foot tiger tracking with veteran naturalists',
@@ -125,7 +125,7 @@ const ACTIVITIES_LIST: ActivityItem[] = [
     region: 'Kathmandu Valley',
     season: 'Year-round',
     estimatedCost: 220,
-    image: 'https://images.unsplash.com/photo-1605649487212-47bdab064df7?q=80&w=800',
+    image: '/pictures/Kathmandu_Durbar_Square___Susheel_Shrestha-1629279698.jpg',
     description: 'Immerse in seven clustered medieval World Heritage sanctuaries, sacred Newari bronze artisan courtyards, and ancient Buddhist stupa rituals.',
     highlights: [
       'Centuries-old peacock windows and pottery squares of Bhaktapur',
@@ -146,7 +146,7 @@ const ACTIVITIES_LIST: ActivityItem[] = [
     region: 'Ilam & Eastern Hills',
     season: 'March – November',
     estimatedCost: 320,
-    image: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=800',
+    image: '/pictures/Illam-1631441491.jpg',
     description: 'Experience authentic mountain hospitality at community-run tea cooperatives, learn artisan cardamom curing, and savor farm-to-table dining.',
     highlights: [
       'Hands-on tea plucking in misty organic rolling hills',
@@ -167,7 +167,7 @@ const ACTIVITIES_LIST: ActivityItem[] = [
     region: 'Pokhara (Sarangkot)',
     season: 'September – May',
     estimatedCost: 140,
-    image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800',
+    image: '/pictures/Pokhara_ss_lt_(4)-1624818140.jpg',
     description: 'Launch from Sarangkot ridge into thermal updrafts above Phewa Lake, soaring with mountain eagles against the towering Annapurna backdrop.',
     highlights: [
       '30-minute high-altitude tandem thermal flight',
@@ -188,7 +188,7 @@ const ACTIVITIES_LIST: ActivityItem[] = [
     region: 'Central Himalayan Rivers',
     season: 'Sept–Dec & Mar–May',
     estimatedCost: 190,
-    image: 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?q=80&w=800',
+    image: '/pictures/Pokhara_oy_lt_(2)-1624817867.jpg',
     description: 'Charge through Class III-IV glacial whitewater gorges fed by Himalayan snowmelt, followed by secluded sandy beach wilderness camping under the stars.',
     highlights: [
       'Thrilling canyon rapids with names like Twin Rock & Surprise',
@@ -209,7 +209,7 @@ const ACTIVITIES_LIST: ActivityItem[] = [
     region: 'Khumbu (Everest)',
     season: 'Year-round',
     estimatedCost: 1250,
-    image: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800',
+    image: '/pictures/everest_(1)-1624869402.jpg',
     description: 'Board an Airbus H125 helicopter from Kathmandu for a scenic alpine flight, landing directly at Kala Patthar for a champagne breakfast overlooking Everest.',
     highlights: [
       'Touchdown at Kala Patthar (5,545m) with direct view of Everest Summit',
@@ -281,7 +281,7 @@ export default function ActivitiesSection({ activeId, onNavigate }: ActivitiesSe
       id: `b-act-${Date.now()}`,
       type: 'Adventure Package',
       title: activity.title,
-      date: 'Flexible Seasonal Booking — 2026',
+      date: 'Flexible Seasonal Booking - 2026',
       details: `${activity.category} in ${activity.region}. Max Altitude: ${activity.maxAltitude}. Duration: ${activity.duration}.`,
       cost: activity.estimatedCost,
       status: 'Confirmed',
@@ -511,8 +511,8 @@ export default function ActivitiesSection({ activeId, onNavigate }: ActivitiesSe
                   key={cat}
                   onClick={() => setSelectedCategory(cat)}
                   className={`text-xs px-4 py-2 rounded-full font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${isActive
-                      ? 'bg-[#0552A2] text-white shadow-sm'
-                      : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 hover:border-slate-300'
+                    ? 'bg-[#0552A2] text-white shadow-sm'
+                    : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 hover:border-slate-300'
                     }`}
                 >
                   {cat !== 'All' && getCategoryIcon(cat)}

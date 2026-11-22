@@ -198,11 +198,11 @@ export default function CultureSection() {
         </div>
 
         {/* =========================================================================
-            PART 1: UNESCO WORLD HERITAGE — CLEAN EDITORIAL SHOWCASE
+            PART 1: UNESCO WORLD HERITAGE - CLEAN EDITORIAL SHOWCASE
         ========================================================================= */}
         <div className="mb-16 lg:mb-20">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            {/* Left Lead Photo (7 cols) — Clean, unobstructed photography */}
+            {/* Left Lead Photo (7 cols) - Clean, unobstructed photography */}
             <div className="lg:col-span-7">
               <div className="relative h-[300px] sm:h-[380px] lg:h-[420px] rounded-2xl overflow-hidden bg-[#17212B] group">
                 <Image
@@ -246,11 +246,10 @@ export default function CultureSection() {
                       key={site.id}
                       onClick={() => setSelectedSite(site)}
                       aria-label={site.name}
-                      className={`group/thumb relative aspect-[4/3] rounded-lg overflow-hidden cursor-pointer transition-all duration-200 ${
-                        isSelected
+                      className={`group/thumb relative aspect-[4/3] rounded-lg overflow-hidden cursor-pointer transition-all duration-200 ${isSelected
                           ? "ring-2 ring-[#0552A2] ring-offset-2 opacity-100"
                           : "opacity-60 hover:opacity-100"
-                      }`}
+                        }`}
                     >
                       <Image
                         src={site.imageUrl}
@@ -269,7 +268,7 @@ export default function CultureSection() {
         </div>
 
         {/* =========================================================================
-            PART 2: FESTIVALS THAT DEFINE THE YEAR — BORDERLESS SEASONAL SHOWCASE
+            PART 2: FESTIVALS THAT DEFINE THE YEAR - BORDERLESS SEASONAL SHOWCASE
         ========================================================================= */}
         <div className="pt-4">
           {/* Header */}
@@ -294,11 +293,10 @@ export default function CultureSection() {
                 <button
                   key={fest.id}
                   onClick={() => setActiveFestival(fest)}
-                  className={`shrink-0 pb-3 text-left transition-colors cursor-pointer border-b-2 -mb-px flex items-baseline gap-2.5 ${
-                    isActive
+                  className={`shrink-0 pb-3 text-left transition-colors cursor-pointer border-b-2 -mb-px flex items-baseline gap-2.5 ${isActive
                       ? "border-[#0552A2] text-[#0552A2]"
                       : "border-transparent text-[#64748B] hover:text-[#17212B]"
-                  }`}
+                    }`}
                 >
                   <span className="text-[11px] font-mono opacity-70">
                     {String(idx + 1).padStart(2, "0")}

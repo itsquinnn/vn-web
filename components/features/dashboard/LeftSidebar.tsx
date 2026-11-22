@@ -49,27 +49,28 @@ function SidebarItem({
   onClick,
 }: SidebarItemProps) {
   return (
-    <div className="relative group px-1.5">
+    <div className="relative group">
       <button
         onClick={onClick}
         aria-label={label}
-        className={`w-full flex items-center h-8.5 px-2 rounded-lg transition-all duration-200 relative text-left cursor-pointer overflow-hidden ${
+        className={`w-full flex items-center h-9.5 transition-colors duration-150 relative text-left cursor-pointer overflow-hidden ${
+          collapsed ? 'justify-center px-0' : 'px-3.5'
+        } ${
           isActive
-            ? 'bg-[#0552A2]/10 text-[#0552A2] font-semibold shadow-xs'
-            : 'text-slate-600 hover:text-[#17212B] hover:bg-slate-200/50 font-medium'
+            ? 'bg-[#0552A2]/8 text-[#0552A2] font-semibold'
+            : 'text-slate-600 hover:text-[#17212B] hover:bg-slate-100/80 active:bg-slate-100 font-medium'
         }`}
-        style={{ fontSize: '12px' }}
       >
-        {/* Active Pill Accent Indicator */}
+        {/* Active Left Edge Indicator */}
         <span
-          className={`absolute left-0 top-1.5 bottom-1.5 w-1 rounded-r-full bg-[#0552A2] transition-all duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-            isActive ? 'opacity-100 scale-y-100' : 'opacity-0 scale-y-50'
+          className={`absolute left-0 top-0 bottom-0 w-[3px] bg-[#0552A2] transition-opacity duration-150 ${
+            isActive ? 'opacity-100' : 'opacity-0'
           }`}
         />
 
-        {/* Icon Container: Fixed width & positioning prevents any horizontal jumping */}
+        {/* Icon Container */}
         <span
-          className={`h-6 w-6 shrink-0 flex items-center justify-center rounded-md transition-transform duration-200 group-hover:scale-105 ${
+          className={`h-6 w-6 shrink-0 flex items-center justify-center rounded-md transition-colors duration-150 ${
             isActive ? 'text-[#0552A2]' : 'text-slate-400 group-hover:text-slate-700'
           }`}
         >
@@ -80,7 +81,7 @@ function SidebarItem({
           )}
         </span>
 
-        {/* Text Label & Badge: Smooth opacity and transform transition */}
+        {/* Text Label & Badge */}
         <div
           className={`flex-1 min-w-0 flex items-center justify-between ml-2.5 whitespace-nowrap overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
             collapsed
@@ -88,13 +89,13 @@ function SidebarItem({
               : 'opacity-100 translate-x-0 max-w-[170px]'
           }`}
         >
-          <span className="truncate tracking-tight text-[12px] font-medium">
+          <span className="truncate text-[13px]">
             {label}
           </span>
 
           {badge && (
             <span
-              className={`rounded-full text-[9px] font-mono font-bold px-1.5 py-0.2 leading-none shrink-0 ml-1.5 transition-colors ${
+              className={`rounded-full text-[10px] font-semibold px-1.5 py-0.5 leading-none shrink-0 ml-1.5 transition-colors ${
                 isActive
                   ? 'bg-[#0552A2] text-white'
                   : 'bg-slate-200/80 text-slate-600 group-hover:bg-[#0552A2]/15 group-hover:text-[#0552A2]'
@@ -114,10 +115,10 @@ function SidebarItem({
       {/* Accessible Floating Tooltip in Collapsed Mode */}
       {collapsed && (
         <div className="absolute left-[58px] top-1/2 -translate-y-1/2 z-50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-150 ease-out">
-          <div className="bg-[#17212B] text-white text-xs font-semibold px-2 py-1 rounded-md shadow-xl flex items-center gap-1.5 whitespace-nowrap border border-white/10">
+          <div className="bg-[#17212B] text-white text-xs font-semibold px-2.5 py-1 rounded-md shadow-xl flex items-center gap-1.5 whitespace-nowrap border border-white/10">
             <span>{label}</span>
             {badge && (
-              <span className="bg-[#0552A2] text-white font-mono text-[9px] font-bold px-1.5 py-0.2 rounded-full">
+              <span className="bg-[#0552A2] text-white text-[10px] font-semibold px-1.5 py-0.5 rounded-full">
                 {badge}
               </span>
             )}
@@ -138,26 +139,14 @@ interface SidebarGroupProps {
 }
 
 function SidebarGroup({
-  title,
   items,
   activeId,
   collapsed,
   onItemClick,
 }: SidebarGroupProps) {
   return (
-    <div className="py-1">
-      {/* Group Title: Smoothly fades and collapses without abrupt DOM removal */}
-      <div className="overflow-hidden">
-        <p
-          className={`text-[9px] font-mono tracking-widest uppercase text-slate-400 px-3 pb-1 font-bold select-none whitespace-nowrap transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-            collapsed ? 'opacity-0 -translate-x-2 h-0 pb-0' : 'opacity-100 translate-x-0 h-auto'
-          }`}
-        >
-          {title}
-        </p>
-      </div>
-
-      <div className="flex flex-col gap-0.5">
+    <div>
+      <div className="flex flex-col">
         {items.map((item) => (
           <SidebarItem
             key={item.id}
@@ -193,24 +182,13 @@ export default function LeftSidebar({
           collapsed ? 'w-[54px]' : 'w-[204px]'
         }`}
       >
-        {/* Sticky Header / Toggle Bar */}
+        {/* Sticky Collapse Toggle Bar */}
         <div
-          className={`sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-100 px-2.5 py-1.5 flex items-center h-10 ${
-            collapsed ? 'justify-center' : 'justify-between'
+          className={`sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-100 px-2.5 py-1.5 flex items-center h-9 ${
+            collapsed ? 'justify-center' : 'justify-end'
           }`}
         >
-          {/* Header Label */}
-          <div
-            className={`overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-              collapsed ? 'w-0 opacity-0' : 'w-auto opacity-100 pl-1'
-            }`}
-          >
-            <span className="text-[10px] font-mono font-bold tracking-wider text-slate-400 uppercase whitespace-nowrap">
-              Navigation
-            </span>
-          </div>
-
-          {/* Toggle Button: Smooth rotation & hover transition */}
+          {/* Toggle Button */}
           <button
             onClick={() => onCollapsedChange(!collapsed)}
             className="p-1 rounded-md text-slate-400 hover:text-[#0552A2] hover:bg-slate-200/50 active:scale-95 transition-all duration-200 cursor-pointer shrink-0"
@@ -236,7 +214,7 @@ export default function LeftSidebar({
         </div>
 
         {/* Scrollable Navigation Groups List */}
-        <nav className="flex-1 overflow-y-auto overflow-x-hidden divide-y divide-slate-100/80 py-1 scrollbar-none">
+        <nav className="flex-1 overflow-y-auto overflow-x-hidden divide-y divide-slate-100 scrollbar-none">
           {navGroups.map((group) => (
             <SidebarGroup
               key={group.title}
@@ -248,21 +226,6 @@ export default function LeftSidebar({
             />
           ))}
         </nav>
-
-        {/* Footer Support / Portal Tag */}
-        <div
-          className={`border-t border-slate-100 bg-slate-50/70 text-left overflow-hidden transition-all duration-350 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-            collapsed ? 'h-0 opacity-0 p-0 border-transparent pointer-events-none' : 'h-auto opacity-100 p-2.5'
-          }`}
-        >
-          <div className="flex items-center gap-1.5 whitespace-nowrap">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-            <span className="text-[10px] font-mono text-slate-500 font-medium truncate">NTB System Active</span>
-          </div>
-          <p className="text-[9px] text-slate-400 mt-0.5 leading-snug whitespace-nowrap">
-            Nepal Tourism Board Portal
-          </p>
-        </div>
       </aside>
 
       {/* ── 2. MOBILE SLIDE-IN DRAWER WITH BACKDROP ───────────────────────── */}
@@ -278,10 +241,7 @@ export default function LeftSidebar({
           {/* Drawer Container */}
           <div className="relative w-64 max-w-[80vw] bg-white h-full shadow-2xl flex flex-col z-10 animate-in slide-in-from-left duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]">
             {/* Mobile Drawer Header */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 bg-white">
-              <span className="text-xs font-mono font-bold tracking-wider text-[#0552A2] uppercase">
-                Expedition Navigation
-              </span>
+            <div className="flex items-center justify-end px-4 py-2.5 border-b border-slate-100 bg-white">
               <button
                 onClick={onMobileClose}
                 className="p-1.5 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-200/50 transition-colors"
@@ -292,7 +252,7 @@ export default function LeftSidebar({
             </div>
 
             {/* Mobile Nav Links */}
-            <nav className="flex-1 overflow-y-auto divide-y divide-slate-100/80 py-2 scrollbar-none">
+            <nav className="flex-1 overflow-y-auto divide-y divide-slate-100 scrollbar-none">
               {navGroups.map((group) => (
                 <SidebarGroup
                   key={group.title}
@@ -307,17 +267,6 @@ export default function LeftSidebar({
                 />
               ))}
             </nav>
-
-            {/* Mobile Footer */}
-            <div className="p-4 border-t border-slate-200 bg-slate-50/90 text-left">
-              <div className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-xs font-mono text-slate-600 font-semibold">NTB Expedition Portal</span>
-              </div>
-              <p className="text-[11px] text-slate-400 mt-1">
-                Official Government Tourism Services
-              </p>
-            </div>
           </div>
         </div>
       )}

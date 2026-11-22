@@ -28,7 +28,7 @@ export default function InfoDetailPage() {
   const [isFullExpanded, setIsFullExpanded] = useState(false);
   const [expandedChannelId, setExpandedChannelId] = useState<string | null>(null);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
-  const [rightSidebarTab, setRightSidebarTab] = useState<'telemetry' | 'chat'>('telemetry');
+  const [rightSidebarTab, setRightSidebarTab] = useState<'telemetry' | 'chat' | 'notices'>('telemetry');
   const [chatViewState, setChatViewState] = useState<'inbox' | 'conversation'>('inbox');
   const [chatInput, setChatInput] = useState('');
   

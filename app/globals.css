@@ -16,11 +16,17 @@
   --color-border: rgba(5, 82, 162, 0.1);
   --color-border-subtle: rgba(23, 33, 43, 0.08);
 
-  --font-heading: var(--font-quicksand), "Quicksand", sans-serif;
-  --font-serif: var(--font-quicksand), "Quicksand", sans-serif;
-  --font-sans: var(--font-ibm-plex-sans), "IBM Plex Sans", sans-serif;
-  --font-condensed:
-    var(--font-roboto-condensed), "Roboto Condensed", sans-serif;
+  --font-quicksand: "Quicksand", sans-serif;
+  --font-ibm-plex-sans: "IBM Plex Sans", sans-serif;
+  --font-roboto-condensed: "Roboto Condensed", sans-serif;
+  --font-oswald: "Oswald", sans-serif;
+  --font-script: "Dancing Script", cursive;
+  --font-poppins: "Poppins", sans-serif;
+
+  --font-heading: "Quicksand", sans-serif;
+  --font-serif: "Quicksand", sans-serif;
+  --font-sans: "IBM Plex Sans", sans-serif;
+  --font-condensed: "Roboto Condensed", sans-serif;
 }
 
 @theme {

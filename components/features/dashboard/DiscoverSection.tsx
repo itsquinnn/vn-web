@@ -5,17 +5,17 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTravelStore } from '@/store/useTravelStore';
 import { useRouter } from 'next/navigation';
 import DashboardHome from './DashboardHome';
-import { 
-  MapPin, 
-  ArrowLeft, 
+import {
+  MapPin,
+  ArrowLeft,
   ArrowRight,
-  Share2, 
-  Check, 
-  Camera, 
-  Compass, 
-  Activity, 
-  UserPlus, 
-  UserCheck, 
+  Share2,
+  Check,
+  Camera,
+  Compass,
+  Activity,
+  UserPlus,
+  UserCheck,
   ClipboardList,
   User
 } from 'lucide-react';
@@ -31,7 +31,7 @@ const DESTINATIONS = [
     name: 'Mount Everest Base Camp',
     elevation: '5,364 m',
     region: 'Khumbu',
-    image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=600&auto=format&fit=crop',
+    image: '/pictures/Everest_tk_trekker_(5)-1630474503.jpg',
     description: 'Walk in the footsteps of legends to the base of the world\'s highest peak.',
     details: 'The trek to Everest Base Camp is a grand pilgrimage through Sherpa country, high suspended bridges, and ancient Buddhist monasteries.'
   },
@@ -40,7 +40,7 @@ const DESTINATIONS = [
     name: 'Phewa Lake, Pokhara',
     elevation: '822 m',
     region: 'Kaski',
-    image: 'https://images.unsplash.com/photo-1486916856992-e4db22c8df33?q=80&w=600&auto=format&fit=crop',
+    image: '/pictures/Pokhara_ss_lt_(4)-1624818140.jpg',
     description: 'A tranquil lakeside resort town with raw mountain reflections.',
     details: 'Relax in standard lakeside tea houses or paddle under the clear gaze of Machapuchare (Fishtail Peak) and the Annapurna range.'
   },
@@ -49,7 +49,7 @@ const DESTINATIONS = [
     name: 'Boudhanath Stupa',
     elevation: '1,400 m',
     region: 'Kathmandu',
-    image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=600&auto=format&fit=crop',
+    image: '/pictures/boudha-1624805151.jpg',
     description: 'One of the largest spherical stupas in the world.',
     details: 'A beacon of ancient spirituality decorated with thousands of prayer flags waving in the gentle breeze, surrounded by peaceful monasteries.'
   },
@@ -58,7 +58,7 @@ const DESTINATIONS = [
     name: 'Chitwan Wildlife Sanctuary',
     elevation: '150 m',
     region: 'Chitwan',
-    image: 'https://images.unsplash.com/photo-1581888227599-779811939961?q=80&w=600&auto=format&fit=crop',
+    image: '/pictures/Chitwan_ss_lt_(17)-1624813756.jpg',
     description: 'Deep subtropical jungles where rare rhinos roam free.',
     details: 'Experience guided canoe safaris and dense jungle exploration looking for tigers, leopards, and crocodiles.'
   },
@@ -67,7 +67,7 @@ const DESTINATIONS = [
     name: 'Lo Manthang, Upper Mustang',
     elevation: '3,840 m',
     region: 'Mustang',
-    image: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80&w=600&auto=format&fit=crop',
+    image: '/pictures/mustang_tk_people-1624440754.jpeg',
     description: 'A walled city in the high-altitude trans-Himalayan desert.',
     details: 'Explore ancient red cliffs, sky caves, and the preserved fortress palace of the former Kingdom of Lo.'
   }
@@ -79,7 +79,7 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
 
   const [postContent, setPostContent] = useState('');
   const [postLocation, setPostLocation] = useState('');
-  const [selectedImage, setSelectedImage] = useState('https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=800');
+  const [selectedImage, setSelectedImage] = useState('/pictures/Everest_tk_trekker_(5)-1630474503.jpg');
   const [activeCommentPostId, setActiveCommentPostId] = useState<string | null>(null);
   const [commentInputs, setCommentInputs] = useState<Record<string, string>>({});
   const [imageSelectorOpen, setImageSelectorOpen] = useState(false);
@@ -128,7 +128,7 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
       setSelectedProfileUser({
         userId: slug,
         name: userName,
-        avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=150',
+        avatar: '/pictures/mustang_tk_people-1624440754.jpeg',
         role: 'Explorer',
         location: 'Nepal'
       });
@@ -137,11 +137,11 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
   };
 
   const MOCK_PHOTOS = [
-    { name: 'Everest Peaks', url: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=800' },
-    { name: 'Phewa Lakeside', url: 'https://images.unsplash.com/photo-1486916856992-e4db22c8df33?q=80&w=800' },
-    { name: 'Chitwan Jungle Tiger', url: 'https://images.unsplash.com/photo-1581888227599-779811939961?q=80&w=800' },
-    { name: 'Ancient Bhaktapur', url: 'https://images.unsplash.com/photo-1605649487212-47bdab064df7?q=80&w=800' },
-    { name: 'Kathmandu Gateway', url: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800' },
+    { name: 'Everest Peaks', url: '/pictures/Everest_tk_trekker_(5)-1630474503.jpg' },
+    { name: 'Phewa Lakeside', url: '/pictures/Pokhara_ss_lt_(4)-1624818140.jpg' },
+    { name: 'Chitwan Jungle Tiger', url: '/pictures/Chitwan_ss_jungleactivities-1630491399.JPG' },
+    { name: 'Ancient Bhaktapur', url: '/pictures/Bhaktapur_ss_lt_(2)-1629279885.jpg' },
+    { name: 'Kathmandu Gateway', url: '/pictures/Kathmandu_Durbar_Square___Susheel_Shrestha-1629279698.jpg' },
   ];
 
   const containerVariants: any = {
@@ -169,586 +169,569 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
           transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
           className="w-full text-left"
         >
-        {/* ── HOME VIEW ────────────────────────────────────────────────── */}
-        {activeId === 'home' && (
-          selectedProfileUser ? (
-            <div className="animate-in fade-in duration-300">
-              {/* Cover Banner — breaks out of parent p-6/md:p-10 on top + sides */}
-              <div
-                className="relative h-44 overflow-hidden"
-                style={{
-                  marginTop: '-1.5rem',
-                  marginLeft: '-1.5rem',
-                  marginRight: '-1.5rem',
-                  width: 'calc(100% + 3rem)',
-                }}
-              >
-                {/* md override via a pseudo-style trick using a style tag approach isn't possible, 
-                    so we use the closest Tailwind responsive inline workaround */}
-                <img src={getDiscoverProfileDetails(selectedProfileUser.name, selectedProfileUser.role).banner} alt="Cover" className="w-full h-full object-cover" />
-                <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, transparent 35%, rgba(255,254,250,0.9))' }} />
-
-                {/* Back Button — top left inside banner */}
-                <button
-                  onClick={() => setSelectedProfileUser(null)}
-                  className="absolute top-4 left-4 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/80 backdrop-blur-md border border-[#92C4EA]/25 text-[9px] font-mono font-bold text-[#475569] hover:text-[#0552A2] hover:bg-white transition-all cursor-pointer active:scale-95 uppercase tracking-wider"
-                >
-                  <ArrowLeft className="h-3 w-3" />
-                  Back
-                </button>
-
-                {/* Share Button — top right inside banner */}
-                <button
-                  onClick={() => {
-                    if (typeof window !== 'undefined') {
-                      const profileLink = `${window.location.origin}/user/${selectedProfileUser.userId || '048291'}`;
-                      navigator.clipboard.writeText(profileLink);
-                      setCopied(true);
-                      setTimeout(() => setCopied(false), 2000);
-                    }
+          {/* ── HOME VIEW ────────────────────────────────────────────────── */}
+          {activeId === 'home' && (
+            selectedProfileUser ? (
+              <div className="animate-in fade-in duration-300">
+                {/* Cover Banner - breaks out of parent p-6/md:p-10 on top + sides */}
+                <div
+                  className="relative h-44 overflow-hidden"
+                  style={{
+                    marginTop: '-1.5rem',
+                    marginLeft: '-1.5rem',
+                    marginRight: '-1.5rem',
+                    width: 'calc(100% + 3rem)',
                   }}
-                  className="absolute top-4 right-4 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/80 backdrop-blur-md border border-[#92C4EA]/25 text-[9px] font-mono font-bold text-[#475569] hover:text-[#0552A2] hover:bg-white transition-all cursor-pointer active:scale-95 uppercase tracking-wider"
                 >
-                  <Share2 className="h-3 w-3" />
-                  <span>{copied ? 'Copied! ✨' : 'Share'}</span>
-                </button>
-              </div>
+                  {/* md override via a pseudo-style trick using a style tag approach isn't possible, 
+                    so we use the closest Tailwind responsive inline workaround */}
+                  <img src={getDiscoverProfileDetails(selectedProfileUser.name, selectedProfileUser.role).banner} alt="Cover" className="w-full h-full object-cover" />
+                  <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, transparent 35%, rgba(255,254,250,0.9))' }} />
 
-              {/* ── Profile Info Card (overlaps banner) ── */}
-              <div
-                className="relative z-10 mx-4 -mt-10 rounded-2xl"
-                style={{ background: 'rgba(255,254,250,0.96)', border: '1px solid rgba(194,147,103,0.14)', boxShadow: '0 4px 24px rgba(61,45,39,0.07)' }}
-              >
-                {/* Top row: Avatar + Name/Role/Location + Follow */}
-                <div className="flex items-end gap-4 px-5 pt-4 pb-3">
-                  {/* Avatar */}
-                  <div className="relative shrink-0 -mt-10">
-                    <div
-                      className="h-20 w-20 rounded-full overflow-hidden border-4 shadow-md p-0.5"
-                      style={{ borderColor: '#FFFEFA', background: 'linear-gradient(45deg, #0552A2, #044080)' }}
-                    >
-                      <div className="h-full w-full rounded-full overflow-hidden bg-[#E2E8F0]">
-                        <img src={selectedProfileUser.avatar} alt={selectedProfileUser.name} className="h-full w-full object-cover" />
-                      </div>
-                    </div>
-                    <span
-                      className="absolute bottom-1 right-1 h-5 w-5 rounded-full flex items-center justify-center border text-[8px] font-black text-white"
-                      style={{ background: 'linear-gradient(135deg,#0552A2,#044080)', borderColor: '#FFFEFA' }}
-                      title="Verified Explorer"
-                    >✓</span>
-                  </div>
-
-                  {/* Name + Role + Location */}
-                  <div className="flex-1 min-w-0 pb-0.5">
-                    <h1 className="text-lg font-black text-[#17212B] tracking-tight leading-none">{selectedProfileUser.name}</h1>
-                    <span className="text-[8.5px] font-mono font-bold uppercase tracking-widest text-[#0552A2] mt-0.5 block">{selectedProfileUser.role}</span>
-                    {selectedProfileUser.location && (
-                      <span className="text-[8.5px] font-mono text-[#64748B] flex items-center gap-1 mt-1">
-                        <MapPin className="h-2.5 w-2.5 text-[#0552A2]" />
-                        {selectedProfileUser.location}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Follow Button */}
+                  {/* Back Button - top left inside banner */}
                   <button
-                    onClick={() => setIsFollowing(!isFollowing)}
-                    className="shrink-0 text-[9px] font-mono font-bold uppercase tracking-wider px-4 py-2 rounded-xl cursor-pointer transition-all active:scale-95 flex items-center gap-1.5 text-white"
-                    style={{ background: isFollowing ? 'linear-gradient(135deg, #475569, #5C463C)' : 'linear-gradient(135deg, #0552A2, #044080)' }}
+                    onClick={() => setSelectedProfileUser(null)}
+                    className="absolute top-4 left-4 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/80 backdrop-blur-md border border-[#92C4EA]/25 text-[9px] font-mono font-bold text-[#475569] hover:text-[#0552A2] hover:bg-white transition-all cursor-pointer active:scale-95 uppercase tracking-wider"
                   >
-                    {isFollowing ? <UserCheck className="h-3 w-3" /> : <UserPlus className="h-3 w-3" />}
-                    {isFollowing ? 'Following' : 'Follow'}
+                    <ArrowLeft className="h-3 w-3" />
+                    Back
+                  </button>
+
+                  {/* Share Button - top right inside banner */}
+                  <button
+                    onClick={() => {
+                      if (typeof window !== 'undefined') {
+                        const profileLink = `${window.location.origin}/user/${selectedProfileUser.userId || '048291'}`;
+                        navigator.clipboard.writeText(profileLink);
+                        setCopied(true);
+                        setTimeout(() => setCopied(false), 2000);
+                      }
+                    }}
+                    className="absolute top-4 right-4 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/80 backdrop-blur-md border border-[#92C4EA]/25 text-[9px] font-mono font-bold text-[#475569] hover:text-[#0552A2] hover:bg-white transition-all cursor-pointer active:scale-95 uppercase tracking-wider"
+                  >
+                    <Share2 className="h-3 w-3" />
+                    <span>{copied ? 'Copied! ✨' : 'Share'}</span>
                   </button>
                 </div>
 
-                {/* Divider */}
-                <div className="mx-5" style={{ height: '1px', background: 'rgba(194,147,103,0.12)' }} />
-
-                {/* Stats row */}
-                <div className="flex items-center gap-0 px-5 py-2.5">
-                  {[
-                    { label: 'Posts', value: String(feedPosts.filter(p => p.userName === selectedProfileUser.name).length) },
-                    { label: 'Followers', value: getDiscoverProfileDetails(selectedProfileUser.name, selectedProfileUser.role).followers },
-                    { label: 'Following', value: getDiscoverProfileDetails(selectedProfileUser.name, selectedProfileUser.role).following },
-                  ].map((s, i) => (
-                    <div key={s.label} className={`flex-1 text-center font-mono ${i < 2 ? 'border-r border-[#92C4EA]/20' : ''}`}>
-                      <span className="block text-sm font-black text-[#17212B]">{s.value}</span>
-                      <span className="block text-[7.5px] uppercase tracking-widest text-[#64748B]">{s.label}</span>
+                {/* ── Profile Info Card (overlaps banner) ── */}
+                <div
+                  className="relative z-10 mx-4 -mt-10 rounded-2xl"
+                  style={{ background: 'rgba(255,254,250,0.96)', border: '1px solid rgba(194,147,103,0.14)', boxShadow: '0 4px 24px rgba(61,45,39,0.07)' }}
+                >
+                  {/* Top row: Avatar + Name/Role/Location + Follow */}
+                  <div className="flex items-end gap-4 px-5 pt-4 pb-3">
+                    {/* Avatar */}
+                    <div className="relative shrink-0 -mt-10">
+                      <div
+                        className="h-20 w-20 rounded-full overflow-hidden border-4 shadow-md p-0.5"
+                        style={{ borderColor: '#FFFEFA', background: 'linear-gradient(45deg, #0552A2, #044080)' }}
+                      >
+                        <div className="h-full w-full rounded-full overflow-hidden bg-[#E2E8F0]">
+                          <img src={selectedProfileUser.avatar} alt={selectedProfileUser.name} className="h-full w-full object-cover" />
+                        </div>
+                      </div>
+                      <span
+                        className="absolute bottom-1 right-1 h-5 w-5 rounded-full flex items-center justify-center border text-[8px] font-black text-white"
+                        style={{ background: 'linear-gradient(135deg,#0552A2,#044080)', borderColor: '#FFFEFA' }}
+                        title="Verified Explorer"
+                      >✓</span>
                     </div>
-                  ))}
+
+                    {/* Name + Role + Location */}
+                    <div className="flex-1 min-w-0 pb-0.5">
+                      <h1 className="text-lg font-black text-[#17212B] tracking-tight leading-none">{selectedProfileUser.name}</h1>
+                      <span className="text-[8.5px] font-mono font-bold uppercase tracking-widest text-[#0552A2] mt-0.5 block">{selectedProfileUser.role}</span>
+                      {selectedProfileUser.location && (
+                        <span className="text-[8.5px] font-mono text-[#64748B] flex items-center gap-1 mt-1">
+                          <MapPin className="h-2.5 w-2.5 text-[#0552A2]" />
+                          {selectedProfileUser.location}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Follow Button */}
+                    <button
+                      onClick={() => setIsFollowing(!isFollowing)}
+                      className="shrink-0 text-[9px] font-mono font-bold uppercase tracking-wider px-4 py-2 rounded-xl cursor-pointer transition-all active:scale-95 flex items-center gap-1.5 text-white"
+                      style={{ background: isFollowing ? 'linear-gradient(135deg, #475569, #5C463C)' : 'linear-gradient(135deg, #0552A2, #044080)' }}
+                    >
+                      {isFollowing ? <UserCheck className="h-3 w-3" /> : <UserPlus className="h-3 w-3" />}
+                      {isFollowing ? 'Following' : 'Follow'}
+                    </button>
+                  </div>
+
+                  {/* Divider */}
+                  <div className="mx-5" style={{ height: '1px', background: 'rgba(194,147,103,0.12)' }} />
+
+                  {/* Stats row */}
+                  <div className="flex items-center gap-0 px-5 py-2.5">
+                    {[
+                      { label: 'Posts', value: String(feedPosts.filter(p => p.userName === selectedProfileUser.name).length) },
+                      { label: 'Followers', value: getDiscoverProfileDetails(selectedProfileUser.name, selectedProfileUser.role).followers },
+                      { label: 'Following', value: getDiscoverProfileDetails(selectedProfileUser.name, selectedProfileUser.role).following },
+                    ].map((s, i) => (
+                      <div key={s.label} className={`flex-1 text-center font-mono ${i < 2 ? 'border-r border-[#92C4EA]/20' : ''}`}>
+                        <span className="block text-sm font-black text-[#17212B]">{s.value}</span>
+                        <span className="block text-[7.5px] uppercase tracking-widest text-[#64748B]">{s.label}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Divider */}
+                  <div className="mx-5" style={{ height: '1px', background: 'rgba(194,147,103,0.12)' }} />
+
+                  {/* Bio */}
+                  <p className="px-5 py-3 text-[11px] text-[#475569] leading-relaxed">
+                    {getDiscoverProfileDetails(selectedProfileUser.name, selectedProfileUser.role).bio}
+                  </p>
                 </div>
 
-                {/* Divider */}
-                <div className="mx-5" style={{ height: '1px', background: 'rgba(194,147,103,0.12)' }} />
+                {/* Elegant Tab Buttons */}
+                <div className="mt-4 mb-3 flex p-1 rounded-xl font-mono"
+                  style={{ background: 'rgba(194,147,103,0.05)', border: '1px solid rgba(194,147,103,0.12)' }}>
+                  {[
+                    { id: 'posts', label: 'Chronicles', icon: ClipboardList },
+                    { id: 'trips', label: 'Past Trips', icon: Compass },
+                    { id: 'gallery', label: 'Gallery', icon: Camera },
+                    { id: 'gear', label: 'Gear & Bio', icon: Activity },
+                  ].map(tab => {
+                    const IconComponent = tab.icon;
+                    const isActive = activeProfileTab === tab.id;
+                    return (
+                      <button
+                        key={tab.id}
+                        onClick={() => setActiveProfileTab(tab.id as any)}
+                        className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[9px] font-bold uppercase tracking-wider transition-all cursor-pointer ${isActive
+                            ? 'bg-white text-[#0552A2] shadow-xs scale-102 font-black'
+                            : 'text-[#8C766C] hover:text-[#5C463C]'
+                          }`}
+                      >
+                        <IconComponent className="h-3 w-3 shrink-0" />
+                        <span className="hidden sm:inline">{tab.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
 
-                {/* Bio */}
-                <p className="px-5 py-3 text-[11px] text-[#475569] leading-relaxed">
-                  {getDiscoverProfileDetails(selectedProfileUser.name, selectedProfileUser.role).bio}
-                </p>
-              </div>
-
-              {/* Elegant Tab Buttons */}
-              <div className="mt-4 mb-3 flex p-1 rounded-xl font-mono"
-                style={{ background: 'rgba(194,147,103,0.05)', border: '1px solid rgba(194,147,103,0.12)' }}>
-                {[
-                  { id: 'posts', label: 'Chronicles', icon: ClipboardList },
-                  { id: 'trips', label: 'Past Trips', icon: Compass },
-                  { id: 'gallery', label: 'Gallery', icon: Camera },
-                  { id: 'gear', label: 'Gear & Bio', icon: Activity },
-                ].map(tab => {
-                  const IconComponent = tab.icon;
-                  const isActive = activeProfileTab === tab.id;
-                  return (
-                    <button
-                      key={tab.id}
-                      onClick={() => setActiveProfileTab(tab.id as any)}
-                      className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[9px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                        isActive 
-                          ? 'bg-white text-[#0552A2] shadow-xs scale-102 font-black' 
-                          : 'text-[#8C766C] hover:text-[#5C463C]'
-                      }`}
+                {/* TAB CONTENT */}
+                <AnimatePresence mode="wait">
+                  {activeProfileTab === 'posts' && (
+                    <motion.div
+                      key="posts"
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -12 }}
+                      transition={{ duration: 0.25 }}
+                      className="flex flex-col gap-6"
                     >
-                      <IconComponent className="h-3 w-3 shrink-0" />
-                      <span className="hidden sm:inline">{tab.label}</span>
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* TAB CONTENT */}
-              <AnimatePresence mode="wait">
-                {activeProfileTab === 'posts' && (
-                  <motion.div
-                    key="posts"
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -12 }}
-                    transition={{ duration: 0.25 }}
-                    className="flex flex-col gap-6"
-                  >
-                    {feedPosts.filter(p => p.userName === selectedProfileUser.name).length === 0 ? (
-                      <div className="text-center py-12 bg-white border border-slate-200/90 rounded-2xl shadow-xs">
-                        <p className="text-xs font-mono text-[#64748B]">No chronicles published yet by this traveler.</p>
-                      </div>
-                    ) : (
-                      feedPosts
-                        .filter((post) => post.userName === selectedProfileUser.name)
-                        .map((post) => (
-                          <div 
-                            key={post.id}
-                            className="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden hover:border-[#0552A2]/30 transition-all duration-300 flex flex-col text-left"
-                          >
-                            {/* Post Header */}
-                            <div className="flex items-center justify-between p-4.5 pb-2">
-                              <div className="flex items-center gap-3">
-                                <div className="h-9 w-9 rounded-full overflow-hidden border border-slate-200 bg-slate-100">
-                                  <img src={post.userAvatar} alt={post.userName} className="h-full w-full object-cover" />
-                                </div>
-                                <div>
-                                  <h4 className="text-xs font-bold text-[#17212B]">{post.userName}</h4>
-                                  <div className="flex items-center gap-1.5 mt-0.5">
-                                    <span className="text-[8px] font-mono text-[#0552A2] font-bold uppercase tracking-wider">{post.userRole}</span>
-                                    {post.location && (
-                                      <>
-                                        <span className="text-[#64748B] text-[8px]">•</span>
-                                        <span className="text-[8px] font-mono text-[#475569] flex items-center gap-0.5">
-                                          <svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2a8 8 0 00-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 00-8-8z" /><circle cx="12" cy="10" r="3" /></svg>
-                                          {post.location}
-                                        </span>
-                                      </>
-                                    )}
+                      {feedPosts.filter(p => p.userName === selectedProfileUser.name).length === 0 ? (
+                        <div className="text-center py-12 bg-white border border-slate-200/90 rounded-2xl shadow-xs">
+                          <p className="text-xs font-mono text-[#64748B]">No chronicles published yet by this traveler.</p>
+                        </div>
+                      ) : (
+                        feedPosts
+                          .filter((post) => post.userName === selectedProfileUser.name)
+                          .map((post) => (
+                            <div
+                              key={post.id}
+                              className="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden hover:border-[#0552A2]/30 transition-all duration-300 flex flex-col text-left"
+                            >
+                              {/* Post Header */}
+                              <div className="flex items-center justify-between p-4.5 pb-2">
+                                <div className="flex items-center gap-3">
+                                  <div className="h-9 w-9 rounded-full overflow-hidden border border-slate-200 bg-slate-100">
+                                    <img src={post.userAvatar} alt={post.userName} className="h-full w-full object-cover" />
+                                  </div>
+                                  <div>
+                                    <h4 className="text-xs font-bold text-[#17212B]">{post.userName}</h4>
+                                    <div className="flex items-center gap-1.5 mt-0.5">
+                                      <span className="text-[8px] font-mono text-[#0552A2] font-bold uppercase tracking-wider">{post.userRole}</span>
+                                      {post.location && (
+                                        <>
+                                          <span className="text-[#64748B] text-[8px]">•</span>
+                                          <span className="text-[8px] font-mono text-[#475569] flex items-center gap-0.5">
+                                            <svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2a8 8 0 00-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 00-8-8z" /><circle cx="12" cy="10" r="3" /></svg>
+                                            {post.location}
+                                          </span>
+                                        </>
+                                      )}
+                                    </div>
                                   </div>
                                 </div>
+                                <span className="text-[8px] font-mono text-[#64748B]">{post.timestamp}</span>
                               </div>
-                              <span className="text-[8px] font-mono text-[#64748B]">{post.timestamp}</span>
-                            </div>
 
-                            {/* Post Content */}
-                            <p className="px-4.5 py-2 text-[11px] text-[#475569] leading-relaxed text-left">
-                              {post.content}
-                            </p>
+                              {/* Post Content */}
+                              <p className="px-4.5 py-2 text-[11px] text-[#475569] leading-relaxed text-left">
+                                {post.content}
+                              </p>
 
-                            {/* Post Image */}
-                            {post.image && (
-                              <div className="w-full overflow-hidden border-y border-slate-100 max-h-72">
-                                <img src={post.image} alt="Chronicle scene" className="w-full object-cover max-h-72" />
-                              </div>
-                            )}
+                              {/* Post Image */}
+                              {post.image && (
+                                <div className="w-full overflow-hidden border-y border-slate-100 max-h-72">
+                                  <img src={post.image} alt="Chronicle scene" className="w-full object-cover max-h-72" />
+                                </div>
+                              )}
 
-                            {/* Post Interactive Actions */}
-                            <div className="flex items-center gap-4 px-4.5 py-3 border-t border-slate-100 mt-1">
-                              <button
-                                onClick={() => likeFeedPost(post.id)}
-                                className={`flex items-center gap-1.5 text-[10px] font-medium transition-colors cursor-pointer ${post.likedByUser ? 'text-pink-500' : 'text-[#475569] hover:text-pink-500'}`}
-                              >
-                                <svg viewBox="0 0 24 24" width="13" height="13" fill={post.likedByUser ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" /></svg>
-                                <span className="font-mono">{post.likes}</span>
-                              </button>
-
-                              <button
-                                onClick={() => setActiveCommentPostId(activeCommentPostId === post.id ? null : post.id)}
-                                className="flex items-center gap-1.5 text-[10px] font-medium text-[#475569] hover:text-[#0552A2] transition-colors cursor-pointer"
-                              >
-                                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
-                                <span className="font-mono">{post.comments.length}</span>
-                              </button>
-                            </div>
-
-                            {/* Comment Stream */}
-                            {post.comments.length > 0 && (
-                              <div className="px-4.5 pb-3 pt-1 border-t border-slate-100 flex flex-col gap-2">
-                                {post.comments.map((comment) => (
-                                  <div key={comment.id} className="flex items-start gap-2 text-left">
-                                    <div 
-                                      onClick={() => handleCommenterClick(comment.userName)}
-                                      className="h-5 w-5 rounded-full overflow-hidden border border-slate-200 bg-slate-100 shrink-0 flex items-center justify-center text-[#0552A2] cursor-pointer hover:scale-95 transition-transform"
-                                    >
-                                      <User className="h-2.5 w-2.5 text-[#0552A2]" />
-                                    </div>
-                                    <div className="flex-1 bg-slate-50 rounded-xl px-3 py-1.5 border border-slate-200">
-                                      <span 
-                                        onClick={() => handleCommenterClick(comment.userName)}
-                                        className="text-[10px] font-bold text-[#17212B] cursor-pointer hover:text-[#0552A2] hover:underline transition-colors block"
-                                      >
-                                        {comment.userName}
-                                      </span>
-                                      <p className="text-[10px] text-[#475569] mt-0.5 leading-relaxed">{comment.text}</p>
-                                    </div>
-                                    <span className="text-[7px] font-mono text-[#64748B] self-end mb-1 shrink-0">{comment.timestamp}</span>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-
-                            {/* Interactive Comment Input */}
-                            {activeCommentPostId === post.id && (
-                              <div className="px-4.5 pb-4.5 pt-2 border-t border-[#92C4EA]/10 flex gap-2">
-                                <input
-                                  value={commentInputs[post.id] || ''}
-                                  onChange={(e) => setCommentInputs(prev => ({ ...prev, [post.id]: e.target.value }))}
-                                  onKeyDown={(e) => {
-                                    if (e.key === 'Enter' && commentInputs[post.id]?.trim()) {
-                                      addFeedComment(post.id, commentInputs[post.id]);
-                                      setCommentInputs(prev => ({ ...prev, [post.id]: '' }));
-                                    }
-                                  }}
-                                  placeholder="Write a comment... (Press Enter)"
-                                  className="flex-1 bg-white border border-[#92C4EA]/35 focus:border-[#0552A2]/45 rounded-xl px-3.5 py-2 text-[10px] text-[#17212B] placeholder-[#64748B]/60 focus:outline-none"
-                                />
+                              {/* Post Interactive Actions */}
+                              <div className="flex items-center gap-4 px-4.5 py-3 border-t border-slate-100 mt-1">
                                 <button
-                                  onClick={() => {
-                                    if (commentInputs[post.id]?.trim()) {
-                                      addFeedComment(post.id, commentInputs[post.id]);
-                                      setCommentInputs(prev => ({ ...prev, [post.id]: '' }));
-                                    }
-                                  }}
-                                  style={{ background: 'linear-gradient(135deg, #0552A2 0%, #044080 100%)' }}
-                                  className="h-7 w-7 rounded-xl flex items-center justify-center text-white cursor-pointer active:scale-95 transition-all"
+                                  onClick={() => likeFeedPost(post.id)}
+                                  className={`flex items-center gap-1.5 text-[10px] font-medium transition-colors cursor-pointer ${post.likedByUser ? 'text-pink-500' : 'text-[#475569] hover:text-pink-500'}`}
                                 >
-                                  <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" /></svg>
+                                  <svg viewBox="0 0 24 24" width="13" height="13" fill={post.likedByUser ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" /></svg>
+                                  <span className="font-mono">{post.likes}</span>
+                                </button>
+
+                                <button
+                                  onClick={() => setActiveCommentPostId(activeCommentPostId === post.id ? null : post.id)}
+                                  className="flex items-center gap-1.5 text-[10px] font-medium text-[#475569] hover:text-[#0552A2] transition-colors cursor-pointer"
+                                >
+                                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
+                                  <span className="font-mono">{post.comments.length}</span>
                                 </button>
                               </div>
-                            )}
-                          </div>
-                        ))
-                    )}
-                  </motion.div>
-                )}
 
-                {activeProfileTab === 'trips' && (
-                  <motion.div
-                    key="trips"
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -12 }}
-                    transition={{ duration: 0.25 }}
-                    className="flex flex-col gap-5 text-left"
-                  >
-                    {getDiscoverProfileDetails(selectedProfileUser.name, selectedProfileUser.role).pastTrips.map((trip: any, idx: number) => (
-                      <div 
-                        key={idx}
-                        className="bg-white/80 border border-[#92C4EA]/25 rounded-2xl p-4.5 flex flex-col md:flex-row gap-4 hover:border-[#0552A2]/30 transition-colors shadow-sm"
-                      >
-                        <img src={trip.image} alt={trip.title} className="w-full md:w-36 h-24 object-cover rounded-xl border border-[#92C4EA]/20 shrink-0" />
-                        <div className="flex-1 flex flex-col justify-center gap-1.5">
-                          <div className="flex items-center gap-2">
-                            <span className="text-[8px] font-mono font-bold text-white bg-[#0552A2] px-2 py-0.5 rounded uppercase tracking-wider">
-                              {trip.date}
-                            </span>
-                            <span className="text-[9px] font-mono text-[#64748B]">{trip.elevation} • {trip.region}</span>
-                          </div>
-                          <h3 className="text-sm font-black text-[#17212B] mt-1">{trip.title}</h3>
-                          <p className="text-[11px] text-[#475569] leading-relaxed">{trip.description}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </motion.div>
-                )}
+                              {/* Comment Stream */}
+                              {post.comments.length > 0 && (
+                                <div className="px-4.5 pb-3 pt-1 border-t border-slate-100 flex flex-col gap-2">
+                                  {post.comments.map((comment) => (
+                                    <div key={comment.id} className="flex items-start gap-2 text-left">
+                                      <div
+                                        onClick={() => handleCommenterClick(comment.userName)}
+                                        className="h-5 w-5 rounded-full overflow-hidden border border-slate-200 bg-slate-100 shrink-0 flex items-center justify-center text-[#0552A2] cursor-pointer hover:scale-95 transition-transform"
+                                      >
+                                        <User className="h-2.5 w-2.5 text-[#0552A2]" />
+                                      </div>
+                                      <div className="flex-1 bg-slate-50 rounded-xl px-3 py-1.5 border border-slate-200">
+                                        <span
+                                          onClick={() => handleCommenterClick(comment.userName)}
+                                          className="text-[10px] font-bold text-[#17212B] cursor-pointer hover:text-[#0552A2] hover:underline transition-colors block"
+                                        >
+                                          {comment.userName}
+                                        </span>
+                                        <p className="text-[10px] text-[#475569] mt-0.5 leading-relaxed">{comment.text}</p>
+                                      </div>
+                                      <span className="text-[7px] font-mono text-[#64748B] self-end mb-1 shrink-0">{comment.timestamp}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
 
-                {activeProfileTab === 'gallery' && (
-                  <motion.div
-                    key="gallery"
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -12 }}
-                    transition={{ duration: 0.25 }}
-                    className="grid grid-cols-2 sm:grid-cols-3 gap-3"
-                  >
-                    {getDiscoverProfileDetails(selectedProfileUser.name, selectedProfileUser.role).gallery.map((imgUrl: string, idx: number) => (
-                      <motion.div
-                        key={idx}
-                        whileHover={{ scale: 1.02 }}
-                        className="relative aspect-square rounded-2xl overflow-hidden border border-[#0552A2]/15 bg-[#F8FAFC] shadow-xs cursor-pointer group"
-                      >
-                        <img src={imgUrl} alt={`Gallery capture ${idx + 1}`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                          <span className="text-white text-[10px] font-mono tracking-widest font-black uppercase">Vibe · 100%</span>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </motion.div>
-                )}
+                              {/* Interactive Comment Input */}
+                              {activeCommentPostId === post.id && (
+                                <div className="px-4.5 pb-4.5 pt-2 border-t border-[#92C4EA]/10 flex gap-2">
+                                  <input
+                                    value={commentInputs[post.id] || ''}
+                                    onChange={(e) => setCommentInputs(prev => ({ ...prev, [post.id]: e.target.value }))}
+                                    onKeyDown={(e) => {
+                                      if (e.key === 'Enter' && commentInputs[post.id]?.trim()) {
+                                        addFeedComment(post.id, commentInputs[post.id]);
+                                        setCommentInputs(prev => ({ ...prev, [post.id]: '' }));
+                                      }
+                                    }}
+                                    placeholder="Write a comment... (Press Enter)"
+                                    className="flex-1 bg-white border border-[#92C4EA]/35 focus:border-[#0552A2]/45 rounded-xl px-3.5 py-2 text-[10px] text-[#17212B] placeholder-[#64748B]/60 focus:outline-none"
+                                  />
+                                  <button
+                                    onClick={() => {
+                                      if (commentInputs[post.id]?.trim()) {
+                                        addFeedComment(post.id, commentInputs[post.id]);
+                                        setCommentInputs(prev => ({ ...prev, [post.id]: '' }));
+                                      }
+                                    }}
+                                    style={{ background: 'linear-gradient(135deg, #0552A2 0%, #044080 100%)' }}
+                                    className="h-7 w-7 rounded-xl flex items-center justify-center text-white cursor-pointer active:scale-95 transition-all"
+                                  >
+                                    <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" /></svg>
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+                          ))
+                      )}
+                    </motion.div>
+                  )}
 
-                {activeProfileTab === 'gear' && (
-                  <motion.div
-                    key="gear"
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -12 }}
-                    transition={{ duration: 0.25 }}
-                    className="flex flex-col gap-6 text-left"
-                  >
-                    <div className="bg-white/80 border border-[#0552A2]/15 rounded-2xl p-5 shadow-xs">
-                      <h3 className="text-xs font-mono font-bold uppercase text-[#0552A2] tracking-wider mb-2.5">Traveler Bio & Vision</h3>
-                      <p className="text-[11px] text-[#475569] leading-relaxed">
-                        Dedicated Himalayan pathfinder. Believes in soft ecological footprints, supporting local sherpa economies, and preserving the deep historical artifacts and oral histories of the high valleys. Currently mapping remote tea houses and tracking microclimate shifts above 3,500m.
-                      </p>
-                    </div>
-
-                    <div className="bg-white/80 border border-[#0552A2]/15 rounded-2xl p-5 shadow-xs flex flex-col gap-3">
-                      <h3 className="text-xs font-mono font-bold uppercase text-[#0552A2] tracking-wider mb-1">Calibrated Gear Pack</h3>
-                      {getDiscoverProfileDetails(selectedProfileUser.name, selectedProfileUser.role).gear.map((g: any, idx: number) => (
-                        <div key={idx} className="flex gap-3 items-start border-b border-[#F8FAFC] pb-2.5 last:border-0 last:pb-0">
-                          <div className="h-6 w-6 rounded-lg bg-blue-50 border border-[#0552A2]/20 flex items-center justify-center text-[11px] font-bold text-[#0552A2] mt-0.5 font-mono shrink-0">
-                            0{idx + 1}
-                          </div>
-                          <div>
-                            <h4 className="text-[11px] font-bold text-[#17212B]">{g.name}</h4>
-                            <p className="text-[10px] text-[#64748B] mt-0.5 leading-normal">{g.desc}</p>
+                  {activeProfileTab === 'trips' && (
+                    <motion.div
+                      key="trips"
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -12 }}
+                      transition={{ duration: 0.25 }}
+                      className="flex flex-col gap-5 text-left"
+                    >
+                      {getDiscoverProfileDetails(selectedProfileUser.name, selectedProfileUser.role).pastTrips.map((trip: any, idx: number) => (
+                        <div
+                          key={idx}
+                          className="bg-white/80 border border-[#92C4EA]/25 rounded-2xl p-4.5 flex flex-col md:flex-row gap-4 hover:border-[#0552A2]/30 transition-colors shadow-sm"
+                        >
+                          <img src={trip.image} alt={trip.title} className="w-full md:w-36 h-24 object-cover rounded-xl border border-[#92C4EA]/20 shrink-0" />
+                          <div className="flex-1 flex flex-col justify-center gap-1.5">
+                            <div className="flex items-center gap-2">
+                              <span className="text-[8px] font-mono font-bold text-white bg-[#0552A2] px-2 py-0.5 rounded uppercase tracking-wider">
+                                {trip.date}
+                              </span>
+                              <span className="text-[9px] font-mono text-[#64748B]">{trip.elevation} • {trip.region}</span>
+                            </div>
+                            <h3 className="text-sm font-black text-[#17212B] mt-1">{trip.title}</h3>
+                            <p className="text-[11px] text-[#475569] leading-relaxed">{trip.description}</p>
                           </div>
                         </div>
                       ))}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          ) : (
-            <div className="flex flex-col gap-8 max-w-[1440px] w-full mx-auto py-4">
-              <motion.div variants={itemVariants} className="flex flex-col gap-3">
-                <span className="text-[10px] font-mono font-bold tracking-widest text-[#0552A2] uppercase">
-                  Welcome to Nepal
-                </span>
-                <h1 className="text-3xl md:text-5xl font-black text-[#17212B] tracking-tight leading-tight">
-                  An Oasis of <br />
-                  Natural & Spiritual Wonder.
-                </h1>
-                <p className="text-sm text-[#475569] max-w-xl leading-relaxed">
-                  Discover a land where giant snow peaks meet sub-tropical forests, and centuries of preserved culture blend into a soft, welcoming sanctuary.
-                </p>
-              </motion.div>
+                    </motion.div>
+                  )}
 
-              {/* Featured Hero Card / Selected Profile Display */}
-              <motion.div
-                variants={itemVariants}
-                className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-slate-900 aspect-video md:aspect-[21/9]"
-              >
-                <img
-                  src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=1200&auto=format&fit=crop"
-                  alt="Himalayan Peak"
-                  className="w-full h-full object-cover opacity-90 transition-transform duration-700 hover:scale-102"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#17212B]/90 via-transparent to-transparent flex flex-col justify-end p-6 md:p-8">
-                  <span className="text-[9px] font-mono font-bold uppercase text-[#92C4EA] tracking-widest">Featured Expedition</span>
-                  <h2 className="text-xl md:text-2xl font-bold text-white mt-1">Sagarmatha Everest National Park</h2>
-                  <p className="text-xs text-white/80 mt-1.5 max-w-lg leading-relaxed">
-                    Embark on an adventure of a lifetime through giant mountains, glacier bridges, and Sherpa villages.
-                  </p>
-                </div>
-              </motion.div>
+                  {activeProfileTab === 'gallery' && (
+                    <motion.div
+                      key="gallery"
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -12 }}
+                      transition={{ duration: 0.25 }}
+                      className="grid grid-cols-2 sm:grid-cols-3 gap-3"
+                    >
+                      {getDiscoverProfileDetails(selectedProfileUser.name, selectedProfileUser.role).gallery.map((imgUrl: string, idx: number) => (
+                        <motion.div
+                          key={idx}
+                          whileHover={{ scale: 1.02 }}
+                          className="relative aspect-square rounded-2xl overflow-hidden border border-[#0552A2]/15 bg-[#F8FAFC] shadow-xs cursor-pointer group"
+                        >
+                          <img src={imgUrl} alt={`Gallery capture ${idx + 1}`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                          <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <span className="text-white text-[10px] font-mono tracking-widest font-black uppercase">Vibe · 100%</span>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </motion.div>
+                  )}
 
-              {/* Quick Info Grid */}
-              <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-                <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-xs flex flex-col gap-2 text-left">
-                  <span className="text-[10px] font-mono font-bold text-[#0552A2] uppercase">01 / Altitudes</span>
-                  <h3 className="text-sm font-bold text-[#17212B]">8,848m Peak</h3>
-                  <p className="text-xs text-[#475569] leading-relaxed">Mount Everest rules the skyline along with seven other 8,000m+ giants.</p>
-                </div>
-                <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-xs flex flex-col gap-2 text-left">
-                  <span className="text-[10px] font-mono font-bold text-[#0552A2] uppercase">02 / Biodiversity</span>
-                  <h3 className="text-sm font-bold text-[#17212B]">Subtropical to Arctic</h3>
-                  <p className="text-xs text-[#475569] leading-relaxed">Explore habitats ranging from wild tiger sanctuaries to thin, freezing glaciers.</p>
-                </div>
-                <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-xs flex flex-col gap-2 text-left">
-                  <span className="text-[10px] font-mono font-bold text-[#0552A2] uppercase">03 / Sanctuary</span>
-                  <h3 className="text-sm font-bold text-[#17212B]">Zen & Hospitality</h3>
-                  <p className="text-xs text-[#475569] leading-relaxed">Rest in premium eco-resorts and authentic homestays rooted in ancient warmth.</p>
-                </div>
-              </motion.div>
+                  {activeProfileTab === 'gear' && (
+                    <motion.div
+                      key="gear"
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -12 }}
+                      transition={{ duration: 0.25 }}
+                      className="flex flex-col gap-6 text-left"
+                    >
+                      <div className="bg-white/80 border border-[#0552A2]/15 rounded-2xl p-5 shadow-xs">
+                        <h3 className="text-xs font-mono font-bold uppercase text-[#0552A2] tracking-wider mb-2.5">Traveler Bio & Vision</h3>
+                        <p className="text-[11px] text-[#475569] leading-relaxed">
+                          Dedicated Himalayan pathfinder. Believes in soft ecological footprints, supporting local sherpa economies, and preserving the deep historical artifacts and oral histories of the high valleys. Currently mapping remote tea houses and tracking microclimate shifts above 3,500m.
+                        </p>
+                      </div>
 
-              {/* ── COMMUNITY TRAVEL DIARIES ── */}
-              <motion.div variants={itemVariants} className="flex flex-col gap-6 mt-4">
-                <div className="flex flex-col gap-1 border-b border-slate-200/80 pb-3 text-left">
-                  <span className="text-[10px] font-mono font-bold tracking-widest text-[#0552A2] uppercase">
-                    Traveler Diaries
-                  </span>
-                  <h2 className="text-xl font-bold tracking-tight text-[#17212B]">Community Chronicles</h2>
-                  <p className="text-xs text-[#475569]">Share your journeys and check out live updates from fellow adventurers in Nepal.</p>
-                </div>
-
-                {/* Premium Post Composer */}
-                <div
-                  className="rounded-2xl p-4 sm:p-5 flex flex-col gap-4 bg-white border border-slate-200/90 shadow-xs"
-                >
-                  {/* Text Input Area */}
-                  <div className="flex gap-3">
-                    <div className="h-9 w-9 rounded-full overflow-hidden border-2 border-[#0552A2]/20 flex-shrink-0 bg-slate-100 flex items-center justify-center">
-                      {currentUser?.avatar ? (
-                        <img src={currentUser.avatar} alt={currentUser.name} className="h-full w-full object-cover" />
-                      ) : (
-                        <User className="h-4 w-4 text-[#0552A2]" />
-                      )}
-                    </div>
-                    <textarea
-                      value={postContent}
-                      onChange={(e) => setPostContent(e.target.value)}
-                      placeholder="Share your Nepal chronicle... what mountains did you gaze at today?"
-                      rows={3}
-                      className="flex-1 bg-slate-50/70 border border-slate-200 focus:border-[#0552A2]/50 focus:bg-white rounded-xl px-4 py-3 text-[11px] text-[#17212B] placeholder-slate-400 focus:outline-none resize-none font-sans leading-relaxed transition-all shadow-2xs"
-                    />
-                  </div>
-
-                  {/* Photo selector section */}
-                  <div className="flex flex-col gap-2.5">
-                    {imageSelectorOpen && (
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3.5 bg-slate-50 rounded-xl border border-slate-200 animate-in fade-in duration-200">
-                        {MOCK_PHOTOS.map((photo) => (
-                          <div
-                            key={photo.name}
-                            onClick={() => {
-                              setSelectedImage(photo.url);
-                              setImageSelectorOpen(false);
-                            }}
-                            className={`relative rounded-lg overflow-hidden aspect-video cursor-pointer border-2 transition-all ${selectedImage === photo.url ? 'border-[#0552A2] scale-98 shadow-sm' : 'border-transparent opacity-70 hover:opacity-100'}`}
-                          >
-                            <img src={photo.url} alt={photo.name} className="h-full w-full object-cover" />
-                            <div className="absolute inset-0 bg-black/25 flex items-end justify-center p-1">
-                              <span className="text-[7px] text-white font-mono truncate">{photo.name}</span>
+                      <div className="bg-white/80 border border-[#0552A2]/15 rounded-2xl p-5 shadow-xs flex flex-col gap-3">
+                        <h3 className="text-xs font-mono font-bold uppercase text-[#0552A2] tracking-wider mb-1">Calibrated Gear Pack</h3>
+                        {getDiscoverProfileDetails(selectedProfileUser.name, selectedProfileUser.role).gear.map((g: any, idx: number) => (
+                          <div key={idx} className="flex gap-3 items-start border-b border-[#F8FAFC] pb-2.5 last:border-0 last:pb-0">
+                            <div className="h-6 w-6 rounded-lg bg-blue-50 border border-[#0552A2]/20 flex items-center justify-center text-[11px] font-bold text-[#0552A2] mt-0.5 font-mono shrink-0">
+                              0{idx + 1}
+                            </div>
+                            <div>
+                              <h4 className="text-[11px] font-bold text-[#17212B]">{g.name}</h4>
+                              <p className="text-[10px] text-[#64748B] mt-0.5 leading-normal">{g.desc}</p>
                             </div>
                           </div>
                         ))}
-                        <div
-                          onClick={() => {
-                            setSelectedImage('');
-                            setImageSelectorOpen(false);
-                          }}
-                          style={{ border: '1px dashed rgba(194,147,103,0.4)' }}
-                          className="rounded-lg aspect-video cursor-pointer hover:bg-[#F2F8FD]/50 flex flex-col items-center justify-center text-[8px] font-mono text-[#64748B]"
-                        >
-                          No Photo
-                        </div>
-                        {/* Custom upload button */}
-                        <button 
-                          onClick={() => fileInputRef.current?.click()}
-                          className="aspect-video rounded-lg border-2 border-dashed border-[#92C4EA]/40 hover:border-[#0552A2]/40 flex flex-col items-center justify-center gap-1 text-[8px] font-mono text-[#64748B] hover:text-[#17212B] cursor-pointer transition-all"
-                        >
-                          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                          <span>Upload</span>
-                        </button>
-                        <input 
-                          type="file" 
-                          ref={fileInputRef} 
-                          onChange={handleFileChange} 
-                          accept="image/*" 
-                          className="hidden" 
-                        />
                       </div>
-                    )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-8 max-w-[1440px] w-full mx-auto py-4">
+                <motion.div variants={itemVariants} className="flex flex-col gap-3">
+                  <span className="text-[10px] font-mono font-bold tracking-widest text-[#0552A2] uppercase">
+                    Welcome to Nepal
+                  </span>
+                  <h1 className="text-3xl md:text-5xl font-black text-[#17212B] tracking-tight leading-tight">
+                    An Oasis of <br />
+                    Natural & Spiritual Wonder.
+                  </h1>
+                  <p className="text-sm text-[#475569] max-w-xl leading-relaxed">
+                    Discover a land where giant snow peaks meet sub-tropical forests, and centuries of preserved culture blend into a soft, welcoming sanctuary.
+                  </p>
+                </motion.div>
+
+                {/* Featured Hero Card / Selected Profile Display */}
+                <motion.div
+                  variants={itemVariants}
+                  className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-slate-900 aspect-video md:aspect-[21/9]"
+                >
+                  <img
+                    src="/pictures/everest_(1)-1624869402.jpg"
+                    alt="Himalayan Peak"
+                    className="w-full h-full object-cover opacity-90 transition-transform duration-700 hover:scale-102"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#17212B]/90 via-transparent to-transparent flex flex-col justify-end p-6 md:p-8">
+                    <span className="text-[9px] font-mono font-bold uppercase text-[#92C4EA] tracking-widest">Featured Expedition</span>
+                    <h2 className="text-xl md:text-2xl font-bold text-white mt-1">Sagarmatha Everest National Park</h2>
+                    <p className="text-xs text-white/80 mt-1.5 max-w-lg leading-relaxed">
+                      Embark on an adventure of a lifetime through giant mountains, glacier bridges, and Sherpa villages.
+                    </p>
+                  </div>
+                </motion.div>
+
+                {/* Quick Info Grid */}
+                <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+                  <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-xs flex flex-col gap-2 text-left">
+                    <span className="text-[10px] font-mono font-bold text-[#0552A2] uppercase">01 / Altitudes</span>
+                    <h3 className="text-sm font-bold text-[#17212B]">8,848m Peak</h3>
+                    <p className="text-xs text-[#475569] leading-relaxed">Mount Everest rules the skyline along with seven other 8,000m+ giants.</p>
+                  </div>
+                  <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-xs flex flex-col gap-2 text-left">
+                    <span className="text-[10px] font-mono font-bold text-[#0552A2] uppercase">02 / Biodiversity</span>
+                    <h3 className="text-sm font-bold text-[#17212B]">Subtropical to Arctic</h3>
+                    <p className="text-xs text-[#475569] leading-relaxed">Explore habitats ranging from wild tiger sanctuaries to thin, freezing glaciers.</p>
+                  </div>
+                  <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-xs flex flex-col gap-2 text-left">
+                    <span className="text-[10px] font-mono font-bold text-[#0552A2] uppercase">03 / Sanctuary</span>
+                    <h3 className="text-sm font-bold text-[#17212B]">Zen & Hospitality</h3>
+                    <p className="text-xs text-[#475569] leading-relaxed">Rest in premium eco-resorts and authentic homestays rooted in ancient warmth.</p>
+                  </div>
+                </motion.div>
+
+                {/* ── COMMUNITY TRAVEL DIARIES ── */}
+                <motion.div variants={itemVariants} className="flex flex-col gap-6 mt-4">
+                  <div className="flex flex-col gap-1 border-b border-slate-200/80 pb-3 text-left">
+                    <span className="text-[10px] font-mono font-bold tracking-widest text-[#0552A2] uppercase">
+                      Traveler Diaries
+                    </span>
+                    <h2 className="text-xl font-bold tracking-tight text-[#17212B]">Community Chronicles</h2>
+                    <p className="text-xs text-[#475569]">Share your journeys and check out live updates from fellow adventurers in Nepal.</p>
                   </div>
 
-                  {/* Action Toolbar */}
-                  <div className="flex items-center justify-between border-t border-[#92C4EA]/12 pt-3">
-                    <div className="flex items-center gap-3">
-                      <button 
-                        onClick={() => setImageSelectorOpen(!imageSelectorOpen)}
-                        style={{ background: 'rgba(194,147,103,0.06)', border: '1px solid rgba(194,147,103,0.18)' }}
-                        className="flex items-center gap-1.5 text-[9px] font-semibold text-[#0552A2] hover:text-white px-3 py-1.5 rounded-lg hover:bg-[#0552A2] active:scale-95 transition-all cursor-pointer"
-                      >
-                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                        <span>Photo</span>
-                      </button>
-
-                      <div className="relative flex items-center">
-                        <span className="absolute left-2.5 text-[#64748B] pointer-events-none opacity-80">
-                          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M12 2a8 8 0 00-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 00-8-8z"/><circle cx="12" cy="10" r="3"/></svg>
-                        </span>
-                        <input
-                          type="text"
-                          value={postLocation}
-                          onChange={(e) => setPostLocation(e.target.value)}
-                          placeholder="Add location..."
-                          className="bg-slate-50 border border-slate-200 rounded-lg pl-6 pr-2.5 py-1.5 text-[9px] text-[#17212B] placeholder-slate-400 focus:outline-none focus:border-[#0552A2]/50 focus:bg-white transition-all font-sans"
-                        />
+                  {/* Premium Post Composer */}
+                  <div
+                    className="rounded-2xl p-4 sm:p-5 flex flex-col gap-4 bg-white border border-slate-200/90 shadow-xs"
+                  >
+                    {/* Text Input Area */}
+                    <div className="flex gap-3">
+                      <div className="h-9 w-9 rounded-full overflow-hidden border-2 border-[#0552A2]/20 flex-shrink-0 bg-slate-100 flex items-center justify-center">
+                        {currentUser?.avatar ? (
+                          <img src={currentUser.avatar} alt={currentUser.name} className="h-full w-full object-cover" />
+                        ) : (
+                          <User className="h-4 w-4 text-[#0552A2]" />
+                        )}
                       </div>
+                      <textarea
+                        value={postContent}
+                        onChange={(e) => setPostContent(e.target.value)}
+                        placeholder="Share your Nepal chronicle... what mountains did you gaze at today?"
+                        rows={3}
+                        className="flex-1 bg-slate-50/70 border border-slate-200 focus:border-[#0552A2]/50 focus:bg-white rounded-xl px-4 py-3 text-[11px] text-[#17212B] placeholder-slate-400 focus:outline-none resize-none font-sans leading-relaxed transition-all shadow-2xs"
+                      />
                     </div>
 
-                    <button
-                      onClick={() => {
-                        if (postContent.trim()) {
-                          addFeedPost(postContent, postLocation, selectedImage);
-                          setPostContent('');
-                        }
-                      }}
-                      style={{ background: 'linear-gradient(135deg, #0552A2 0%, #044080 100%)', boxShadow: '0 4px 10px rgba(194,147,103,0.18)' }}
-                      className="text-white text-[10px] font-bold px-4.5 py-1.5 rounded-lg hover:opacity-90 active:scale-95 transition-all cursor-pointer"
-                    >
-                      Publish Chronicle
-                    </button>
-                  </div>
-                </div>
-
-                {/* Diaries feed list */}
-                <motion.div 
-                  variants={itemVariants}
-                  className="flex flex-col gap-6"
-                >
-                  {feedPosts
-                    .filter((post) => !selectedProfileUser || post.userName === selectedProfileUser.name)
-                    .map((post) => (
-                      <div 
-                        key={post.id}
-                        className="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden hover:border-[#0552A2]/30 transition-all duration-300 flex flex-col"
-                      >
-                        {/* Post User Header */}
-                        <div className="flex items-center justify-between p-4.5 pb-2 text-left">
-                          <div className="flex items-center gap-3">
+                    {/* Photo selector section */}
+                    <div className="flex flex-col gap-2.5">
+                      {imageSelectorOpen && (
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3.5 bg-slate-50 rounded-xl border border-slate-200 animate-in fade-in duration-200">
+                          {MOCK_PHOTOS.map((photo) => (
                             <div
+                              key={photo.name}
                               onClick={() => {
-                                setSelectedProfileUser({
-                                  userId: post.userId,
-                                  name: post.userName,
-                                  avatar: post.userAvatar,
-                                  role: post.userRole,
-                                  location: post.location
-                                });
-                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                                setSelectedImage(photo.url);
+                                setImageSelectorOpen(false);
                               }}
-                              className="h-9 w-9 rounded-full overflow-hidden border border-slate-200 bg-slate-100 cursor-pointer hover:scale-95 transition-transform"
+                              className={`relative rounded-lg overflow-hidden aspect-video cursor-pointer border-2 transition-all ${selectedImage === photo.url ? 'border-[#0552A2] scale-98 shadow-sm' : 'border-transparent opacity-70 hover:opacity-100'}`}
                             >
-                              <img src={post.userAvatar} alt={post.userName} className="h-full w-full object-cover" />
+                              <img src={photo.url} alt={photo.name} className="h-full w-full object-cover" />
+                              <div className="absolute inset-0 bg-black/25 flex items-end justify-center p-1">
+                                <span className="text-[7px] text-white font-mono truncate">{photo.name}</span>
+                              </div>
                             </div>
-                            <div>
-                              <h4
+                          ))}
+                          <div
+                            onClick={() => {
+                              setSelectedImage('');
+                              setImageSelectorOpen(false);
+                            }}
+                            style={{ border: '1px dashed rgba(194,147,103,0.4)' }}
+                            className="rounded-lg aspect-video cursor-pointer hover:bg-[#F2F8FD]/50 flex flex-col items-center justify-center text-[8px] font-mono text-[#64748B]"
+                          >
+                            No Photo
+                          </div>
+                          {/* Custom upload button */}
+                          <button
+                            onClick={() => fileInputRef.current?.click()}
+                            className="aspect-video rounded-lg border-2 border-dashed border-[#92C4EA]/40 hover:border-[#0552A2]/40 flex flex-col items-center justify-center gap-1 text-[8px] font-mono text-[#64748B] hover:text-[#17212B] cursor-pointer transition-all"
+                          >
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" /></svg>
+                            <span>Upload</span>
+                          </button>
+                          <input
+                            type="file"
+                            ref={fileInputRef}
+                            onChange={handleFileChange}
+                            accept="image/*"
+                            className="hidden"
+                          />
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Action Toolbar */}
+                    <div className="flex items-center justify-between border-t border-[#92C4EA]/12 pt-3">
+                      <div className="flex items-center gap-3">
+                        <button
+                          onClick={() => setImageSelectorOpen(!imageSelectorOpen)}
+                          style={{ background: 'rgba(194,147,103,0.06)', border: '1px solid rgba(194,147,103,0.18)' }}
+                          className="flex items-center gap-1.5 text-[9px] font-semibold text-[#0552A2] hover:text-white px-3 py-1.5 rounded-lg hover:bg-[#0552A2] active:scale-95 transition-all cursor-pointer"
+                        >
+                          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" /></svg>
+                          <span>Photo</span>
+                        </button>
+
+                        <div className="relative flex items-center">
+                          <span className="absolute left-2.5 text-[#64748B] pointer-events-none opacity-80">
+                            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M12 2a8 8 0 00-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 00-8-8z" /><circle cx="12" cy="10" r="3" /></svg>
+                          </span>
+                          <input
+                            type="text"
+                            value={postLocation}
+                            onChange={(e) => setPostLocation(e.target.value)}
+                            placeholder="Add location..."
+                            className="bg-slate-50 border border-slate-200 rounded-lg pl-6 pr-2.5 py-1.5 text-[9px] text-[#17212B] placeholder-slate-400 focus:outline-none focus:border-[#0552A2]/50 focus:bg-white transition-all font-sans"
+                          />
+                        </div>
+                      </div>
+
+                      <button
+                        onClick={() => {
+                          if (postContent.trim()) {
+                            addFeedPost(postContent, postLocation, selectedImage);
+                            setPostContent('');
+                          }
+                        }}
+                        style={{ background: 'linear-gradient(135deg, #0552A2 0%, #044080 100%)', boxShadow: '0 4px 10px rgba(194,147,103,0.18)' }}
+                        className="text-white text-[10px] font-bold px-4.5 py-1.5 rounded-lg hover:opacity-90 active:scale-95 transition-all cursor-pointer"
+                      >
+                        Publish Chronicle
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Diaries feed list */}
+                  <motion.div
+                    variants={itemVariants}
+                    className="flex flex-col gap-6"
+                  >
+                    {feedPosts
+                      .filter((post) => !selectedProfileUser || post.userName === selectedProfileUser.name)
+                      .map((post) => (
+                        <div
+                          key={post.id}
+                          className="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden hover:border-[#0552A2]/30 transition-all duration-300 flex flex-col"
+                        >
+                          {/* Post User Header */}
+                          <div className="flex items-center justify-between p-4.5 pb-2 text-left">
+                            <div className="flex items-center gap-3">
+                              <div
                                 onClick={() => {
                                   setSelectedProfileUser({
                                     userId: post.userId,
@@ -759,381 +742,397 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                                   });
                                   window.scrollTo({ top: 0, behavior: 'smooth' });
                                 }}
-                                className="text-xs font-bold text-[#17212B] cursor-pointer hover:text-[#0552A2] transition-colors"
+                                className="h-9 w-9 rounded-full overflow-hidden border border-slate-200 bg-slate-100 cursor-pointer hover:scale-95 transition-transform"
                               >
-                                {post.userName}
-                              </h4>
-                              <div className="flex items-center gap-1.5 mt-0.5">
-                                <span className="text-[8px] font-mono text-[#0552A2] font-bold uppercase tracking-wider">{post.userRole}</span>
-                                {post.location && (
-                                  <>
-                                    <span className="text-[#64748B] text-[8px]">•</span>
-                                    <span className="text-[8px] font-mono text-[#475569] flex items-center gap-0.5">
-                                      <svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2a8 8 0 00-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 00-8-8z" /><circle cx="12" cy="10" r="3" /></svg>
-                                      {post.location}
-                                    </span>
-                                  </>
-                                )}
+                                <img src={post.userAvatar} alt={post.userName} className="h-full w-full object-cover" />
+                              </div>
+                              <div>
+                                <h4
+                                  onClick={() => {
+                                    setSelectedProfileUser({
+                                      userId: post.userId,
+                                      name: post.userName,
+                                      avatar: post.userAvatar,
+                                      role: post.userRole,
+                                      location: post.location
+                                    });
+                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                  }}
+                                  className="text-xs font-bold text-[#17212B] cursor-pointer hover:text-[#0552A2] transition-colors"
+                                >
+                                  {post.userName}
+                                </h4>
+                                <div className="flex items-center gap-1.5 mt-0.5">
+                                  <span className="text-[8px] font-mono text-[#0552A2] font-bold uppercase tracking-wider">{post.userRole}</span>
+                                  {post.location && (
+                                    <>
+                                      <span className="text-[#64748B] text-[8px]">•</span>
+                                      <span className="text-[8px] font-mono text-[#475569] flex items-center gap-0.5">
+                                        <svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2a8 8 0 00-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 00-8-8z" /><circle cx="12" cy="10" r="3" /></svg>
+                                        {post.location}
+                                      </span>
+                                    </>
+                                  )}
+                                </div>
                               </div>
                             </div>
+                            <span className="text-[8px] font-mono text-[#64748B]">{post.timestamp}</span>
                           </div>
-                          <span className="text-[8px] font-mono text-[#64748B]">{post.timestamp}</span>
-                        </div>
 
-                        {/* Post Content */}
-                        <p className="px-4.5 py-2 text-[11px] text-[#475569] leading-relaxed text-left">
-                          {post.content}
-                        </p>
+                          {/* Post Content */}
+                          <p className="px-4.5 py-2 text-[11px] text-[#475569] leading-relaxed text-left">
+                            {post.content}
+                          </p>
 
-                        {/* Post Image Showcase */}
-                        {post.image && (
-                          <div className="w-full overflow-hidden border-y border-slate-100 max-h-72">
-                            <img src={post.image} alt="Chronicle scene" className="w-full object-cover max-h-72" />
-                          </div>
-                        )}
+                          {/* Post Image Showcase */}
+                          {post.image && (
+                            <div className="w-full overflow-hidden border-y border-slate-100 max-h-72">
+                              <img src={post.image} alt="Chronicle scene" className="w-full object-cover max-h-72" />
+                            </div>
+                          )}
 
-                        {/* Post Interactive Actions */}
-                        <div className="flex items-center gap-4 px-4.5 py-3 border-t border-slate-100 mt-1">
-                          {/* Like Action */}
-                          <button
-                            onClick={() => likeFeedPost(post.id)}
-                            className={`flex items-center gap-1.5 text-[10px] font-medium transition-colors cursor-pointer ${post.likedByUser ? 'text-pink-500' : 'text-[#475569] hover:text-pink-500'}`}
-                          >
-                            <svg viewBox="0 0 24 24" width="13" height="13" fill={post.likedByUser ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" /></svg>
-                            <span className="font-mono">{post.likes}</span>
-                          </button>
-
-                          {/* Comment Toggle Action */}
-                          <button
-                            onClick={() => setActiveCommentPostId(activeCommentPostId === post.id ? null : post.id)}
-                            className="flex items-center gap-1.5 text-[10px] font-medium text-[#475569] hover:text-[#0552A2] transition-colors cursor-pointer"
-                          >
-                            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
-                            <span className="font-mono">{post.comments.length}</span>
-                          </button>
-                        </div>
-
-                        {/* Comment Stream */}
-                        {post.comments.length > 0 && (
-                          <div className="px-4.5 pb-3 pt-1 border-t border-slate-100 flex flex-col gap-2">
-                            {post.comments.map((comment) => (
-                              <div key={comment.id} className="flex items-start gap-2 text-left">
-                                <div 
-                                  onClick={() => handleCommenterClick(comment.userName)}
-                                  className="h-5 w-5 rounded-full overflow-hidden border border-slate-200 bg-slate-100 shrink-0 flex items-center justify-center text-[#0552A2] cursor-pointer hover:scale-95 transition-transform"
-                                >
-                                  <User className="h-2.5 w-2.5 text-[#0552A2]" />
-                                </div>
-                                <div className="flex-1 bg-slate-50 rounded-xl px-3 py-1.5 border border-slate-200">
-                                  <span 
-                                    onClick={() => handleCommenterClick(comment.userName)}
-                                    className="text-[10px] font-bold text-[#17212B] cursor-pointer hover:text-[#0552A2] hover:underline transition-colors block"
-                                  >
-                                    {comment.userName}
-                                  </span>
-                                  <p className="text-[10px] text-[#475569] mt-0.5 leading-relaxed">{comment.text}</p>
-                                </div>
-                                <span className="text-[7px] font-mono text-[#64748B] self-end mb-1 shrink-0">{comment.timestamp}</span>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-
-                        {/* Interactive Comment Input */}
-                        {activeCommentPostId === post.id && (
-                          <div className="px-4.5 pb-4.5 pt-2 border-t border-[#92C4EA]/10 flex gap-2">
-                            <input
-                              value={commentInputs[post.id] || ''}
-                              onChange={(e) => setCommentInputs(prev => ({ ...prev, [post.id]: e.target.value }))}
-                              onKeyDown={(e) => {
-                                if (e.key === 'Enter' && commentInputs[post.id]?.trim()) {
-                                  addFeedComment(post.id, commentInputs[post.id]);
-                                  setCommentInputs(prev => ({ ...prev, [post.id]: '' }));
-                                }
-                              }}
-                              placeholder="Write a comment... (Press Enter)"
-                              className="flex-1 bg-white border border-[#92C4EA]/35 focus:border-[#0552A2]/45 rounded-xl px-3.5 py-2 text-[10px] text-[#17212B] placeholder-[#64748B]/60 focus:outline-none"
-                            />
+                          {/* Post Interactive Actions */}
+                          <div className="flex items-center gap-4 px-4.5 py-3 border-t border-slate-100 mt-1">
+                            {/* Like Action */}
                             <button
-                              onClick={() => {
-                                if (commentInputs[post.id]?.trim()) {
-                                  addFeedComment(post.id, commentInputs[post.id]);
-                                  setCommentInputs(prev => ({ ...prev, [post.id]: '' }));
-                                }
-                              }}
-                              style={{ background: 'linear-gradient(135deg, #0552A2 0%, #044080 100%)' }}
-                              className="h-7 w-7 rounded-xl flex items-center justify-center text-white cursor-pointer active:scale-95 transition-all"
+                              onClick={() => likeFeedPost(post.id)}
+                              className={`flex items-center gap-1.5 text-[10px] font-medium transition-colors cursor-pointer ${post.likedByUser ? 'text-pink-500' : 'text-[#475569] hover:text-pink-500'}`}
                             >
-                              <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" /></svg>
+                              <svg viewBox="0 0 24 24" width="13" height="13" fill={post.likedByUser ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" /></svg>
+                              <span className="font-mono">{post.likes}</span>
+                            </button>
+
+                            {/* Comment Toggle Action */}
+                            <button
+                              onClick={() => setActiveCommentPostId(activeCommentPostId === post.id ? null : post.id)}
+                              className="flex items-center gap-1.5 text-[10px] font-medium text-[#475569] hover:text-[#0552A2] transition-colors cursor-pointer"
+                            >
+                              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
+                              <span className="font-mono">{post.comments.length}</span>
                             </button>
                           </div>
-                        )}
 
-                      </div>
-                    ))}
+                          {/* Comment Stream */}
+                          {post.comments.length > 0 && (
+                            <div className="px-4.5 pb-3 pt-1 border-t border-slate-100 flex flex-col gap-2">
+                              {post.comments.map((comment) => (
+                                <div key={comment.id} className="flex items-start gap-2 text-left">
+                                  <div
+                                    onClick={() => handleCommenterClick(comment.userName)}
+                                    className="h-5 w-5 rounded-full overflow-hidden border border-slate-200 bg-slate-100 shrink-0 flex items-center justify-center text-[#0552A2] cursor-pointer hover:scale-95 transition-transform"
+                                  >
+                                    <User className="h-2.5 w-2.5 text-[#0552A2]" />
+                                  </div>
+                                  <div className="flex-1 bg-slate-50 rounded-xl px-3 py-1.5 border border-slate-200">
+                                    <span
+                                      onClick={() => handleCommenterClick(comment.userName)}
+                                      className="text-[10px] font-bold text-[#17212B] cursor-pointer hover:text-[#0552A2] hover:underline transition-colors block"
+                                    >
+                                      {comment.userName}
+                                    </span>
+                                    <p className="text-[10px] text-[#475569] mt-0.5 leading-relaxed">{comment.text}</p>
+                                  </div>
+                                  <span className="text-[7px] font-mono text-[#64748B] self-end mb-1 shrink-0">{comment.timestamp}</span>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+
+                          {/* Interactive Comment Input */}
+                          {activeCommentPostId === post.id && (
+                            <div className="px-4.5 pb-4.5 pt-2 border-t border-[#92C4EA]/10 flex gap-2">
+                              <input
+                                value={commentInputs[post.id] || ''}
+                                onChange={(e) => setCommentInputs(prev => ({ ...prev, [post.id]: e.target.value }))}
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Enter' && commentInputs[post.id]?.trim()) {
+                                    addFeedComment(post.id, commentInputs[post.id]);
+                                    setCommentInputs(prev => ({ ...prev, [post.id]: '' }));
+                                  }
+                                }}
+                                placeholder="Write a comment... (Press Enter)"
+                                className="flex-1 bg-white border border-[#92C4EA]/35 focus:border-[#0552A2]/45 rounded-xl px-3.5 py-2 text-[10px] text-[#17212B] placeholder-[#64748B]/60 focus:outline-none"
+                              />
+                              <button
+                                onClick={() => {
+                                  if (commentInputs[post.id]?.trim()) {
+                                    addFeedComment(post.id, commentInputs[post.id]);
+                                    setCommentInputs(prev => ({ ...prev, [post.id]: '' }));
+                                  }
+                                }}
+                                style={{ background: 'linear-gradient(135deg, #0552A2 0%, #044080 100%)' }}
+                                className="h-7 w-7 rounded-xl flex items-center justify-center text-white cursor-pointer active:scale-95 transition-all"
+                              >
+                                <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" /></svg>
+                              </button>
+                            </div>
+                          )}
+
+                        </div>
+                      ))}
+                  </motion.div>
                 </motion.div>
+              </div>
+            )
+          )}
+
+          {/* ── EXPLORE VIEW ──────────────────────────────────────────────── */}
+          {activeId === 'explore' && (
+            <div className="flex flex-col gap-6 max-w-[1440px] w-full mx-auto py-4">
+              <motion.div variants={itemVariants} className="flex flex-col gap-1.5">
+                <span className="text-[10px] font-mono font-bold tracking-widest text-[#0552A2] uppercase">
+                  Explore Destinations
+                </span>
+                <h2 className="text-2xl font-black tracking-tight text-[#17212B]">Discover Curated Havens</h2>
+                <p className="text-xs text-[#475569]">Select from our handpicked destinations to see local altitude grids and travel stories.</p>
+              </motion.div>
+
+              <motion.div
+                layout="position"
+                className="grid gap-5 auto-card-grid"
+                style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))' }}
+              >
+                {DESTINATIONS.map((d, index) => (
+                  <motion.div
+                    key={d.id}
+                    layout="position"
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      layout: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
+                      opacity: { duration: 0.28, delay: index * 0.04 },
+                      y: { duration: 0.28, delay: index * 0.04, ease: [0.22, 1, 0.36, 1] }
+                    }}
+                    onClick={() => onNavigate ? onNavigate(d.id) : router.push('/info/' + d.id)}
+                    className="group bg-white border border-slate-200/90 rounded-2xl overflow-hidden hover:border-[#0552A2]/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] shadow-xs cursor-pointer active:scale-[0.985] flex flex-col justify-between transform-gpu will-change-transform"
+                  >
+                    <div>
+                      <div className="relative h-36 sm:h-40 overflow-hidden bg-slate-900">
+                        <img
+                          src={d.image}
+                          alt={d.name}
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu will-change-transform"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent pointer-events-none" />
+                        <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-xs text-[10px] font-mono font-bold text-[#0552A2] px-2.5 py-0.5 rounded-full border border-slate-200 shadow-xs">
+                          {d.elevation}
+                        </div>
+                        <div className="absolute bottom-2.5 left-3 text-[10px] font-mono text-white/90 font-medium">
+                          {d.region} Region
+                        </div>
+                      </div>
+
+                      <div className="p-4 flex flex-col gap-1.5">
+                        <h3 className="text-sm sm:text-base font-bold text-[#17212B] group-hover:text-[#0552A2] transition-colors leading-snug line-clamp-1">
+                          {d.name}
+                        </h3>
+                        <p className="text-xs text-[#475569] leading-relaxed line-clamp-2">
+                          {d.description}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="px-4 pb-3.5 pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+                      <span className="text-[10px] font-mono text-slate-400">View Details</span>
+                      <button
+                        className="font-bold text-[#0552A2] group-hover:underline flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <span>Explore</span>
+                        <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform duration-200 ease-out" />
+                      </button>
+                    </div>
+                  </motion.div>
+                ))}
               </motion.div>
             </div>
-          )
-        )}
+          )}
 
-        {/* ── EXPLORE VIEW ──────────────────────────────────────────────── */}
-        {activeId === 'explore' && (
-          <div className="flex flex-col gap-6 max-w-[1440px] w-full mx-auto py-4">
-            <motion.div variants={itemVariants} className="flex flex-col gap-1.5">
-              <span className="text-[10px] font-mono font-bold tracking-widest text-[#0552A2] uppercase">
-                Explore Destinations
-              </span>
-              <h2 className="text-2xl font-black tracking-tight text-[#17212B]">Discover Curated Havens</h2>
-              <p className="text-xs text-[#475569]">Select from our handpicked destinations to see local altitude grids and travel stories.</p>
-            </motion.div>
+          {/* ── POPULAR VIEW ──────────────────────────────────────────────── */}
+          {activeId === 'popular' && (
+            <div className="flex flex-col gap-5 max-w-5xl w-full mx-auto py-2">
+              <motion.div variants={itemVariants} className="flex flex-col gap-1">
+                <span className="text-[10px] font-mono font-bold tracking-widest text-[#0552A2] uppercase">
+                  Trending Travels
+                </span>
+                <h2 className="text-xl sm:text-2xl font-black tracking-tight text-[#17212B]">Popular Journeys</h2>
+                <p className="text-xs text-[#475569]">Most loved paths by worldwide travelers seeking adventure, peace, and culture.</p>
+              </motion.div>
 
-            <motion.div
-              layout="position"
-              className="grid gap-5 auto-card-grid"
-              style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))' }}
-            >
-              {DESTINATIONS.map((d, index) => (
-                <motion.div
-                  key={d.id}
-                  layout="position"
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    layout: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
-                    opacity: { duration: 0.28, delay: index * 0.04 },
-                    y: { duration: 0.28, delay: index * 0.04, ease: [0.22, 1, 0.36, 1] }
-                  }}
-                  onClick={() => onNavigate ? onNavigate(d.id) : router.push('/info/' + d.id)}
-                  className="group bg-white border border-slate-200/90 rounded-2xl overflow-hidden hover:border-[#0552A2]/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] shadow-xs cursor-pointer active:scale-[0.985] flex flex-col justify-between transform-gpu will-change-transform"
-                >
-                  <div>
-                    <div className="relative h-36 sm:h-40 overflow-hidden bg-slate-900">
+              {/* Destination Cards matching design - Compact Size */}
+              <div className="flex flex-col gap-3 sm:gap-3.5 mt-1">
+                {DESTINATIONS.map((d, index) => (
+                  <motion.div
+                    variants={itemVariants}
+                    key={d.id}
+                    onClick={() => onNavigate ? onNavigate(d.id) : router.push('/info/' + d.id)}
+                    className="group rounded-xl sm:rounded-2xl bg-white border border-slate-200/80 shadow-[0_2px_8px_-3px_rgba(15,42,74,0.05)] hover:shadow-md hover:border-[#0552A2]/30 transition-all duration-300 overflow-hidden flex flex-col sm:flex-row cursor-pointer"
+                  >
+                    {/* Left Flush Image */}
+                    <div className="relative w-full sm:w-48 md:w-56 h-36 sm:h-auto min-h-[120px] sm:min-h-[130px] shrink-0 bg-slate-100 overflow-hidden">
                       <img
                         src={d.image}
                         alt={d.name}
                         loading="lazy"
-                        decoding="async"
-                        className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu will-change-transform"
+                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent pointer-events-none" />
-                      <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-xs text-[10px] font-mono font-bold text-[#0552A2] px-2.5 py-0.5 rounded-full border border-slate-200 shadow-xs">
-                        {d.elevation}
-                      </div>
-                      <div className="absolute bottom-2.5 left-3 text-[10px] font-mono text-white/90 font-medium">
-                        {d.region} Region
-                      </div>
                     </div>
 
-                    <div className="p-4 flex flex-col gap-1.5">
-                      <h3 className="text-sm sm:text-base font-bold text-[#17212B] group-hover:text-[#0552A2] transition-colors leading-snug line-clamp-1">
+                    {/* Right Details */}
+                    <div className="py-3 sm:py-4 px-4 sm:px-5 md:px-6 flex-1 flex flex-col justify-center text-left">
+                      <div className="flex items-center gap-2.5">
+                        <span className="px-2.5 py-0.5 rounded-full bg-[#0552A2] text-white text-[10px] sm:text-[11px] font-bold font-mono tracking-tight shadow-2xs select-none">
+                          #{index + 1} Trending
+                        </span>
+                        <span className="text-[11px] font-mono font-semibold text-[#0552A2]">
+                          {d.elevation}
+                        </span>
+                      </div>
+
+                      <h3 className="text-base sm:text-lg font-bold tracking-tight text-[#17212B] mt-1.5 group-hover:text-[#0552A2] transition-colors leading-snug">
                         {d.name}
                       </h3>
-                      <p className="text-xs text-[#475569] leading-relaxed line-clamp-2">
+
+                      <p className="text-xs text-[#64748B] mt-1 leading-normal line-clamp-2 max-w-2xl">
                         {d.description}
                       </p>
                     </div>
-                  </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          )}
 
-                  <div className="px-4 pb-3.5 pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
-                    <span className="text-[10px] font-mono text-slate-400">View Details</span>
-                    <button
-                      className="font-bold text-[#0552A2] group-hover:underline flex items-center gap-1.5 cursor-pointer"
-                    >
-                      <span>Explore</span>
-                      <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform duration-200 ease-out" />
-                    </button>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        )}
+          {/* ── ATTRACTIONS VIEW ──────────────────────────────────────────── */}
+          {activeId === 'attractions' && (
+            <div className="flex flex-col gap-6 max-w-[1440px] w-full mx-auto py-4">
+              <motion.div variants={itemVariants} className="flex flex-col gap-1.5">
+                <span className="text-[10px] font-mono font-bold tracking-widest text-[#0552A2] uppercase">
+                  Sightseeing Matrix
+                </span>
+                <h2 className="text-2xl font-black tracking-tight text-[#17212B]">Iconic Landmarks</h2>
+                <p className="text-xs text-[#475569]">The spiritual monuments, ancient valleys, and high glaciers defining our geography.</p>
+              </motion.div>
 
-        {/* ── POPULAR VIEW ──────────────────────────────────────────────── */}
-        {activeId === 'popular' && (
-          <div className="flex flex-col gap-5 max-w-5xl w-full mx-auto py-2">
-            <motion.div variants={itemVariants} className="flex flex-col gap-1">
-              <span className="text-[10px] font-mono font-bold tracking-widest text-[#0552A2] uppercase">
-                Trending Travels
-              </span>
-              <h2 className="text-xl sm:text-2xl font-black tracking-tight text-[#17212B]">Popular Journeys</h2>
-              <p className="text-xs text-[#475569]">Most loved paths by worldwide travelers seeking adventure, peace, and culture.</p>
-            </motion.div>
+              <motion.div
+                layout="position"
+                className="grid gap-5 auto-card-grid"
+                style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))' }}
+              >
+                {DESTINATIONS.map((d, index) => (
+                  <motion.div
+                    key={d.id}
+                    layout="position"
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      layout: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
+                      opacity: { duration: 0.28, delay: index * 0.04 },
+                      y: { duration: 0.28, delay: index * 0.04, ease: [0.22, 1, 0.36, 1] }
+                    }}
+                    onClick={() => onNavigate ? onNavigate(d.id) : router.push('/info/' + d.id)}
+                    className="group bg-white border border-slate-200/90 rounded-2xl overflow-hidden hover:border-[#0552A2]/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] shadow-xs cursor-pointer active:scale-[0.985] flex flex-col justify-between transform-gpu will-change-transform"
+                  >
+                    <div>
+                      <div className="relative h-36 sm:h-40 overflow-hidden bg-slate-900">
+                        <img
+                          src={d.image}
+                          alt={d.name}
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu will-change-transform"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent pointer-events-none" />
+                        <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-xs text-[10px] font-mono font-bold text-[#0552A2] px-2.5 py-0.5 rounded-full border border-slate-200 shadow-xs">
+                          {d.elevation}
+                        </div>
+                        <div className="absolute bottom-2.5 left-3 text-[10px] font-mono text-white/90 font-medium">
+                          {d.region} Region
+                        </div>
+                      </div>
 
-            {/* Destination Cards matching design - Compact Size */}
-            <div className="flex flex-col gap-3 sm:gap-3.5 mt-1">
-              {DESTINATIONS.map((d, index) => (
-                <motion.div
-                  variants={itemVariants}
-                  key={d.id}
-                  onClick={() => onNavigate ? onNavigate(d.id) : router.push('/info/' + d.id)}
-                  className="group rounded-xl sm:rounded-2xl bg-white border border-slate-200/80 shadow-[0_2px_8px_-3px_rgba(15,42,74,0.05)] hover:shadow-md hover:border-[#0552A2]/30 transition-all duration-300 overflow-hidden flex flex-col sm:flex-row cursor-pointer"
-                >
-                  {/* Left Flush Image */}
-                  <div className="relative w-full sm:w-48 md:w-56 h-36 sm:h-auto min-h-[120px] sm:min-h-[130px] shrink-0 bg-slate-100 overflow-hidden">
-                    <img
-                      src={d.image}
-                      alt={d.name}
-                      loading="lazy"
-                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                    />
-                  </div>
-
-                  {/* Right Details */}
-                  <div className="py-3 sm:py-4 px-4 sm:px-5 md:px-6 flex-1 flex flex-col justify-center text-left">
-                    <div className="flex items-center gap-2.5">
-                      <span className="px-2.5 py-0.5 rounded-full bg-[#0552A2] text-white text-[10px] sm:text-[11px] font-bold font-mono tracking-tight shadow-2xs select-none">
-                        #{index + 1} Trending
-                      </span>
-                      <span className="text-[11px] font-mono font-semibold text-[#0552A2]">
-                        {d.elevation}
-                      </span>
+                      <div className="p-4 flex flex-col gap-1.5">
+                        <h3 className="text-sm sm:text-base font-bold text-[#17212B] group-hover:text-[#0552A2] transition-colors leading-snug line-clamp-1">
+                          {d.name}
+                        </h3>
+                        <p className="text-xs text-[#475569] leading-relaxed line-clamp-2">
+                          {d.description}
+                        </p>
+                      </div>
                     </div>
 
-                    <h3 className="text-base sm:text-lg font-bold tracking-tight text-[#17212B] mt-1.5 group-hover:text-[#0552A2] transition-colors leading-snug">
-                      {d.name}
-                    </h3>
-
-                    <p className="text-xs text-[#64748B] mt-1 leading-normal line-clamp-2 max-w-2xl">
-                      {d.description}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
+                    <div className="px-4 pb-3.5 pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+                      <span className="text-[10px] font-mono text-slate-400">View Details</span>
+                      <button
+                        className="font-bold text-[#0552A2] group-hover:underline flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <span>Explore</span>
+                        <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform duration-200 ease-out" />
+                      </button>
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* ── ATTRACTIONS VIEW ──────────────────────────────────────────── */}
-        {activeId === 'attractions' && (
-          <div className="flex flex-col gap-6 max-w-[1440px] w-full mx-auto py-4">
-            <motion.div variants={itemVariants} className="flex flex-col gap-1.5">
-              <span className="text-[10px] font-mono font-bold tracking-widest text-[#0552A2] uppercase">
-                Sightseeing Matrix
-              </span>
-              <h2 className="text-2xl font-black tracking-tight text-[#17212B]">Iconic Landmarks</h2>
-              <p className="text-xs text-[#475569]">The spiritual monuments, ancient valleys, and high glaciers defining our geography.</p>
-            </motion.div>
+          {/* ── TOP 5 DESTINATIONS VIEW ─────────────────────────────────────── */}
+          {activeId === 'top5' && (
+            <div className="flex flex-col gap-5 max-w-5xl w-full mx-auto py-2">
+              <motion.div variants={itemVariants} className="flex flex-col gap-1">
+                <span className="text-[10px] font-mono font-bold tracking-widest text-[#0552A2] uppercase">
+                  Curated Gold Tier
+                </span>
+                <h2 className="text-xl sm:text-2xl font-black tracking-tight text-[#17212B]">Top 5 Destinations</h2>
+                <p className="text-xs text-[#475569]">The supreme selection representing Trekking, Spiritual peace, Wildlife, Heritage, and desert camps.</p>
+              </motion.div>
 
-            <motion.div
-              layout="position"
-              className="grid gap-5 auto-card-grid"
-              style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))' }}
-            >
-              {DESTINATIONS.map((d, index) => (
-                <motion.div
-                  key={d.id}
-                  layout="position"
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    layout: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
-                    opacity: { duration: 0.28, delay: index * 0.04 },
-                    y: { duration: 0.28, delay: index * 0.04, ease: [0.22, 1, 0.36, 1] }
-                  }}
-                  onClick={() => onNavigate ? onNavigate(d.id) : router.push('/info/' + d.id)}
-                  className="group bg-white border border-slate-200/90 rounded-2xl overflow-hidden hover:border-[#0552A2]/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] shadow-xs cursor-pointer active:scale-[0.985] flex flex-col justify-between transform-gpu will-change-transform"
-                >
-                  <div>
-                    <div className="relative h-36 sm:h-40 overflow-hidden bg-slate-900">
+              {/* Destination Cards matching design - Compact Size */}
+              <div className="flex flex-col gap-3 sm:gap-3.5 mt-1">
+                {DESTINATIONS.map((d, idx) => (
+                  <motion.div
+                    variants={itemVariants}
+                    key={d.id}
+                    onClick={() => onNavigate ? onNavigate(d.id) : router.push('/info/' + d.id)}
+                    className="group rounded-xl sm:rounded-2xl bg-white border border-slate-200/80 shadow-[0_2px_8px_-3px_rgba(15,42,74,0.05)] hover:shadow-md hover:border-[#0552A2]/30 transition-all duration-300 overflow-hidden flex flex-col sm:flex-row cursor-pointer"
+                  >
+                    {/* Left Flush Image */}
+                    <div className="relative w-full sm:w-48 md:w-56 h-36 sm:h-auto min-h-[120px] sm:min-h-[130px] shrink-0 bg-slate-100 overflow-hidden">
                       <img
                         src={d.image}
                         alt={d.name}
                         loading="lazy"
-                        decoding="async"
-                        className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu will-change-transform"
+                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent pointer-events-none" />
-                      <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-xs text-[10px] font-mono font-bold text-[#0552A2] px-2.5 py-0.5 rounded-full border border-slate-200 shadow-xs">
-                        {d.elevation}
-                      </div>
-                      <div className="absolute bottom-2.5 left-3 text-[10px] font-mono text-white/90 font-medium">
-                        {d.region} Region
-                      </div>
                     </div>
 
-                    <div className="p-4 flex flex-col gap-1.5">
-                      <h3 className="text-sm sm:text-base font-bold text-[#17212B] group-hover:text-[#0552A2] transition-colors leading-snug line-clamp-1">
+                    {/* Right Details */}
+                    <div className="py-3 sm:py-4 px-4 sm:px-5 md:px-6 flex-1 flex flex-col justify-center text-left">
+                      <div className="flex items-center gap-2.5">
+                        <span className="px-2.5 py-0.5 rounded-full bg-[#0552A2] text-white text-[10px] sm:text-[11px] font-bold font-mono tracking-tight shadow-2xs select-none">
+                          #{idx + 1} Top Pick
+                        </span>
+                        <span className="text-[11px] font-mono font-semibold text-[#0552A2]">
+                          {d.elevation}
+                        </span>
+                      </div>
+
+                      <h3 className="text-base sm:text-lg font-bold tracking-tight text-[#17212B] mt-1.5 group-hover:text-[#0552A2] transition-colors leading-snug">
                         {d.name}
                       </h3>
-                      <p className="text-xs text-[#475569] leading-relaxed line-clamp-2">
+
+                      <p className="text-xs text-[#64748B] mt-1 leading-normal line-clamp-2 max-w-2xl">
                         {d.description}
                       </p>
                     </div>
-                  </div>
-
-                  <div className="px-4 pb-3.5 pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
-                    <span className="text-[10px] font-mono text-slate-400">View Details</span>
-                    <button
-                      className="font-bold text-[#0552A2] group-hover:underline flex items-center gap-1.5 cursor-pointer"
-                    >
-                      <span>Explore</span>
-                      <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform duration-200 ease-out" />
-                    </button>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        )}
-
-        {/* ── TOP 5 DESTINATIONS VIEW ─────────────────────────────────────── */}
-        {activeId === 'top5' && (
-          <div className="flex flex-col gap-5 max-w-5xl w-full mx-auto py-2">
-            <motion.div variants={itemVariants} className="flex flex-col gap-1">
-              <span className="text-[10px] font-mono font-bold tracking-widest text-[#0552A2] uppercase">
-                Curated Gold Tier
-              </span>
-              <h2 className="text-xl sm:text-2xl font-black tracking-tight text-[#17212B]">Top 5 Destinations</h2>
-              <p className="text-xs text-[#475569]">The supreme selection representing Trekking, Spiritual peace, Wildlife, Heritage, and desert camps.</p>
-            </motion.div>
-
-            {/* Destination Cards matching design - Compact Size */}
-            <div className="flex flex-col gap-3 sm:gap-3.5 mt-1">
-              {DESTINATIONS.map((d, idx) => (
-                <motion.div
-                  variants={itemVariants}
-                  key={d.id}
-                  onClick={() => onNavigate ? onNavigate(d.id) : router.push('/info/' + d.id)}
-                  className="group rounded-xl sm:rounded-2xl bg-white border border-slate-200/80 shadow-[0_2px_8px_-3px_rgba(15,42,74,0.05)] hover:shadow-md hover:border-[#0552A2]/30 transition-all duration-300 overflow-hidden flex flex-col sm:flex-row cursor-pointer"
-                >
-                  {/* Left Flush Image */}
-                  <div className="relative w-full sm:w-48 md:w-56 h-36 sm:h-auto min-h-[120px] sm:min-h-[130px] shrink-0 bg-slate-100 overflow-hidden">
-                    <img
-                      src={d.image}
-                      alt={d.name}
-                      loading="lazy"
-                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                    />
-                  </div>
-
-                  {/* Right Details */}
-                  <div className="py-3 sm:py-4 px-4 sm:px-5 md:px-6 flex-1 flex flex-col justify-center text-left">
-                    <div className="flex items-center gap-2.5">
-                      <span className="px-2.5 py-0.5 rounded-full bg-[#0552A2] text-white text-[10px] sm:text-[11px] font-bold font-mono tracking-tight shadow-2xs select-none">
-                        #{idx + 1} Top Pick
-                      </span>
-                      <span className="text-[11px] font-mono font-semibold text-[#0552A2]">
-                        {d.elevation}
-                      </span>
-                    </div>
-
-                    <h3 className="text-base sm:text-lg font-bold tracking-tight text-[#17212B] mt-1.5 group-hover:text-[#0552A2] transition-colors leading-snug">
-                      {d.name}
-                    </h3>
-
-                    <p className="text-xs text-[#64748B] mt-1 leading-normal line-clamp-2 max-w-2xl">
-                      {d.description}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
-      </motion.div>
-    </AnimatePresence>
+          )}
+        </motion.div>
+      </AnimatePresence>
 
     </>
   );
@@ -1144,7 +1143,7 @@ const getDiscoverProfileDetails = (username: string, role: string) => {
     return {
       bio: 'Cultural researcher & Himalayan ethnographer. Documenting Newari architecture & monastic traditions in the valleys. 🏯✨',
       followers: '4.8k', following: '342',
-      banner: 'https://images.unsplash.com/photo-1605649487212-47bdab064df7?q=80&w=900',
+      banner: '/pictures/Bhaktapur_ss_lt_(2)-1629279885.jpg',
       pastTrips: [
         {
           title: 'Bhaktapur Heritage Walk',
@@ -1152,7 +1151,7 @@ const getDiscoverProfileDetails = (username: string, role: string) => {
           elevation: '1,400m',
           region: 'Kathmandu Valley',
           description: 'Studying the intricate details of Nyatapola Temple and woodcarving architecture.',
-          image: 'https://images.unsplash.com/photo-1605649487212-47bdab064df7?q=80&w=600',
+          image: '/pictures/Bhaktapur_ss_lt_(2)-1629279885.jpg',
         },
         {
           title: 'Lumbini Sacred Garden Trek',
@@ -1160,7 +1159,7 @@ const getDiscoverProfileDetails = (username: string, role: string) => {
           elevation: '150m',
           region: 'Rupandehi',
           description: 'Analyzing Ashokan Pillar inscriptions and early monastic layout.',
-          image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=600',
+          image: '/pictures/Lumbini_tk_pilgrimage_(3)-1624819677.jpg',
         },
         {
           title: 'Phoksundo Lake Expedition',
@@ -1168,16 +1167,16 @@ const getDiscoverProfileDetails = (username: string, role: string) => {
           elevation: '3,611m',
           region: 'Dolpo',
           description: 'Documenting the unique Tibetan Bon culture and turquoise alpine waters.',
-          image: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80&w=600',
+          image: '/pictures/shey-1626727697.jpeg',
         }
       ],
       gallery: [
-        'https://images.unsplash.com/photo-1605649487212-47bdab064df7?q=80&w=600',
-        'https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=600',
-        'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80&w=600',
-        'https://images.unsplash.com/photo-1486916856992-e4db22c8df33?q=80&w=600',
-        'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=600',
-        'https://images.unsplash.com/photo-1581888227599-779811939961?q=80&w=600'
+        '/pictures/Bhaktapur_ss_lt_(2)-1629279885.jpg',
+        '/pictures/Lumbini_tk_pilgrimage_(3)-1624819677.jpg',
+        '/pictures/shey-1626727697.jpeg',
+        '/pictures/Pokhara_ss_lt_(4)-1624818140.jpg',
+        '/pictures/annapurna-1624804396.jpg',
+        '/pictures/Chitwan_ss_lt_(17)-1624813756.jpg'
       ],
       gear: [
         { name: 'Leica SL2-S Camera', desc: 'Fitted with weather-proof primes for rugged heritage shoots.' },
@@ -1190,7 +1189,7 @@ const getDiscoverProfileDetails = (username: string, role: string) => {
     return {
       bio: "High-altitude climber & alpine photographer. Driven to capture the raw power of Nepal's 8,000ers. 🏔️❄️",
       followers: '12.4k', following: '512',
-      banner: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=900',
+      banner: '/pictures/Everest_tk_trekker_(5)-1630474503.jpg',
       pastTrips: [
         {
           title: 'Everest Base Camp High-Camp',
@@ -1198,7 +1197,7 @@ const getDiscoverProfileDetails = (username: string, role: string) => {
           elevation: '5,364m',
           region: 'Khumbu Valley',
           description: 'Successfully reached Base Camp under clear skies and completed photography series.',
-          image: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=600',
+          image: '/pictures/Everest_tk_trekker_(5)-1630474503.jpg',
         },
         {
           title: 'Thorong La Pass Crossing',
@@ -1206,7 +1205,7 @@ const getDiscoverProfileDetails = (username: string, role: string) => {
           elevation: '5,416m',
           region: 'Annapurna Valley',
           description: 'Trekking through active snowstorms. Documented frozen water falls and tea houses.',
-          image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=600',
+          image: '/pictures/annapurna-1624804396.jpg',
         },
         {
           title: 'Mera Peak Summit Attempt',
@@ -1214,16 +1213,16 @@ const getDiscoverProfileDetails = (username: string, role: string) => {
           elevation: '6,476m',
           region: 'Hinku Valley',
           description: 'Alpine mountaineering in sub-zero temperatures. Captured panoramic summit view of 5 peaks.',
-          image: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80&w=600',
+          image: '/pictures/Manaslu_View_from_Lho-1624808940.jpg',
         }
       ],
       gallery: [
-        'https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=600',
-        'https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=600',
-        'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80&w=600',
-        'https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=600',
-        'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=600',
-        'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?q=80&w=600'
+        '/pictures/Everest_tk_trekker_(5)-1630474503.jpg',
+        '/pictures/annapurna-1624804396.jpg',
+        '/pictures/Manaslu_View_from_Lho-1624808940.jpg',
+        '/pictures/Dhaulagiri_1626729219-1635169360.jpeg',
+        '/pictures/Choyou_1626729673-1635169288.jpeg',
+        '/pictures/everest_(1)-1624869402.jpg'
       ],
       gear: [
         { name: 'Quantum Pressurized Shell', desc: 'Heated Gore-Tex layer calibrated to -30 degrees Celsius.' },
@@ -1235,7 +1234,7 @@ const getDiscoverProfileDetails = (username: string, role: string) => {
   return {
     bio: `Himalayan wanderer & registered ${role.toLowerCase()}. Documenting trail logs, local tea-houses, and hidden lakes. 🗺️🎒`,
     followers: '840', following: '190',
-    banner: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=900',
+    banner: '/pictures/Pokhara_oy_lt_(2)-1624817867.jpg',
     pastTrips: [
       {
         title: 'Phewa Lake Kayak Tour',
@@ -1243,7 +1242,7 @@ const getDiscoverProfileDetails = (username: string, role: string) => {
         elevation: '822m',
         region: 'Pokhara Kaski',
         description: 'Relaxed paddle around the Tal Barahi Temple with mirror reflections of Machapuchare.',
-        image: 'https://images.unsplash.com/photo-1486916856992-e4db22c8df33?q=80&w=600',
+        image: '/pictures/Pokhara_ss_lt_(4)-1624818140.jpg',
       },
       {
         title: 'Chitwan Jungle Safari',
@@ -1251,14 +1250,14 @@ const getDiscoverProfileDetails = (username: string, role: string) => {
         elevation: '150m',
         region: 'Chitwan',
         description: 'Jungle exploration, spotted two one-horned rhinos near the Rapti river banks.',
-        image: 'https://images.unsplash.com/photo-1581888227599-779811939961?q=80&w=600',
+        image: '/pictures/Chitwan_ss_lt_(17)-1624813756.jpg',
       }
     ],
     gallery: [
-      'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=600',
-      'https://images.unsplash.com/photo-1486916856992-e4db22c8df33?q=80&w=600',
-      'https://images.unsplash.com/photo-1581888227599-779811939961?q=80&w=600',
-      'https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=600'
+      '/pictures/Pokhara_oy_lt_(2)-1624817867.jpg',
+      '/pictures/Pokhara_ss_lt_(4)-1624818140.jpg',
+      '/pictures/Chitwan_ss_lt_(17)-1624813756.jpg',
+      '/pictures/Everest_tk_trekker_(5)-1630474503.jpg'
     ],
     gear: [
       { name: 'Osprey 50L Backpack', desc: 'Sturdy, light-weight back support pack for multiday treks.' },
