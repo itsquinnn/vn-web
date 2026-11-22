@@ -33,6 +33,7 @@ import {
   Hotel,
   Car,
   UserCheck,
+  ConciergeBell,
   TicketCheck,
   UserPlus,
   Building2,
@@ -86,6 +87,7 @@ const NAV_GROUPS: NavGroup[] = [
     title: 'Guides & Permits',
     items: [
       { id: 'guides', label: 'Guides', icon: UserCheck },
+      { id: 'butler', label: 'Butler', icon: ConciergeBell },
       { id: 'permits', label: 'Permits', icon: TicketCheck },
     ],
   },
@@ -281,7 +283,7 @@ export default function DashboardPage() {
     if (['hotels', 'transportation'].includes(active)) {
       return <StaysSection activeId={active} />;
     }
-    if (['guides', 'permits'].includes(active)) {
+    if (['guides', 'butler', 'permits'].includes(active)) {
       return <GuidesPermitsSection activeId={active} />;
     }
     if (['login', 'bookings', 'pasttrips', 'messages', 'customize'].includes(active)) {

@@ -8,6 +8,65 @@ interface GuidesPermitsSectionProps {
   activeId: string;
 }
 
+interface Butler {
+  id: string;
+  name: string;
+  specialty: string;
+  rating: number;
+  experience: number;
+  languages: string[];
+  bio: string;
+  pricePerDay: number;
+  avatar: string;
+}
+
+const BUTLERS: Butler[] = [
+  {
+    id: 'butler-1',
+    name: 'Aarav Rajbhandari',
+    specialty: 'Heritage & Palace Concierge',
+    rating: 4.9,
+    experience: 9,
+    languages: ['English', 'Nepali', 'French'],
+    bio: 'Dedicated personal butler for heritage suites, private dining curation, luggage logistics, and Kathmandu cultural arrangements.',
+    pricePerDay: 95,
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=300',
+  },
+  {
+    id: 'butler-2',
+    name: 'Sonam Dolma',
+    specialty: 'Luxury Lodge Butler',
+    rating: 5.0,
+    experience: 7,
+    languages: ['English', 'Nepali', 'Tibetan'],
+    bio: 'Specialized in high-altitude luxury lodge hospitality, heated gear preparation, bespoke tea service, and wellness scheduling.',
+    pricePerDay: 110,
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300',
+  },
+  {
+    id: 'butler-3',
+    name: 'Bikash Thapa',
+    specialty: 'Expedition & Transit Valet',
+    rating: 4.8,
+    experience: 11,
+    languages: ['English', 'Nepali', 'Hindi', 'Japanese'],
+    bio: 'Handles seamless airport-to-lodge transfers, private helicopter coordination, equipment packing, and 24/7 itinerary adjustments.',
+    pricePerDay: 85,
+    avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?q=80&w=300',
+  },
+  {
+    id: 'butler-4',
+    name: 'Prerana Shrestha',
+    specialty: 'Private Retreat Host',
+    rating: 4.9,
+    experience: 6,
+    languages: ['English', 'Nepali', 'German'],
+    bio: 'Curates private lakeside picnics, spa reservations, dietary meal planning, and artisan shopping experiences in Pokhara and Kathmandu.',
+    pricePerDay: 90,
+    avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=300',
+  },
+];
+
 export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionProps) {
   const { guides, permits, addPermit, addBooking } = useTravelStore();
   
@@ -22,6 +81,7 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStep, setSubmitStep] = useState(0); // 0: None, 1: Hashing, 2: Verification, 3: Completed
   const [hiredGuide, setHiredGuide] = useState<Guide | null>(null);
+  const [hiredButler, setHiredButler] = useState<Butler | null>(null);
 
   const containerVariants: any = {
     hidden: { opacity: 0, y: 15 },
@@ -81,6 +141,25 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
     setHiredGuide(guide);
     setTimeout(() => {
       setHiredGuide(null);
+    }, 2000);
+  };
+
+  const handleHireButler = (butler: Butler) => {
+    const invNo = `INV-BUTLER-${Math.floor(1000 + Math.random() * 9000)}`;
+    addBooking({
+      id: `b-butler-${Date.now()}`,
+      type: 'Guide',
+      title: `${butler.name} - Personal Butler Service`,
+      date: `${startDate} - ${endDate}`,
+      details: `${butler.specialty}. Languages: ${butler.languages.join(', ')}.`,
+      cost: butler.pricePerDay * 5,
+      status: 'Confirmed',
+      invoiceNo: invNo
+    });
+
+    setHiredButler(butler);
+    setTimeout(() => {
+      setHiredButler(null);
     }, 2000);
   };
 
@@ -150,6 +229,76 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
                 <h4 className="text-sm font-bold text-[#17212B]">Guide Application Recieved</h4>
                 <p className="text-xs text-[#475569] mt-1.5 leading-relaxed">
                   You have successfully booked {hiredGuide.name}. Verification invoice logged in Account.
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ── BUTLER VIEW ────────────────────────────────────────────────── */}
+      {activeId === 'butler' && (
+        <div className="flex flex-col gap-6 max-w-[1440px] w-full mx-auto py-4">
+          <motion.div variants={itemVariants} className="flex flex-col gap-1.5">
+            <h2 className="text-2xl font-black tracking-tight text-[#17212B]">Personal Butlers & Concierge</h2>
+            <p className="text-xs text-[#475569]">Book dedicated personal butlers for suite hospitality, private dining, luggage care, and seamless travel logistics.</p>
+          </motion.div>
+
+          <motion.div
+            variants={itemVariants}
+            className="grid gap-5 auto-card-grid"
+            style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))' }}
+          >
+            {BUTLERS.map((butler) => (
+              <div
+                key={butler.id}
+                className="bg-white border border-slate-200/90 rounded-2xl p-5 flex flex-col justify-between hover:border-[#0552A2]/50 transition-all duration-300 shadow-xs"
+              >
+                <div className="flex gap-4">
+                  <img src={butler.avatar} alt={butler.name} className="w-16 h-16 object-cover rounded-xl border border-slate-200 shrink-0" />
+                  <div className="flex-1 flex flex-col gap-1">
+                    <div className="flex justify-between items-start gap-2">
+                      <h3 className="text-sm font-bold text-[#17212B]">{butler.name}</h3>
+                      <span className="text-[10px] font-mono font-bold text-[#0552A2] shrink-0">
+                        ★ {butler.rating.toFixed(1)} ({butler.experience} yrs)
+                      </span>
+                    </div>
+                    <span className="text-[10px] font-mono text-zinc-500">{butler.specialty}</span>
+                    <p className="text-xs text-[#475569] leading-relaxed line-clamp-2 mt-1">{butler.bio}</p>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-1.5 mt-3">
+                  {butler.languages.map((lang) => (
+                    <span key={lang} className="text-[10px] font-mono text-[#475569] bg-slate-50 border border-slate-200/80 px-2 py-0.5 rounded-md">
+                      {lang}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="flex justify-between items-center mt-4 border-t border-slate-100 pt-3">
+                  <div className="text-xs font-mono">
+                    <span className="text-[#64748B] block text-[9px] uppercase">Service Rate</span>
+                    <span className="font-bold text-[#17212B]">${butler.pricePerDay}/day</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleHireButler(butler)}
+                    className="bg-[#0552A2] hover:bg-[#044080] text-white text-[10px] font-mono font-bold px-3.5 py-2 rounded-lg transition-colors cursor-pointer shadow-2xs"
+                  >
+                    Book Butler
+                  </button>
+                </div>
+              </div>
+            ))}
+          </motion.div>
+
+          {hiredButler && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
+              <div className="bg-white border border-[#92C4EA]/40 p-6 rounded-3xl shadow-xl max-w-sm text-center">
+                <h4 className="text-sm font-bold text-[#17212B]">Butler Reserved</h4>
+                <p className="text-xs text-[#475569] mt-1.5 leading-relaxed">
+                  You have successfully booked {hiredButler.name} ({hiredButler.specialty}). Your confirmation is logged in Bookings.
                 </p>
               </div>
             </div>
