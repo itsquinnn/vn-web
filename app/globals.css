@@ -1,0 +1,519 @@
+@import "tailwindcss";
+
+:root {
+  --color-sky-blue: #92c4ea;
+  --color-deep-blue: #0552a2;
+  --color-deep-blue-hover: #043e7b;
+  --color-nepal-red: #ec1f27;
+  --color-golden-yellow: #fdb716;
+  --color-pure-white: #ffffff;
+  --color-glacier-white: #ffffff;
+  --color-foreground: #17212b;
+  --color-muted: #4b5563;
+  --color-muted-light: #9ca3af;
+  --color-surface-muted: #ffffff;
+  --color-surface: #ffffff;
+  --color-border: rgba(5, 82, 162, 0.1);
+  --color-border-subtle: rgba(23, 33, 43, 0.08);
+
+  --font-heading: var(--font-quicksand), "Quicksand", sans-serif;
+  --font-serif: var(--font-quicksand), "Quicksand", sans-serif;
+  --font-sans: var(--font-ibm-plex-sans), "IBM Plex Sans", sans-serif;
+  --font-condensed:
+    var(--font-roboto-condensed), "Roboto Condensed", sans-serif;
+}
+
+@theme {
+  --color-sky-blue: #92c4ea;
+  --color-deep-blue: #0552a2;
+  --color-deep-blue-hover: #043e7b;
+  --color-nepal-red: #ec1f27;
+  --color-golden-yellow: #fdb716;
+  --color-pure-white: #ffffff;
+  --color-glacier-white: #ffffff;
+  --color-foreground: #17212b;
+  --color-muted: #4b5563;
+  --color-muted-light: #9ca3af;
+  --color-surface-muted: #ffffff;
+  --color-surface: #ffffff;
+  --color-border: rgba(5, 82, 162, 0.1);
+  --color-border-subtle: rgba(23, 33, 43, 0.08);
+
+  --font-serif: var(--font-quicksand), "Quicksand", sans-serif;
+  --font-heading: var(--font-quicksand), "Quicksand", sans-serif;
+  --font-sans: var(--font-ibm-plex-sans), "IBM Plex Sans", sans-serif;
+  --font-condensed:
+    var(--font-roboto-condensed), "Roboto Condensed", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+html,
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-pure-white, #ffffff);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  overflow-x: clip;
+  max-width: 100vw;
+  text-rendering: optimizeLegibility;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+button,
+a,
+[role="button"] {
+  touch-action: manipulation;
+  transition:
+    transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.2s ease;
+}
+
+button:active:not(:disabled),
+a:active:not(:disabled),
+[role="button"]:active:not(:disabled) {
+  transform: scale(0.985);
+}
+
+/* ─── Broken Image Placeholder Suppression ────────────────────────────────── */
+img:not([src]),
+img[src=""] {
+  visibility: hidden;
+}
+
+/* ─── Global Scrollbar Removal (Entire Website) ───────────────────────────── */
+/* Hide scrollbar for Chrome, Safari, Edge, Opera, and all WebKit browsers */
+*::-webkit-scrollbar,
+::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+}
+
+*::-webkit-scrollbar-track,
+::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+*::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-thumb {
+  background: transparent !important;
+}
+
+/* Hide scrollbar for Firefox, IE, and standard compliant engines */
+*,
+*::before,
+*::after {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.scrollbar-thin,
+.scrollbar-none {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.scrollbar-thin::-webkit-scrollbar,
+.scrollbar-none::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* ─── Dashboard Pure White Theme ─────────────────────────────────────────── */
+.dashboard-theme {
+  --color-glacier-white: #ffffff;
+  --color-pure-white: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-muted: #ffffff;
+  background-color: #ffffff !important;
+}
+
+/* Ensure clean pure white on all dashboard surfaces, sidebars & cards */
+.dashboard-theme .bg-white,
+.dashboard-theme .bg-\[\#FFFFFF\],
+.dashboard-theme .bg-\[\#ffffff\] {
+  background-color: #ffffff !important;
+}
+
+.dashboard-theme .bg-white\/95 {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.dashboard-theme .bg-white\/90 {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.dashboard-theme .bg-white\/80 {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.dashboard-theme .bg-white\/60 {
+  background-color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Typography Scale */
+.text-heading-1 {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 6vw, 4.75rem);
+  line-height: 1.06;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.text-heading-2 {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.text-heading-3 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.5rem, 2.8vw, 2.25rem);
+  line-height: 1.22;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.text-heading-4 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  line-height: 1.3;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.text-heading-5 {
+  font-family: var(--font-heading);
+  font-size: 1.125rem;
+  line-height: 1.35;
+  font-weight: 600;
+}
+
+.text-body-lg {
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  font-weight: 400;
+}
+
+.text-body {
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.text-body-sm {
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  font-weight: 400;
+}
+
+.text-caption {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* Editorial Buttons */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  background-color: #0552a2;
+  color: #ffffff;
+  padding: 0.875rem 1.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition:
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.25s ease,
+    box-shadow 0.25s ease;
+  box-shadow: 0 4px 14px rgba(5, 82, 162, 0.22);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #043e7b;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(5, 82, 162, 0.3);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  background-color: transparent;
+  color: #0552a2;
+  border: 1.5px solid rgba(5, 82, 162, 0.35);
+  padding: 0.875rem 1.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition:
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.25s ease,
+    box-shadow 0.25s ease;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  border-color: #0552a2;
+  background-color: rgba(5, 82, 162, 0.04);
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: transparent;
+  color: #17212b;
+  padding: 0.625rem 1.25rem;
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-ghost:hover {
+  background-color: rgba(5, 82, 162, 0.06);
+  color: #0552a2;
+}
+
+/* Gradients */
+.gradient-text-gold {
+  background: linear-gradient(135deg, #fdb716 0%, #d97706 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-red {
+  background: linear-gradient(135deg, #ec1f27 0%, #b91c1c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-blue {
+  background: linear-gradient(135deg, #0552a2 0%, #92c4ea 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Layout Utilities */
+@layer utilities {
+  .container {
+    width: 100%;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: clamp(1.25rem, 5vw, 5.5rem);
+    padding-right: clamp(1.25rem, 5vw, 5.5rem);
+  }
+}
+
+/* Image zoom styling */
+.image-container img {
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.image-container:hover img {
+  transform: scale(1.04);
+}
+
+/* Aspect ratios */
+.aspect-cinematic {
+  aspect-ratio: 21 / 9;
+}
+
+.aspect-portrait {
+  aspect-ratio: 3 / 4;
+}
+
+/* Accessibility & Performance: Respect Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Hardware acceleration optimization */
+.gpu-layer {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Smooth GPU-composited section/tab transition */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 6px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-section-enter {
+  animation: fadeSlideIn 0.24s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Off-screen rendering optimization for below-the-fold sections */
+#destinations,
+#experiences,
+#culture,
+#plan-your-trip {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 700px;
+}
+
+/* ─── Continuous Infinite Marquee ─────────────────────────────────────────── */
+@keyframes marquee-scroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+.animate-marquee-infinite {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 45s linear infinite;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+.pause-marquee:hover .animate-marquee-infinite,
+.animate-marquee-infinite:hover {
+  animation-play-state: paused;
+}
+
+/* ─── Content Visibility & Rendering Engine Optimizations ────────────────── */
+#destinations,
+#experiences,
+#culture,
+#plan-your-trip {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 700px;
+}
+
+/* ─── Premium Fluid Sidebar Transition ───────────────────────────────────── */
+.transition-sidebar {
+  transition-property: width, max-width, transform, opacity, padding, margin;
+  transition-duration: 350ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ─── Auto-Responsive Card Grid (Fluid Container-Aware Columns) ───────────── */
+.auto-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  contain: layout inline-size;
+}
+
+.auto-card-grid > * {
+  contain: content;
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 320px;
+}
+
+/* ─── Responsive Journey Card (Container-Aware Sidebar Adaptation) ───────── */
+.journey-card-wrapper {
+  container-type: inline-size;
+}
+
+.journey-responsive-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.journey-responsive-visual {
+  width: 100%;
+  height: 210px;
+  min-height: 190px;
+}
+
+@container (min-width: 660px) {
+  .journey-responsive-card {
+    flex-direction: row !important;
+  }
+  .journey-responsive-visual {
+    width: 42% !important;
+    height: auto !important;
+    min-height: 220px !important;
+  }
+}
+
+/* ─── Responsive Multi-Column Grids (Adapts to Left Sidebar Collapse/Open) ── */
+.responsive-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+@container (min-width: 440px) {
+  .responsive-grid-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@container (min-width: 740px) {
+  .responsive-grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.responsive-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+@container (min-width: 480px) {
+  .responsive-grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
