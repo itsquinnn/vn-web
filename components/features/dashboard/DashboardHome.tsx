@@ -3,6 +3,7 @@
 import React, { useState, useMemo } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTravelStore } from '@/store/useTravelStore';
 import {
   Compass,
   ArrowRight,
@@ -11,6 +12,9 @@ import {
   Hotel,
   ShieldCheck,
   Heart,
+  Search,
+  MapPin,
+  X,
 } from 'lucide-react';
 import {
   RECOMMENDED_DESTINATIONS,
@@ -22,10 +26,27 @@ interface DashboardHomeProps {
   onNavigate?: (id: string) => void;
 }
 
+const PLACE_FILTERS = [
+  { id: 'All', label: 'All Nepal', keywords: [] as string[] },
+  { id: 'everest', label: 'Everest & Koshi', keywords: ['koshi', 'everest', 'ilam'] },
+  { id: 'gandaki', label: 'Pokhara & Annapurna', keywords: ['gandaki', 'ghandruk', 'bandipur', 'mustang'] },
+  { id: 'mustang', label: 'Upper Mustang', keywords: ['mustang'] },
+  { id: 'chitwan', label: 'Chitwan & Bardia', keywords: ['chitwan', 'bardia'] },
+  { id: 'karnali', label: 'Rara & Dolpo', keywords: ['karnali', 'rara', 'dolpo'] },
+  { id: 'bagmati', label: 'Bagmati & Rolwaling', keywords: ['bagmati', 'dolakha', 'tsho-rolpa'] },
+  { id: 'madhesh', label: 'Janakpur & Madhesh', keywords: ['madhesh', 'janakpur'] },
+  { id: 'west', label: 'Far West (Khaptad)', keywords: ['sudurpashchim', 'khaptad'] },
+];
+
 export default function DashboardHome({ onNavigate }: DashboardHomeProps) {
+  const currentUser = useTravelStore((state) => state.currentUser);
   const [wishlist, setWishlist] = useState<WishlistItem[]>(INITIAL_WISHLIST);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [activeRecCategory, setActiveRecCategory] = useState<string>('All');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [selectedPlace, setSelectedPlace] = useState<string>('All');
+
+  const firstName = currentUser?.name?.split(' ')[0] || 'Traveler';
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -49,12 +70,31 @@ export default function DashboardHome({ onNavigate }: DashboardHomeProps) {
   };
 
   const filteredRecommendations = useMemo(() => {
-    if (activeRecCategory === 'All') return RECOMMENDED_DESTINATIONS;
-    return RECOMMENDED_DESTINATIONS.filter((r) => r.category === activeRecCategory);
-  }, [activeRecCategory]);
+    const placeObj = PLACE_FILTERS.find((p) => p.id === selectedPlace);
+    return RECOMMENDED_DESTINATIONS.filter((dest) => {
+      const matchesCategory = activeRecCategory === 'All' || dest.category === activeRecCategory;
+      const matchesPlace =
+        !placeObj ||
+        placeObj.id === 'All' ||
+        placeObj.keywords.some(
+          (kw) =>
+            dest.region.toLowerCase().includes(kw) ||
+            dest.slug.toLowerCase().includes(kw) ||
+            dest.name.toLowerCase().includes(kw)
+        );
+      const q = searchQuery.trim().toLowerCase();
+      const matchesSearch =
+        !q ||
+        dest.name.toLowerCase().includes(q) ||
+        dest.region.toLowerCase().includes(q) ||
+        dest.description.toLowerCase().includes(q) ||
+        dest.category.toLowerCase().includes(q);
+      return matchesCategory && matchesPlace && matchesSearch;
+    });
+  }, [activeRecCategory, selectedPlace, searchQuery]);
 
   return (
-    <div className="w-full space-y-6 sm:space-y-8 pb-8 text-left">
+    <div className="w-full space-y-6 sm:space-y-7 pb-8 text-left">
       <AnimatePresence>
         {toastMessage && (
           <motion.div
@@ -68,6 +108,66 @@ export default function DashboardHome({ onNavigate }: DashboardHomeProps) {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Namaste Greeting + Search + Place Selector */}
+      <div className="space-y-4 pb-2">
+        <div>
+          <h1 className="font-[family-name:var(--font-quicksand)] text-2xl sm:text-3xl font-bold text-[#17212B] tracking-tight">
+            Namaste, {firstName}
+          </h1>
+          <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs sm:text-sm text-[#4B5563] mt-1">
+            From Himalayan passes to quiet tea hills — pick a place below to tailor your recommendations.
+          </p>
+        </div>
+
+        {/* Search Input */}
+        <div className="relative max-w-xl">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search places, valleys, national parks, or regions..."
+            className="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-9 py-2.5 text-xs sm:text-sm text-[#17212B] placeholder:text-slate-400 focus:outline-none focus:border-[#0552A2] transition-colors"
+          />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+              aria-label="Clear search"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          )}
+        </div>
+
+        {/* Places Selector */}
+        <div className="space-y-2">
+          <p className="font-[family-name:var(--font-quicksand)] text-xs font-bold text-[#17212B] flex items-center gap-1.5">
+            <MapPin className="h-3.5 w-3.5 text-[#0552A2]" />
+            <span>Where in Nepal are you dreaming of going?</span>
+          </p>
+          <div className="flex flex-wrap gap-1.5">
+            {PLACE_FILTERS.map((place) => {
+              const active = selectedPlace === place.id;
+              return (
+                <button
+                  key={place.id}
+                  type="button"
+                  onClick={() => setSelectedPlace(place.id)}
+                  className={`text-xs px-3 py-1.5 rounded-full font-semibold transition-colors cursor-pointer border ${
+                    active
+                      ? 'bg-[#0552A2] text-white border-[#0552A2]'
+                      : 'bg-white text-[#4B5563] border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                  }`}
+                >
+                  {place.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
 
       {/* Quick Travel Actions */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -161,94 +261,116 @@ export default function DashboardHome({ onNavigate }: DashboardHomeProps) {
           </div>
         </div>
 
-        <motion.div
-          layout
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5"
-        >
-          {filteredRecommendations.map((dest) => {
-            const isWishlisted = wishlist.some((w) => w.slug === dest.slug);
-            return (
-              <motion.div
-                key={dest.id}
-                layout
-                transition={{
-                  layout: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
-                  opacity: { duration: 0.25 },
-                }}
-                className="group rounded-2xl bg-white border border-slate-200/80 overflow-hidden shadow-xs hover:shadow-md transition-[border-color,box-shadow,transform] duration-300 ease-out flex flex-col justify-between transform-gpu will-change-transform"
-              >
-                <div className="relative h-44 sm:h-48 w-full overflow-hidden bg-[#17212B]">
-                  <Image
-                    src={dest.imageUrl}
-                    alt={dest.name}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 30vw"
-                    unoptimized
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-104"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+        {filteredRecommendations.length === 0 ? (
+          <div className="bg-white border border-slate-200 rounded-2xl p-8 text-center flex flex-col items-center gap-2">
+            <p className="font-[family-name:var(--font-quicksand)] text-sm font-bold text-[#17212B]">
+              No destinations match that combination
+            </p>
+            <p className="text-xs text-slate-500">
+              Try another region or reset your filters to view all destinations.
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedPlace('All');
+                setActiveRecCategory('All');
+                setSearchQuery('');
+              }}
+              className="mt-1 text-xs font-semibold text-[#0552A2] hover:underline cursor-pointer"
+            >
+              Show All Places
+            </button>
+          </div>
+        ) : (
+          <motion.div
+            layout
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5"
+          >
+            {filteredRecommendations.map((dest) => {
+              const isWishlisted = wishlist.some((w) => w.slug === dest.slug);
+              return (
+                <motion.div
+                  key={dest.id}
+                  layout
+                  transition={{
+                    layout: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
+                    opacity: { duration: 0.25 },
+                  }}
+                  className="group rounded-2xl bg-white border border-slate-200/80 overflow-hidden shadow-xs hover:shadow-md transition-[border-color,box-shadow,transform] duration-300 ease-out flex flex-col justify-between transform-gpu will-change-transform"
+                >
+                  <div className="relative h-44 sm:h-48 w-full overflow-hidden bg-[#17212B]">
+                    <Image
+                      src={dest.imageUrl}
+                      alt={dest.name}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 30vw"
+                      unoptimized
+                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-104"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
-                  <div className="absolute top-3.5 left-3.5 bg-white/95 backdrop-blur-md px-2.5 py-0.5 rounded-full text-[11px] font-semibold text-[#0552A2]">
-                    {dest.category}
-                  </div>
-
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleWishlist({
-                        id: `w-${dest.slug}`,
-                        name: dest.name,
-                        slug: dest.slug,
-                        location: dest.region,
-                        category: dest.category,
-                        imageUrl: dest.imageUrl,
-                      });
-                    }}
-                    className={`absolute top-3.5 right-3.5 h-8 w-8 rounded-full flex items-center justify-center transition-all cursor-pointer ${
-                      isWishlisted
-                        ? 'bg-[#EC1F27] text-white shadow-md'
-                        : 'bg-white/80 backdrop-blur-md text-[#17212B] hover:bg-white hover:text-[#EC1F27]'
-                    }`}
-                    title={isWishlisted ? 'Remove from wishlist' : 'Save to wishlist'}
-                  >
-                    <Heart className="h-4 w-4" fill={isWishlisted ? 'currentColor' : 'none'} />
-                  </button>
-
-                  <div className="absolute bottom-3 left-3.5 right-3.5 text-white">
-                    <span className="text-[11px] font-medium text-amber-200 block truncate">
-                      {dest.region} • {dest.elevation}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between gap-3">
-                  <div>
-                    <h4 className="text-sm sm:text-base font-bold font-[family-name:var(--font-quicksand)] text-[#17212B] group-hover:text-[#0552A2] transition-colors leading-snug">
-                      {dest.name}
-                    </h4>
-                    <p className="text-xs text-[#4B5563] mt-1 line-clamp-2 leading-relaxed">
-                      {dest.description}
-                    </p>
-                  </div>
-
-                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                    <span className="text-slate-500 text-[11px]">
-                      Est: {dest.duration}
-                    </span>
+                    <div className="absolute top-3.5 left-3.5 bg-white/95 backdrop-blur-md px-2.5 py-0.5 rounded-full text-[11px] font-semibold text-[#0552A2]">
+                      {dest.category}
+                    </div>
 
                     <button
-                      onClick={() => handleDestinationClick(dest.slug)}
-                      className="font-semibold text-[#0552A2] hover:underline flex items-center gap-1 cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleWishlist({
+                          id: `w-${dest.slug}`,
+                          name: dest.name,
+                          slug: dest.slug,
+                          location: dest.region,
+                          category: dest.category,
+                          imageUrl: dest.imageUrl,
+                        });
+                      }}
+                      className={`absolute top-3.5 right-3.5 h-8 w-8 rounded-full flex items-center justify-center transition-all cursor-pointer ${
+                        isWishlisted
+                          ? 'bg-[#EC1F27] text-white shadow-md'
+                          : 'bg-white/80 backdrop-blur-md text-[#17212B] hover:bg-white hover:text-[#EC1F27]'
+                      }`}
+                      title={isWishlisted ? 'Remove from wishlist' : 'Save to wishlist'}
                     >
-                      <span>Explore</span>
-                      <ArrowRight className="h-3.5 w-3.5" />
+                      <Heart className="h-4 w-4" fill={isWishlisted ? 'currentColor' : 'none'} />
                     </button>
+
+                    <div className="absolute bottom-3 left-3.5 right-3.5 text-white">
+                      <span className="text-[11px] font-medium text-amber-200 block truncate">
+                        {dest.region} • {dest.elevation}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            );
-          })}
-        </motion.div>
+
+                  <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between gap-3">
+                    <div>
+                      <h4 className="text-sm sm:text-base font-bold font-[family-name:var(--font-quicksand)] text-[#17212B] group-hover:text-[#0552A2] transition-colors leading-snug">
+                        {dest.name}
+                      </h4>
+                      <p className="text-xs text-[#4B5563] mt-1 line-clamp-2 leading-relaxed">
+                        {dest.description}
+                      </p>
+                    </div>
+
+                    <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                      <span className="text-slate-500 text-[11px]">
+                        Est: {dest.duration}
+                      </span>
+
+                      <button
+                        onClick={() => handleDestinationClick(dest.slug)}
+                        className="font-semibold text-[#0552A2] hover:underline flex items-center gap-1 cursor-pointer"
+                      >
+                        <span>Explore</span>
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </motion.div>
+        )}
       </div>
 
       {/* Editorial Stories */}

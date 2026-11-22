@@ -8,24 +8,19 @@ import { useTravelStore } from '@/store/useTravelStore';
 import {
   Compass,
   Mountain,
-  Calendar,
-  Clock,
   MapPin,
-  ShieldCheck,
   CheckCircle2,
   ArrowRight,
   ArrowUpRight,
   Search,
   SlidersHorizontal,
-  Sparkles,
   X,
-  Award,
   Zap,
   Trees,
   Landmark,
   Wind,
   Coffee,
-  Check
+  Check,
 } from 'lucide-react';
 
 interface ActivitiesSectionProps {
@@ -35,8 +30,9 @@ interface ActivitiesSectionProps {
 
 export interface ActivityItem {
   id: string;
+  section: 'activities' | 'trekking' | 'mountaineering' | 'wildlife' | 'cultural' | 'ecotourism';
   title: string;
-  category: 'Trekking' | 'Mountaineering' | 'Wildlife' | 'Cultural' | 'Aerial & Action' | 'Eco-Tourism';
+  category: string;
   difficulty: 'Easy' | 'Moderate' | 'Challenging' | 'Technical / Extreme' | 'Moderate to Challenging';
   duration: string;
   maxAltitude: string;
@@ -52,185 +48,665 @@ export interface ActivityItem {
 }
 
 const ACTIVITIES_LIST: ActivityItem[] = [
+  // ── ACTIVITIES & ADVENTURE (Paragliding, Bungee, Zip-line, Rafting, etc.) ──
   {
-    id: 'trekking',
-    title: 'Annapurna Sanctuary & High Pass Loop',
-    category: 'Trekking',
-    difficulty: 'Moderate to Challenging',
-    duration: '10 - 14 Days',
-    maxAltitude: '4,130m',
-    region: 'Annapurna & Gandaki',
-    season: 'Oct–Dec & Mar–May',
-    estimatedCost: 850,
-    image: '/pictures/annapurna-1624804396.jpg',
-    description: 'Walk pristine trails through ancient rhododendron forests into the sacred glacial amphitheater surrounded by towering 7,000m and 8,000m peaks.',
-    highlights: [
-      'Poon Hill sunrise panoramic view of Dhaulagiri & Annapurna',
-      'Glacial amphitheater at Annapurna Base Camp (ABC)',
-      'Natural mineral hot springs relaxation in Jhinu Danda'
-    ],
-    permits: ['ACAP Conservation Permit (Endorsed)', 'TIMS Central Trekker Register Card'],
-    gearRequirement: 'Layered alpine thermal kit, broken-in trekking boots, collapsible poles',
-    guideRequirement: 'Certified NMA / TAAN Mountain Guide + Porter'
-  },
-  {
-    id: 'mountaineering',
-    title: 'Ama Dablam & Island Peak Ascents',
-    category: 'Mountaineering',
-    difficulty: 'Technical / Extreme',
-    duration: '24 - 30 Days',
-    maxAltitude: '6,812m',
-    region: 'Khumbu (Everest)',
-    season: 'April–May & Oct–Nov',
-    estimatedCost: 4200,
-    image: '/pictures/Everest_tk_trekker_(5)-1630474503.jpg',
-    description: 'Technical alpine ridge climbing on the "Matterhorn of the Himalayas", accompanied by master Sherpa pathfinders with high-altitude oxygen telemetry.',
-    highlights: [
-      'Exhilarating knife-edge granite and ice ridge climbing',
-      'Acclimatization camp perched above the clouds',
-      'Unmatched summit panoramas over Everest, Lhotse, and Makalu'
-    ],
-    permits: ['NMA Technical Peak Climbing Permit', 'Sagarmatha National Park Permit'],
-    gearRequirement: 'Full technical alpine kit (harness, crampons, ice axes, 8000m down suit)',
-    guideRequirement: 'Mandatory IFMGA / UIAGM Certified Lead Sherpa'
-  },
-  {
-    id: 'wildlife',
-    title: 'Chitwan & Bardia Deep Jungle Safari',
-    category: 'Wildlife',
+    id: 'paragliding-pokhara',
+    section: 'activities',
+    title: 'Paragliding from Sarangkot',
+    category: 'Aerial',
     difficulty: 'Easy',
-    duration: '3 - 5 Days',
-    maxAltitude: '150m',
-    region: 'Terai Lowlands',
-    season: 'October – April',
-    estimatedCost: 380,
-    image: '/pictures/Chitwan_ss_jungleactivities-1630491399.JPG',
-    description: 'Track endangered Royal Bengal tigers, one-horned rhinos, and wild elephant herds on foot and by silent canoe down pristine river corridors.',
-    highlights: [
-      'Guided on-foot tiger tracking with veteran naturalists',
-      'Silent dugout wooden canoe drift for rare gharial crocodiles',
-      'Tharu indigenous cultural dance and local village homestay'
-    ],
-    permits: ['Chitwan / Bardia National Park Wildlife Clearances'],
-    gearRequirement: 'Neutral khaki safari apparel, 8x42 binoculars, sun protection',
-    guideRequirement: 'Senior Wildlife Naturalist & Indigenous Tracker'
-  },
-  {
-    id: 'cultural',
-    title: 'Kathmandu Valley UNESCO Heritage Walk',
-    category: 'Cultural',
-    difficulty: 'Easy',
-    duration: '2 - 4 Days',
-    maxAltitude: '1,400m',
-    region: 'Kathmandu Valley',
-    season: 'Year-round',
-    estimatedCost: 220,
-    image: '/pictures/Kathmandu_Durbar_Square___Susheel_Shrestha-1629279698.jpg',
-    description: 'Immerse in seven clustered medieval World Heritage sanctuaries, sacred Newari bronze artisan courtyards, and ancient Buddhist stupa rituals.',
-    highlights: [
-      'Centuries-old peacock windows and pottery squares of Bhaktapur',
-      'Boudhanath stupa evening prayer flag circumambulation',
-      'Living Goddess (Kumari Ghar) sacred courtyard audience'
-    ],
-    permits: ['Kathmandu Valley UNESCO Heritage Unified Ticket'],
-    gearRequirement: 'Comfortable slip-on walking shoes, modest temple clothing',
-    guideRequirement: 'Licensed Heritage Historian & Cultural Guide'
-  },
-  {
-    id: 'ecotourism',
-    title: 'Highland Organic Tea & Homestay Circuit',
-    category: 'Eco-Tourism',
-    difficulty: 'Easy',
-    duration: '4 - 6 Days',
-    maxAltitude: '2,200m',
-    region: 'Ilam & Eastern Hills',
-    season: 'March – November',
-    estimatedCost: 320,
-    image: '/pictures/Illam-1631441491.jpg',
-    description: 'Experience authentic mountain hospitality at community-run tea cooperatives, learn artisan cardamom curing, and savor farm-to-table dining.',
-    highlights: [
-      'Hands-on tea plucking in misty organic rolling hills',
-      'Traditional stone hearth cooking with host families',
-      'Scenic ridge hikes overlooking Mt. Kanchenjunga'
-    ],
-    permits: ['Community Homestay Cooperative Registry'],
-    gearRequirement: 'Light daypack, breathable warm fleece, personal journal',
-    guideRequirement: 'Local Cooperative Village Ambassador'
-  },
-  {
-    id: 'adventure',
-    title: 'Pokhara Aerial Paragliding & Ultralight',
-    category: 'Aerial & Action',
-    difficulty: 'Moderate',
-    duration: '1 - 2 Days',
-    maxAltitude: '1,800m',
+    duration: '30 – 45 mins',
+    maxAltitude: '1,600m',
     region: 'Pokhara (Sarangkot)',
-    season: 'September – May',
-    estimatedCost: 140,
+    season: 'Sep – May',
+    estimatedCost: 95,
     image: '/pictures/Pokhara_ss_lt_(4)-1624818140.jpg',
-    description: 'Launch from Sarangkot ridge into thermal updrafts above Phewa Lake, soaring with mountain eagles against the towering Annapurna backdrop.',
+    description: 'Take off from Sarangkot ridge above Phewa Lake with a certified tandem pilot and soar alongside the Annapurna range.',
     highlights: [
-      '30-minute high-altitude tandem thermal flight',
-      'Stunning aerial reflections of Machapuchare (Fishtail)',
-      'Complimentary HD action camera recording & landing certificate'
+      '30-minute tandem thermal flight over Phewa Lake',
+      'Panoramic views of Machapuchare (Fishtail)',
+      'Hotel pickup & drop-off in Lakeside Pokhara',
     ],
-    permits: ['CAAN Aerial Tourism Aviation Clearance'],
-    gearRequirement: 'Windproof light jacket, sport shoes, UV sunglasses',
-    guideRequirement: 'APPI / FAI International Certified Tandem Pilot'
+    permits: ['Civil Aviation Paragliding Clearance'],
+    gearRequirement: 'Windproof jacket, closed-toe shoes, sunglasses',
+    guideRequirement: 'APPI / FAI Certified Tandem Pilot',
   },
   {
-    id: 'rafting',
-    title: 'Trishuli & Bhote Koshi Whitewater Rafting',
-    category: 'Aerial & Action',
+    id: 'bungee-kushma',
+    section: 'activities',
+    title: 'Bungee Jumping (Kushma & Bhote Koshi)',
+    category: 'Adventure',
     difficulty: 'Moderate',
-    duration: '2 - 3 Days',
-    maxAltitude: '950m',
-    region: 'Central Himalayan Rivers',
-    season: 'Sept–Dec & Mar–May',
-    estimatedCost: 190,
+    duration: 'Half Day',
+    maxAltitude: '228m Drop',
+    region: 'Kushma / Sindhupalchok',
+    season: 'Year-round',
+    estimatedCost: 110,
     image: '/pictures/Pokhara_oy_lt_(2)-1624817867.jpg',
-    description: 'Charge through Class III-IV glacial whitewater gorges fed by Himalayan snowmelt, followed by secluded sandy beach wilderness camping under the stars.',
+    description: 'Leap from one of the world’s highest cliff-top suspension bungee bridges over the Kali Gandaki or Bhote Koshi river gorge.',
     highlights: [
-      'Thrilling canyon rapids with names like Twin Rock & Surprise',
-      'White sand riverbank campfire barbecues and stargazing',
-      'Cliff jumping and natural canyon waterfall swims'
+      '228m Kushma Cliff jump or 160m Bhote Koshi canyon jump',
+      'International safety harness & double-check system',
+      'Optional canyon swing combo available on site',
     ],
-    permits: ['Nepal River Tourism Authority Entry Token'],
-    gearRequirement: 'Quick-dry sportswear, waterproof dry bag, river sandals',
-    guideRequirement: 'IRF Certified River Captain & Safety Kayak Team'
+    permits: ['On-site safety waiver & registration'],
+    gearRequirement: 'Comfortable athletic clothing and secure sneakers',
+    guideRequirement: 'Certified Jump Master & Safety Crew',
   },
   {
-    id: 'everest-heli',
-    title: 'Everest Luxury Champagne Heli Landing',
-    category: 'Aerial & Action',
+    id: 'zipline-pokhara',
+    section: 'activities',
+    title: 'HighGround Zip-Liner Pokhara',
+    category: 'Aerial',
     difficulty: 'Easy',
-    duration: 'Half Day (4 hrs)',
-    maxAltitude: '5,545m (Kala Patthar)',
-    region: 'Khumbu (Everest)',
+    duration: '2 hours',
+    maxAltitude: '1,625m',
+    region: 'Sarangkot · Pokhara',
+    season: 'Year-round',
+    estimatedCost: 85,
+    image: '/pictures/poonhill_pg_adventure-1624431033.jpeg',
+    description: 'Ride one of the steepest and longest zip-lines in the world, dropping 600 meters vertically at speeds over 100 km/h.',
+    highlights: [
+      '1.8 km zip-line from Sarangkot to Hemja',
+      'Direct views of the Annapurna massif during descent',
+      'Shuttle transfer from Pokhara Lakeside',
+    ],
+    permits: ['Included in activity pass'],
+    gearRequirement: 'Secure footwear, no loose scarves',
+    guideRequirement: 'Trained Zip-Line Operations Team',
+  },
+  {
+    id: 'rafting-trishuli',
+    section: 'activities',
+    title: 'Trishuli & Bhote Koshi Whitewater Rafting',
+    category: 'Water',
+    difficulty: 'Moderate',
+    duration: '1 – 2 Days',
+    maxAltitude: '950m',
+    region: 'Trishuli / Bhote Koshi',
+    season: 'Sep – Dec & Mar – May',
+    estimatedCost: 75,
+    image: '/pictures/Pokhara_oy_lt_(2)-1624817867.jpg',
+    description: 'Navigate Class III–IV glacial river rapids through steep Himalayan gorges with riverside lunch or overnight beach camp.',
+    highlights: [
+      'Class III–IV rapids with full safety kayak support',
+      'Riverside lunch and optional canyon cliff jumps',
+      'Life jacket, helmet, paddle & dry bags provided',
+    ],
+    permits: ['Nepal River Rafting Permit'],
+    gearRequirement: 'Quick-dry shorts/shirt, river sandals, sunscreen',
+    guideRequirement: 'IRF Certified River Guide & Safety Kayaker',
+  },
+  {
+    id: 'ultralight-pokhara',
+    section: 'activities',
+    title: 'Ultralight Flight over Pokhara Valley',
+    category: 'Aerial',
+    difficulty: 'Easy',
+    duration: '30 – 60 mins',
+    maxAltitude: '3,500m',
+    region: 'Pokhara Airport',
+    season: 'Sep – May',
+    estimatedCost: 140,
+    image: '/pictures/annapurna-1624804396.jpg',
+    description: 'Fly in a light two-seat aircraft directly toward the Annapurna and Dhaulagiri ridges at sunrise.',
+    highlights: [
+      'Close-up aerial views of Machapuchare & Annapurna South',
+      '15, 30, or 60-minute flight options',
+      'Early morning smooth-air departure',
+    ],
+    permits: ['CAAN Aviation Clearance'],
+    gearRequirement: 'Warm windproof jacket (cool at altitude)',
+    guideRequirement: 'Licensed Ultralight Captain',
+  },
+  {
+    id: 'mountain-biking',
+    section: 'activities',
+    title: 'Kathmandu Valley & Mustang Mountain Biking',
+    category: 'Cycling',
+    difficulty: 'Moderate',
+    duration: '1 – 3 Days',
+    maxAltitude: '2,200m',
+    region: 'Shivapuri / Nagarkot / Pokhara',
+    season: 'Oct – May',
+    estimatedCost: 120,
+    image: '/pictures/Ghale_Gaon_Photo_001-1634812841.jpg',
+    description: 'Ride terraced ridge trails, pine forests, and rural Newari villages around the Kathmandu rim or Pokhara valley.',
+    highlights: [
+      'Full-suspension mountain bike & helmet included',
+      'Ride through Shivapuri National Park & Nagarkot ridge',
+      'Support vehicle for uphill transfers on day tours',
+    ],
+    permits: ['Shivapuri National Park Entry'],
+    gearRequirement: 'Cycling gloves, athletic shoes, hydration pack',
+    guideRequirement: 'Certified Trail Bike Guide',
+  },
+  {
+    id: 'canyoning-jalabire',
+    section: 'activities',
+    title: 'Jalabire & Sundarijal Waterfall Canyoning',
+    category: 'Water',
+    difficulty: 'Moderate',
+    duration: 'Full Day',
+    maxAltitude: '1,100m',
+    region: 'Chitwan Highway / Kathmandu',
+    season: 'Sep – Jun',
+    estimatedCost: 90,
+    image: '/pictures/Chitwan_ss_lt_(17)-1624813756.jpg',
+    description: 'Abseil down cascading canyon waterfalls, slide down natural rock chutes, and jump into crystal-clear emerald pools.',
+    highlights: [
+      'Multiple waterfall rappels up to 45 meters',
+      'Wetsuit, harness, helmet, and ropes provided',
+      'Ideal day trip between Kathmandu and Chitwan/Pokhara',
+    ],
+    permits: ['Local Canyon Access Fee'],
+    gearRequirement: 'Swimwear, towel, spare dry clothes',
+    guideRequirement: 'Certified Canyoning Instructor',
+  },
+  {
+    id: 'everest-heli-flight',
+    section: 'activities',
+    title: 'Everest Scenic Helicopter Flight',
+    category: 'Aerial',
+    difficulty: 'Easy',
+    duration: '4 hours',
+    maxAltitude: '5,545m',
+    region: 'Kathmandu – Khumbu',
     season: 'Year-round',
     estimatedCost: 1250,
     image: '/pictures/everest_(1)-1624869402.jpg',
-    description: 'Board an Airbus H125 helicopter from Kathmandu for a scenic alpine flight, landing directly at Kala Patthar for a champagne breakfast overlooking Everest.',
+    description: 'Fly from Kathmandu into the heart of the Khumbu with a brief landing near Kala Patthar and breakfast at Hotel Everest View.',
     highlights: [
-      'Touchdown at Kala Patthar (5,545m) with direct view of Everest Summit',
-      'Champagne breakfast on the outdoor terrace of Hotel Everest View',
-      'Aerial flyby over Tengboche Monastery and the Khumbu Icefall'
+      'Close-up views of Mount Everest, Lhotse & Ama Dablam',
+      'Stopover at Hotel Everest View (3,880m)',
+      'Return to Kathmandu the same morning',
     ],
-    permits: ['Sagarmatha High Altitude Aviation Clearance'],
-    gearRequirement: 'Insulated down jacket, warm beanie, alpine sunglasses',
-    guideRequirement: 'Senior Himalayan High-Altitude Flight Captain'
-  }
+    permits: ['Sagarmatha National Park Entry'],
+    gearRequirement: 'Down jacket, sunglasses, warm gloves',
+    guideRequirement: 'Experienced High-Altitude Helicopter Pilot',
+  },
+
+  // ── TREKKING PLACES ──
+  {
+    id: 'trek-ebc',
+    section: 'trekking',
+    title: 'Everest Base Camp (Khumbu)',
+    category: 'Classic Trek',
+    difficulty: 'Challenging',
+    duration: '12 – 14 Days',
+    maxAltitude: '5,364m',
+    region: 'Solukhumbu · Koshi',
+    season: 'Mar – May & Oct – Dec',
+    estimatedCost: 1350,
+    image: '/pictures/Everest_tk_trekker_(5)-1630474503.jpg',
+    description: 'The classic Himalayan trek through Namche Bazaar, Tengboche Monastery, and Lobuche to Everest Base Camp and Kala Patthar.',
+    highlights: [
+      'Sunrise from Kala Patthar (5,545m) facing Everest',
+      'Acclimatization days in Namche Bazaar & Dingboche',
+      'Suspension bridges & Sherpa mountain villages',
+    ],
+    permits: ['Sagarmatha National Park Permit', 'Khumbu Rural Municipality Fee', 'TIMS Card'],
+    gearRequirement: 'Layered thermal kit, -10°C sleeping bag, trekking boots',
+    guideRequirement: 'Licensed Trekking Guide + Optional Porter',
+  },
+  {
+    id: 'trek-abc',
+    section: 'trekking',
+    title: 'Annapurna Base Camp (Sanctuary)',
+    category: 'Classic Trek',
+    difficulty: 'Moderate',
+    duration: '7 – 10 Days',
+    maxAltitude: '4,130m',
+    region: 'Kaski · Gandaki',
+    season: 'Mar – May & Oct – Dec',
+    estimatedCost: 780,
+    image: '/pictures/annapurna-1624804396.jpg',
+    description: 'Walk from terraced Gurung villages and rhododendron forests into the glacial amphitheater beneath Annapurna I and Machapuchare.',
+    highlights: [
+      '360° glacier bowl at Annapurna Base Camp (4,130m)',
+      'Natural hot springs at Jhinu Danda',
+      'Easy access from Pokhara',
+    ],
+    permits: ['ACAP Conservation Permit', 'TIMS Card'],
+    gearRequirement: 'Waterproof shell, warm fleece, broken-in boots',
+    guideRequirement: 'Licensed Guide Recommended / Required',
+  },
+  {
+    id: 'trek-langtang',
+    section: 'trekking',
+    title: 'Langtang Valley & Kyanjin Ri',
+    category: 'Valley Trek',
+    difficulty: 'Moderate',
+    duration: '7 – 9 Days',
+    maxAltitude: '4,773m',
+    region: 'Rasuwa · Bagmati',
+    season: 'Mar – May & Oct – Nov',
+    estimatedCost: 650,
+    image: '/pictures/poonhill_pg_adventure-1624431033.jpeg',
+    description: 'Nepal’s closest high-mountain valley trek from Kathmandu, rich in Tamang culture, yak pastures, and glacier viewpoints.',
+    highlights: [
+      'No domestic flight required (drive from Kathmandu)',
+      'Panoramic hike up Kyanjin Ri (4,773m)',
+      'Kyanjin Gompa monastery & local yak cheese',
+    ],
+    permits: ['Langtang National Park Permit', 'TIMS Card'],
+    gearRequirement: 'Warm down layer, trekking poles, daypack',
+    guideRequirement: 'Licensed Trekking Guide',
+  },
+  {
+    id: 'trek-manaslu',
+    section: 'trekking',
+    title: 'Manaslu Circuit & Larkya La Pass',
+    category: 'Circuit Trek',
+    difficulty: 'Challenging',
+    duration: '13 – 16 Days',
+    maxAltitude: '5,160m',
+    region: 'Gorkha · Gandaki',
+    season: 'Mar – May & Sep – Nov',
+    estimatedCost: 1380,
+    image: '/pictures/Manaslu_View_from_Lho-1624808940.jpg',
+    description: 'A quieter, remote circuit around the world’s eighth-highest peak crossing the dramatic Larkya La high pass.',
+    highlights: [
+      'Cross Larkya La Pass (5,160m) with glacier views',
+      'Tibetan-influenced villages of Samagaon & Samdo',
+      'Birendra Lake & Pungyen Gompa side hike',
+    ],
+    permits: ['Manaslu Restricted Area Permit (MRAP)', 'MCAP', 'ACAP'],
+    gearRequirement: 'Microspikes, -15°C sleeping bag, 4-season layers',
+    guideRequirement: 'Mandatory Licensed Guide (Min. 2 Trekkers for RAP)',
+  },
+  {
+    id: 'trek-mardi',
+    section: 'trekking',
+    title: 'Mardi Himal Ridge Trek',
+    category: 'Short Trek',
+    difficulty: 'Moderate',
+    duration: '5 – 7 Days',
+    maxAltitude: '4,500m',
+    region: 'Kaski · Gandaki',
+    season: 'Mar – May & Oct – Dec',
+    estimatedCost: 520,
+    image: '/pictures/Dhaulagiri_1626729219-1635169360.jpeg',
+    description: 'A scenic ridge-line trail east of Annapurna Base Camp offering close-up sunrise views of Machapuchare.',
+    highlights: [
+      'Ridge walking above the clouds from High Camp',
+      'Short 5–7 day duration starting from Pokhara',
+      'Quiet forest trails and teahouse hospitality',
+    ],
+    permits: ['ACAP Conservation Permit', 'TIMS Card'],
+    gearRequirement: 'Warm jacket, headlamp for sunrise ridge hike',
+    guideRequirement: 'Licensed Trekking Guide',
+  },
+  {
+    id: 'trek-mustang',
+    section: 'trekking',
+    title: 'Upper Mustang (Lo Manthang)',
+    category: 'Restricted Area',
+    difficulty: 'Moderate',
+    duration: '10 – 12 Days',
+    maxAltitude: '3,840m',
+    region: 'Mustang · Gandaki',
+    season: 'Apr – Nov (Monsoon-friendly)',
+    estimatedCost: 1850,
+    image: '/pictures/mustang_tk_people-1624440754.jpeg',
+    description: 'Explore the trans-Himalayan rain-shadow desert, ancient sky caves, and the walled medieval kingdom of Lo Manthang.',
+    highlights: [
+      'Dry rain-shadow climate ideal even during monsoon',
+      'Walled city of Lo Manthang & Chhoser cave dwellings',
+      'Ochre cliffs and centuries-old monasteries',
+    ],
+    permits: ['Upper Mustang Restricted Area Permit ($500)', 'ACAP'],
+    gearRequirement: 'Sun protection, windproof layers, dust buff',
+    guideRequirement: 'Mandatory Licensed Guide',
+  },
+
+  // ── MOUNTAINEERING PEAKS ──
+  {
+    id: 'peak-island',
+    section: 'mountaineering',
+    title: 'Island Peak (Imja Tse) Climb',
+    category: 'Trekking Peak',
+    difficulty: 'Challenging',
+    duration: '16 – 18 Days',
+    maxAltitude: '6,189m',
+    region: 'Khumbu · Koshi',
+    season: 'Apr – May & Oct – Nov',
+    estimatedCost: 2200,
+    image: '/pictures/Everest_tk_trekker_(5)-1630474503.jpg',
+    description: 'Nepal’s most popular 6,000m trekking peak, combining the Everest Base Camp approach with a fixed-line glacier summit push.',
+    highlights: [
+      'Pre-climb fixed-line & crampon training at Base Camp',
+      'Summit ridge overlooking Lhotse South Face',
+      'Great first Himalayan 6,000m peak',
+    ],
+    permits: ['NMA Island Peak Climbing Permit', 'Sagarmatha National Park'],
+    gearRequirement: 'Mountaineering boots, crampons, harness, ice axe, ascender',
+    guideRequirement: 'Certified IFMGA / NMA Climbing Guide',
+  },
+  {
+    id: 'peak-amadablam',
+    section: 'mountaineering',
+    title: 'Ama Dablam Technical Expedition',
+    category: 'Expedition Peak',
+    difficulty: 'Technical / Extreme',
+    duration: '24 – 30 Days',
+    maxAltitude: '6,812m',
+    region: 'Khumbu · Koshi',
+    season: 'Apr – May & Oct – Nov',
+    estimatedCost: 4500,
+    image: '/pictures/everest_(1)-1624869402.jpg',
+    description: 'A classic technical rock, snow, and ice climb up the southwest ridge of one of the Himalayas’ most iconic peaks.',
+    highlights: [
+      'Three high camps perched along dramatic granite ridges',
+      'Summit views of Everest, Lhotse, Makalu & Cho Oyu',
+      'Full Sherpa rope-fixing & high-camp support',
+    ],
+    permits: ['Dept. of Tourism Expedition Permit', 'Sagarmatha National Park'],
+    gearRequirement: 'Full technical alpine kit, 8000m/6000m double boots, down suit',
+    guideRequirement: 'IFMGA / UIAGM Certified Lead Climbing Sherpa',
+  },
+  {
+    id: 'peak-mera',
+    section: 'mountaineering',
+    title: 'Mera Peak Summit (Hinku Valley)',
+    category: 'Trekking Peak',
+    difficulty: 'Moderate to Challenging',
+    duration: '15 – 18 Days',
+    maxAltitude: '6,476m',
+    region: 'Solukhumbu · Koshi',
+    season: 'Apr – May & Oct – Nov',
+    estimatedCost: 2350,
+    image: '/pictures/Choyou_1626729673-1635169288.jpeg',
+    description: 'Nepal’s highest permitted trekking peak, featuring a non-technical glacier ascent with views of five 8,000m giants.',
+    highlights: [
+      'Panoramic summit view of Everest, Lhotse, Makalu, Cho Oyu & Kanchenjunga',
+      'Gradual acclimatization through remote Hinku Valley',
+      'Ideal for strong trekkers stepping into 6,000m+',
+    ],
+    permits: ['NMA Mera Peak Permit', 'Makalu Barun National Park'],
+    gearRequirement: 'Double mountaineering boots, crampons, harness, down jacket',
+    guideRequirement: 'NMA Certified Climbing Guide',
+  },
+  {
+    id: 'peak-lobuche',
+    section: 'mountaineering',
+    title: 'Lobuche East Summit',
+    category: 'Trekking Peak',
+    difficulty: 'Challenging',
+    duration: '16 – 18 Days',
+    maxAltitude: '6,119m',
+    region: 'Khumbu · Koshi',
+    season: 'Apr – May & Oct – Nov',
+    estimatedCost: 2150,
+    image: '/pictures/Manaslu_View_from_Lho-1624808940.jpg',
+    description: 'A steep snow-and-ice ridge climb near Everest Base Camp with sweeping views across the Khumbu Glacier.',
+    highlights: [
+      'High Camp set on rocky moraine at 5,400m',
+      'Steep 45° snow-and-ice fixed-rope ascent',
+      'Combines smoothly with Everest Base Camp trek',
+    ],
+    permits: ['NMA Lobuche East Permit', 'Sagarmatha National Park'],
+    gearRequirement: 'Crampons, ice axe, Jumar ascender, figure-8 descender',
+    guideRequirement: 'NMA / IFMGA Certified Climbing Guide',
+  },
+
+  // ── WILDLIFE PLACES ──
+  {
+    id: 'wild-chitwan',
+    section: 'wildlife',
+    title: 'Chitwan National Park Safari',
+    category: 'UNESCO Park',
+    difficulty: 'Easy',
+    duration: '2 – 4 Days',
+    maxAltitude: '150m',
+    region: 'Chitwan · Bagmati',
+    season: 'Oct – Apr',
+    estimatedCost: 340,
+    image: '/pictures/Chitwan_ss_jungleactivities-1630491399.JPG',
+    description: 'Spot one-horned rhinoceros, gharial crocodiles, and Bengal tigers via jeep safari, dugout canoe, and guided jungle walks.',
+    highlights: [
+      '4x4 jungle jeep safari & Rapti River canoe drift',
+      'High probability of one-horned rhino sightings',
+      'Tharu cultural village walk & evening program',
+    ],
+    permits: ['Chitwan National Park Entry Permit'],
+    gearRequirement: 'Neutral khaki clothing, binoculars, insect repellent',
+    guideRequirement: 'Licensed Jungle Naturalist',
+  },
+  {
+    id: 'wild-bardia',
+    section: 'wildlife',
+    title: 'Bardia National Park Tiger Tracking',
+    category: 'Wilderness',
+    difficulty: 'Easy',
+    duration: '3 – 5 Days',
+    maxAltitude: '152m',
+    region: 'Bardiya · Lumbini',
+    season: 'Oct – Apr',
+    estimatedCost: 420,
+    image: '/pictures/Bardiya_ss_lt_(12)-1624817484.jpg',
+    description: 'Nepal’s largest undisturbed Terai wilderness, famous for quiet walking safaris and strong Royal Bengal Tiger sightings.',
+    highlights: [
+      'Full-day guided walking & jeep safaris along Karnali River',
+      'Wild Asian elephants, Gangetic dolphins & Bengal tigers',
+      'Un-crowded eco-lodges near Thakurdwara',
+    ],
+    permits: ['Bardia National Park Entry Permit'],
+    gearRequirement: 'Neutral-toned breathable clothes, 8x42 binoculars',
+    guideRequirement: 'Senior Wildlife Tracker & Naturalist',
+  },
+  {
+    id: 'wild-koshi',
+    section: 'wildlife',
+    title: 'Koshi Tappu Wildlife Reserve',
+    category: 'Birding & Wetlands',
+    difficulty: 'Easy',
+    duration: '2 – 3 Days',
+    maxAltitude: '90m',
+    region: 'Sunsari · Koshi',
+    season: 'Nov – Mar',
+    estimatedCost: 260,
+    image: '/pictures/Chitwan_ss_lt_(17)-1624813756.jpg',
+    description: 'Premier wetland sanctuary in eastern Nepal home to over 500 bird species, wild water buffalo (Arna), and river dolphins.',
+    highlights: [
+      'Over 500 migratory and resident bird species',
+      'Last remaining wild water buffalo habitat in Nepal',
+      'Peaceful boat rides on the Koshi River',
+    ],
+    permits: ['Koshi Tappu Reserve Permit'],
+    gearRequirement: 'Spotting scope / binoculars, sun hat, light jacket',
+    guideRequirement: 'Ornithologist / Wetland Naturalist',
+  },
+
+  // ── CULTURAL & RELIGIOUS PLACES ──
+  {
+    id: 'cult-ktm',
+    section: 'cultural',
+    title: 'Kathmandu, Patan & Bhaktapur Heritage',
+    category: 'UNESCO World Heritage',
+    difficulty: 'Easy',
+    duration: '1 – 3 Days',
+    maxAltitude: '1,400m',
+    region: 'Kathmandu Valley',
+    season: 'Year-round',
+    estimatedCost: 140,
+    image: '/pictures/Kathmandu_Durbar_Square___Susheel_Shrestha-1629279698.jpg',
+    description: 'Walk medieval brick courtyards, pagoda temples, and Newari woodcarving squares across the valley’s three royal cities.',
+    highlights: [
+      'Bhaktapur Nyatapola Temple & Pottery Square',
+      'Patan Museum & Golden Temple (Hiranya Varna)',
+      'Kathmandu Durbar Square & Kumari Ghar',
+    ],
+    permits: ['Municipal Heritage Site Tickets'],
+    gearRequirement: 'Comfortable walking shoes, modest attire',
+    guideRequirement: 'Licensed Cultural Heritage Guide',
+  },
+  {
+    id: 'cult-lumbini',
+    section: 'cultural',
+    title: 'Lumbini Sacred Garden (Birthplace of Buddha)',
+    category: 'Pilgrimage',
+    difficulty: 'Easy',
+    duration: '2 – 3 Days',
+    maxAltitude: '150m',
+    region: 'Rupandehi · Lumbini',
+    season: 'Oct – Apr',
+    estimatedCost: 210,
+    image: '/pictures/Lumbini_tk_pilgrimage_(3)-1624819677.jpg',
+    description: 'Visit the Maya Devi Temple, the 3rd-century BC Ashokan Pillar, and international Buddhist monasteries in peaceful parkland.',
+    highlights: [
+      'Maya Devi Temple & Sacred Marker Stone',
+      'Emperor Ashoka Pillar & Puskarini Sacred Pond',
+      'Cycle or rickshaw tour of the Monastic Zone',
+    ],
+    permits: ['Lumbini Development Trust Entry'],
+    gearRequirement: 'Light cotton clothing, slip-off shoes for temples',
+    guideRequirement: 'Optional Local Heritage Guide',
+  },
+  {
+    id: 'cult-janakpur',
+    section: 'cultural',
+    title: 'Janakpur & Janaki Mandir',
+    category: 'Pilgrimage & Art',
+    difficulty: 'Easy',
+    duration: '2 Days',
+    maxAltitude: '74m',
+    region: 'Dhanusha · Madhesh',
+    season: 'Oct – Mar',
+    estimatedCost: 180,
+    image: '/pictures/Janakpur_ss_pilgrimage_(1)-1624818475.jpg',
+    description: 'Explore the marble palace temple of Janaki Mandir, sacred ponds, and vibrant Maithil folk painting communities.',
+    highlights: [
+      'Evening aarti at the marble Janaki Mandir',
+      'Janakpur Women’s Development Center (Mithila art)',
+      'Ganga Sagar & Dhanush Sagar sacred ponds',
+    ],
+    permits: ['No special permit required'],
+    gearRequirement: 'Modest temple attire, light footwear',
+    guideRequirement: 'Optional Local Cultural Guide',
+  },
+  {
+    id: 'cult-stupas',
+    section: 'cultural',
+    title: 'Boudhanath, Swayambhunath & Pashupatinath',
+    category: 'Sacred Circuit',
+    difficulty: 'Easy',
+    duration: '1 Day',
+    maxAltitude: '1,400m',
+    region: 'Kathmandu Valley',
+    season: 'Year-round',
+    estimatedCost: 95,
+    image: '/pictures/boudha-1624805151.jpg',
+    description: 'Experience Nepal’s living Buddhist and Hindu traditions from sunrise butter lamps at Swayambhu to evening kora at Boudha.',
+    highlights: [
+      'Circumambulate Boudhanath Stupa at dusk',
+      'Hilltop panoramic views from Swayambhunath',
+      'Bagmati River ghats at Pashupatinath Temple',
+    ],
+    permits: ['Heritage Entry Tickets'],
+    gearRequirement: 'Modest clothing, walking shoes',
+    guideRequirement: 'Licensed City Guide',
+  },
+
+  // ── ECO-TOURISM & HOMESTAYS ──
+  {
+    id: 'eco-ilam',
+    section: 'ecotourism',
+    title: 'Ilam Rolling Tea Highlands',
+    category: 'Tea & Nature',
+    difficulty: 'Easy',
+    duration: '3 – 5 Days',
+    maxAltitude: '1,673m',
+    region: 'Ilam · Koshi',
+    season: 'Mar – Nov',
+    estimatedCost: 310,
+    image: '/pictures/Illam-1631441491.jpg',
+    description: 'Stay with organic tea farming families in misty eastern hills with sunrise views toward Mount Kanchenjunga from Shree Antu.',
+    highlights: [
+      'Sunrise over Kanchenjunga from Antu Danda',
+      'Organic orthodox tea estate walks & tastings',
+      'Mai Pokhari wetland & cardamom farms',
+    ],
+    permits: ['No special trekking permit needed'],
+    gearRequirement: 'Light fleece, rain jacket, walking shoes',
+    guideRequirement: 'Local Homestay Host / Guide',
+  },
+  {
+    id: 'eco-ghalegaon',
+    section: 'ecotourism',
+    title: 'Ghale Gaon Gurung Community Homestay',
+    category: 'Community Tourism',
+    difficulty: 'Easy',
+    duration: '2 – 4 Days',
+    maxAltitude: '2,100m',
+    region: 'Lamjung · Gandaki',
+    season: 'Sep – May',
+    estimatedCost: 220,
+    image: '/pictures/Ghale_Gaon_Photo_001-1634812841.jpg',
+    description: 'Experience South Asia’s model community-run village homestay perched beneath Lamjung Himal and Manaslu.',
+    highlights: [
+      'Traditional stone houses & Gurung hospitality',
+      'Farm-to-table millet, gundruk, and organic meals',
+      'Views of Annapurna II, Lamjung Himal & Manaslu',
+    ],
+    permits: ['ACAP Conservation Permit'],
+    gearRequirement: 'Daypack, warm evening layer',
+    guideRequirement: 'Community Homestay Coordinator',
+  },
+  {
+    id: 'eco-bandipur',
+    section: 'ecotourism',
+    title: 'Bandipur Heritage Hilltown',
+    category: 'Slow Travel',
+    difficulty: 'Easy',
+    duration: '2 – 3 Days',
+    maxAltitude: '1,030m',
+    region: 'Tanahun · Gandaki',
+    season: 'Year-round',
+    estimatedCost: 190,
+    image: '/pictures/Bhaktapur_ss_lt_(2)-1629279885.jpg',
+    description: 'A car-free preserved Newari hilltop bazaar halfway between Kathmandu and Pokhara with sweeping Himalayan ridge views.',
+    highlights: [
+      'Traffic-free cobbled main bazaar & boutique stays',
+      'Short hikes to Siddha Cave & Thani Mai temple',
+      'Ideal slow-travel stop between Kathmandu & Pokhara',
+    ],
+    permits: ['No permit required'],
+    gearRequirement: 'Walking shoes, light evening layer',
+    guideRequirement: 'Self-guided or local walking guide',
+  },
 ];
 
-const CATEGORIES = [
-  'All',
-  'Trekking',
-  'Mountaineering',
-  'Wildlife',
-  'Cultural',
-  'Aerial & Action',
-  'Eco-Tourism'
-];
+const SECTION_META: Record<string, { title: string; subtitle: string }> = {
+  activities: {
+    title: 'Activities & Adventure',
+    subtitle: 'Paragliding, bungee jumping, zip-lining, whitewater rafting, and aerial experiences across Nepal.',
+  },
+  adventure: {
+    title: 'Adventure Sports',
+    subtitle: 'Paragliding, bungee jumping, zip-lining, whitewater rafting, and canyoning across Nepal.',
+  },
+  trekking: {
+    title: 'Trekking Places in Nepal',
+    subtitle: 'Explore classic and remote Himalayan trekking routes from Everest and Annapurna to Langtang and Mustang.',
+  },
+  mountaineering: {
+    title: 'Mountaineering Peaks',
+    subtitle: '6,000m trekking peaks and technical Himalayan climbs across the Khumbu and central ranges.',
+  },
+  wildlife: {
+    title: 'Wildlife Sanctuaries',
+    subtitle: 'National parks and wetland reserves for rhinos, Bengal tigers, wild elephants, and birding.',
+  },
+  cultural: {
+    title: 'Cultural & Religious Sites',
+    subtitle: 'UNESCO heritage squares, sacred Buddhist stupas, Lumbini, and Janakpur.',
+  },
+  ecotourism: {
+    title: 'Eco-Tourism & Homestays',
+    subtitle: 'Community-run mountain villages, organic tea highlands, and slow-travel hilltowns.',
+  },
+};
 
 export default function ActivitiesSection({ activeId, onNavigate }: ActivitiesSectionProps) {
   const router = useRouter();
@@ -242,6 +718,21 @@ export default function ActivitiesSection({ activeId, onNavigate }: ActivitiesSe
   const [selectedActivity, setSelectedActivity] = useState<ActivityItem | null>(null);
   const [bookingSuccess, setBookingSuccess] = useState<string | null>(null);
   const [bookedActivity, setBookedActivity] = useState<{ activity: ActivityItem; invoiceNo: string } | null>(null);
+
+  const normalizedSection: ActivityItem['section'] =
+    activeId === 'adventure' || activeId === 'activities'
+      ? 'activities'
+      : (['trekking', 'mountaineering', 'wildlife', 'cultural', 'ecotourism'].includes(activeId)
+          ? (activeId as ActivityItem['section'])
+          : 'activities');
+
+  const [prevSection, setPrevSection] = useState(normalizedSection);
+  if (prevSection !== normalizedSection) {
+    setPrevSection(normalizedSection);
+    setSelectedCategory('All');
+    setSearchQuery('');
+    setDifficultyFilter('All');
+  }
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -256,12 +747,22 @@ export default function ActivitiesSection({ activeId, onNavigate }: ActivitiesSe
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedActivity, bookedActivity]);
 
+  const sectionItems = useMemo(
+    () => ACTIVITIES_LIST.filter((item) => item.section === normalizedSection),
+    [normalizedSection]
+  );
 
-  // Filter activities
+  const categories = useMemo(() => {
+    const unique = Array.from(new Set(sectionItems.map((i) => i.category)));
+    return ['All', ...unique];
+  }, [sectionItems]);
+
   const filteredActivities = useMemo(() => {
-    return ACTIVITIES_LIST.filter((act) => {
+    return sectionItems.filter((act) => {
       const matchesCategory = selectedCategory === 'All' || act.category === selectedCategory;
-      const matchesDifficulty = difficultyFilter === 'All' || act.difficulty.toLowerCase().includes(difficultyFilter.toLowerCase());
+      const matchesDifficulty =
+        difficultyFilter === 'All' ||
+        act.difficulty.toLowerCase().includes(difficultyFilter.toLowerCase());
       const matchesSearch =
         searchQuery.trim() === '' ||
         act.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -269,11 +770,7 @@ export default function ActivitiesSection({ activeId, onNavigate }: ActivitiesSe
         act.description.toLowerCase().includes(searchQuery.toLowerCase());
       return matchesCategory && matchesDifficulty && matchesSearch;
     });
-  }, [selectedCategory, difficultyFilter, searchQuery]);
-
-  const activeActivity = useMemo(() => {
-    return ACTIVITIES_LIST.find((a) => a.id === activeId) || ACTIVITIES_LIST[0];
-  }, [activeId]);
+  }, [sectionItems, selectedCategory, difficultyFilter, searchQuery]);
 
   const handleBook = (activity: ActivityItem) => {
     const inv = `INV-ACT-${Math.floor(1000 + Math.random() * 9000)}`;
@@ -282,14 +779,14 @@ export default function ActivitiesSection({ activeId, onNavigate }: ActivitiesSe
       type: 'Adventure Package',
       title: activity.title,
       date: 'Flexible Seasonal Booking - 2026',
-      details: `${activity.category} in ${activity.region}. Max Altitude: ${activity.maxAltitude}. Duration: ${activity.duration}.`,
+      details: `${activity.category} in ${activity.region}. Duration: ${activity.duration}.`,
       cost: activity.estimatedCost,
       status: 'Confirmed',
-      invoiceNo: inv
+      invoiceNo: inv,
     });
 
     setBookedActivity({ activity, invoiceNo: inv });
-    setBookingSuccess(`Expedition confirmed! Added "${activity.title}" to your Bookings.`);
+    setBookingSuccess(`Booked "${activity.title}"`);
     setTimeout(() => {
       setBookingSuccess(null);
     }, 4000);
@@ -308,23 +805,25 @@ export default function ActivitiesSection({ activeId, onNavigate }: ActivitiesSe
     return 'bg-emerald-50 text-emerald-700 border-emerald-200';
   };
 
-  const getCategoryIcon = (category: string) => {
-    switch (category) {
-      case 'Trekking':
+  const getSectionIcon = (section: ActivityItem['section']) => {
+    switch (section) {
+      case 'trekking':
         return <Mountain className="h-3.5 w-3.5" />;
-      case 'Mountaineering':
+      case 'mountaineering':
         return <Zap className="h-3.5 w-3.5" />;
-      case 'Wildlife':
+      case 'wildlife':
         return <Trees className="h-3.5 w-3.5" />;
-      case 'Cultural':
+      case 'cultural':
         return <Landmark className="h-3.5 w-3.5" />;
-      case 'Eco-Tourism':
+      case 'ecotourism':
         return <Coffee className="h-3.5 w-3.5" />;
-      case 'Aerial & Action':
+      case 'activities':
       default:
         return <Wind className="h-3.5 w-3.5" />;
     }
   };
+
+  const meta = SECTION_META[activeId] || SECTION_META[normalizedSection];
 
   return (
     <div className="w-full text-left font-sans">
@@ -342,13 +841,13 @@ export default function ActivitiesSection({ activeId, onNavigate }: ActivitiesSe
             </div>
             <div>
               <p className="text-xs font-bold">{bookingSuccess}</p>
-              <p className="text-[10px] text-white/80">View status anytime in your Bookings ledger.</p>
+              <p className="text-[11px] text-white/80">Added to your Bookings.</p>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* ── EXPEDITION BOOKING CONFIRMED MODAL ────────────────────────────── */}
+      {/* Booking Confirmed Modal */}
       <AnimatePresence>
         {bookedActivity && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
@@ -359,11 +858,7 @@ export default function ActivitiesSection({ activeId, onNavigate }: ActivitiesSe
               transition={{ duration: 0.22, ease: 'easeOut' }}
               className="bg-white rounded-3xl p-6 sm:p-7 max-w-md w-full shadow-2xl border border-slate-200 text-center relative overflow-hidden"
             >
-              {/* Top Accent Gradient Bar */}
-              <div className="absolute top-0 inset-x-0 h-2 bg-gradient-to-r from-[#0552A2] via-emerald-500 to-[#0552A2]" />
-
-              {/* Animated Success Badge */}
-              <div className="h-14 w-14 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-600 flex items-center justify-center mx-auto mb-3.5 shadow-sm">
+              <div className="h-14 w-14 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-600 flex items-center justify-center mx-auto mb-3.5">
                 <Check className="h-7 w-7" strokeWidth={3} />
               </div>
 
@@ -379,52 +874,46 @@ export default function ActivitiesSection({ activeId, onNavigate }: ActivitiesSe
                 Added to your Visit Nepal bookings.
               </p>
 
-              {/* Booking Summary Ticket */}
               <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200/70 my-4 text-left flex flex-col gap-2.5 text-xs">
                 <div className="flex justify-between items-center pb-2 border-b border-slate-200/70">
                   <span className="text-slate-500 text-xs">Reference</span>
                   <span className="font-semibold text-[#0552A2]">{bookedActivity.invoiceNo}</span>
                 </div>
                 <div className="flex justify-between items-center text-slate-600">
-                  <span>Destination</span>
+                  <span>Location</span>
                   <span className="font-semibold text-[#17212B]">{bookedActivity.activity.region}</span>
                 </div>
                 <div className="flex justify-between items-center text-slate-600">
                   <span>Duration</span>
                   <span className="font-semibold text-[#17212B]">{bookedActivity.activity.duration}</span>
                 </div>
-                <div className="flex justify-between items-center text-slate-600">
-                  <span>Max Elevation</span>
-                  <span className="font-semibold text-[#17212B]">{bookedActivity.activity.maxAltitude}</span>
-                </div>
                 <div className="flex justify-between items-center pt-2.5 border-t border-slate-200/70">
-                  <span className="font-bold text-[#17212B]">Total Package</span>
-                  <span className="text-base font-bold text-[#0552A2]">
+                  <span className="font-bold text-[#17212B]">Estimated Cost</span>
+                  <span className="font-[family-name:var(--font-quicksand)] text-base font-bold text-[#0552A2]">
                     ${bookedActivity.activity.estimatedCost}{' '}
-                    <span className="text-[10px] text-slate-400 font-normal">/ pax</span>
+                    <span className="text-xs text-slate-400 font-normal">/ person</span>
                   </span>
                 </div>
               </div>
 
-              {/* Modal Actions */}
               <div className="flex flex-col sm:flex-row gap-2.5 pt-1">
                 <button
                   onClick={() => {
                     setBookedActivity(null);
                     if (onNavigate) {
-                      onNavigate('home');
+                      onNavigate('profile');
                     } else {
-                      router.push('/dashboard?section=home');
+                      router.push('/dashboard');
                     }
                   }}
-                  className="flex-1 py-3 px-4 rounded-full bg-[#0552A2] hover:bg-[#043e7b] text-white text-xs font-bold shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-98"
+                  className="flex-1 py-3 px-4 rounded-full bg-[#0552A2] hover:bg-[#043e7b] text-white text-xs font-semibold shadow-sm transition-all cursor-pointer flex items-center justify-center gap-2"
                 >
                   <span>View in My Bookings</span>
                   <ArrowRight className="h-3.5 w-3.5" />
                 </button>
                 <button
                   onClick={() => setBookedActivity(null)}
-                  className="py-3 px-5 rounded-full border border-slate-200 hover:bg-slate-50 text-slate-600 text-xs font-bold transition-all cursor-pointer"
+                  className="py-3 px-5 rounded-full border border-slate-200 hover:bg-slate-50 text-slate-600 text-xs font-semibold transition-all cursor-pointer"
                 >
                   Dismiss
                 </button>
@@ -434,179 +923,179 @@ export default function ActivitiesSection({ activeId, onNavigate }: ActivitiesSe
         )}
       </AnimatePresence>
 
-      {/* ── MAIN DIRECTORY VIEW (when activeId === 'activities') ───────────── */}
-      {activeId === 'activities' && (
-        <div className="flex flex-col gap-4 sm:gap-5 max-w-[1440px] w-full mx-auto py-1">
-          {/* Header */}
-          <div className="pb-4 border-b border-slate-200/70">
-            <h1 className="font-[family-name:var(--font-quicksand)] text-2xl sm:text-3xl font-bold tracking-tight text-[#17212B]">
-              Activities &amp; Experiences
-            </h1>
-            <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs sm:text-sm text-[#4B5563] mt-1 max-w-2xl">
-              From Himalayan treks and wildlife safaris to cultural walks and paragliding across Nepal.
-            </p>
-          </div>
+      {/* Main Directory View */}
+      <div className="flex flex-col gap-5 max-w-[1440px] w-full mx-auto py-1">
+        {/* Header */}
+        <div className="pb-4 border-b border-slate-200/70">
+          <h1 className="font-[family-name:var(--font-quicksand)] text-2xl sm:text-3xl font-bold tracking-tight text-[#17212B]">
+            {meta.title}
+          </h1>
+          <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs sm:text-sm text-[#4B5563] mt-1 max-w-2xl">
+            {meta.subtitle}
+          </p>
+        </div>
 
-          {/* Filter Toolbar: Search + Difficulty Selector */}
-          <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
-            {/* Search Input */}
-            <div className="relative flex-1 min-w-[240px]">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search activities, regions, or peaks..."
-                className="w-full pl-9 pr-8 py-2 text-xs bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-[#0552A2] transition-all"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
-                >
-                  <X className="h-3.5 w-3.5" />
-                </button>
-              )}
-            </div>
-
-            {/* Difficulty Selector */}
-            <div className="flex items-center gap-2 shrink-0">
-              <SlidersHorizontal className="h-3.5 w-3.5 text-slate-400 hidden sm:block" />
-              <select
-                value={difficultyFilter}
-                onChange={(e) => setDifficultyFilter(e.target.value)}
-                aria-label="Filter activities by difficulty level"
-                className="text-xs bg-white border border-slate-200 rounded-xl px-3 py-2 text-[#17212B] focus:outline-none focus:border-[#0552A2] font-medium cursor-pointer"
+        {/* Search + Difficulty Filter */}
+        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+          <div className="relative flex-1 min-w-[240px]">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder={`Search ${meta.title.toLowerCase()}, regions...`}
+              className="w-full pl-9 pr-8 py-2 text-xs bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-[#0552A2] transition-all"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
               >
-                <option value="All">All Difficulties</option>
-                <option value="Easy">Easy (Family &amp; Heritage)</option>
-                <option value="Moderate">Moderate (Trekking)</option>
-                <option value="Challenging">Challenging (High Passes)</option>
-                <option value="Technical">Technical (Climbing)</option>
-              </select>
-            </div>
+                <X className="h-3.5 w-3.5" />
+              </button>
+            )}
           </div>
 
-          {/* Category Horizontal Filter Pills */}
+          <div className="flex items-center gap-2 shrink-0">
+            <SlidersHorizontal className="h-3.5 w-3.5 text-slate-400 hidden sm:block" />
+            <select
+              value={difficultyFilter}
+              onChange={(e) => setDifficultyFilter(e.target.value)}
+              aria-label="Filter by difficulty level"
+              className="text-xs bg-white border border-slate-200 rounded-xl px-3 py-2 text-[#17212B] focus:outline-none focus:border-[#0552A2] font-medium cursor-pointer"
+            >
+              <option value="All">All Levels</option>
+              <option value="Easy">Easy</option>
+              <option value="Moderate">Moderate</option>
+              <option value="Challenging">Challenging</option>
+              <option value="Technical">Technical / Extreme</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Sub-category Pills */}
+        {categories.length > 2 && (
           <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none select-none">
-            {CATEGORIES.map((cat) => {
+            {categories.map((cat) => {
               const isActive = selectedCategory === cat;
               return (
                 <button
                   key={cat}
                   onClick={() => setSelectedCategory(cat)}
-                  className={`text-xs px-4 py-2 rounded-full font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${isActive
-                    ? 'bg-[#0552A2] text-white shadow-sm'
-                    : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 hover:border-slate-300'
-                    }`}
+                  className={`text-xs px-4 py-1.5 rounded-full font-semibold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${
+                    isActive
+                      ? 'bg-[#0552A2] text-white shadow-xs'
+                      : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 hover:border-slate-300'
+                  }`}
                 >
-                  {cat !== 'All' && getCategoryIcon(cat)}
+                  {cat === 'All' && getSectionIcon(normalizedSection)}
                   <span>{cat}</span>
                 </button>
               );
             })}
           </div>
+        )}
 
-          {/* ── CARD GRID ─────────────── */}
-          {filteredActivities.length === 0 ? (
-            <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center flex flex-col items-center justify-center gap-3">
-              <div className="h-12 w-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
-                <Compass className="h-6 w-6" />
-              </div>
-              <h3 className="font-[family-name:var(--font-quicksand)] text-sm font-bold text-[#17212B]">
-                No activities match your filter
-              </h3>
-              <p className="text-xs text-[#64748B] max-w-sm">
-                Try resetting your search or selecting a different category.
-              </p>
-              <button
-                onClick={() => {
-                  setSelectedCategory('All');
-                  setDifficultyFilter('All');
-                  setSearchQuery('');
-                }}
-                className="mt-2 text-xs font-semibold text-[#0552A2] hover:underline cursor-pointer"
-              >
-                Reset Filters
-              </button>
+        {/* Card Grid */}
+        {filteredActivities.length === 0 ? (
+          <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center flex flex-col items-center justify-center gap-3">
+            <div className="h-12 w-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
+              <Compass className="h-6 w-6" />
             </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {filteredActivities.map((act) => (
-                <div
-                  key={act.id}
-                  className="bg-white rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-md hover:border-[#0552A2]/35 transition-all duration-300 overflow-hidden flex flex-col group cursor-pointer"
-                  onClick={() => setSelectedActivity(act)}
-                >
-                  {/* Card Image Banner */}
-                  <div className="relative aspect-[16/10] w-full overflow-hidden bg-slate-100">
-                    <Image
-                      src={act.image}
-                      alt={act.title}
-                      fill
-                      unoptimized
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      className="object-cover group-hover:scale-104 transition-transform duration-700 ease-out"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent" />
+            <h3 className="font-[family-name:var(--font-quicksand)] text-sm font-bold text-[#17212B]">
+              No matching places or activities
+            </h3>
+            <p className="text-xs text-[#64748B] max-w-sm">
+              Try resetting your search or selecting a different filter.
+            </p>
+            <button
+              onClick={() => {
+                setSelectedCategory('All');
+                setDifficultyFilter('All');
+                setSearchQuery('');
+              }}
+              className="mt-2 text-xs font-semibold text-[#0552A2] hover:underline cursor-pointer"
+            >
+              Reset Filters
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {filteredActivities.map((act) => (
+              <div
+                key={act.id}
+                className="bg-white rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-md hover:border-[#0552A2]/35 transition-all duration-300 overflow-hidden flex flex-col group cursor-pointer"
+                onClick={() => setSelectedActivity(act)}
+              >
+                <div className="relative aspect-[16/10] w-full overflow-hidden bg-slate-100">
+                  <Image
+                    src={act.image}
+                    alt={act.title}
+                    fill
+                    unoptimized
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover group-hover:scale-104 transition-transform duration-700 ease-out"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent" />
 
-                    <div className="absolute top-3.5 left-3.5">
-                      <span className="bg-white/95 backdrop-blur-md px-2.5 py-0.5 rounded-full text-[11px] font-semibold text-[#0552A2] flex items-center gap-1">
-                        {getCategoryIcon(act.category)}
-                        <span>{act.category}</span>
-                      </span>
-                    </div>
-
-                    <div className="absolute bottom-3 left-3.5 right-3.5 text-white">
-                      <span className="text-[11px] font-medium text-amber-200 block truncate">
-                        {act.region} · {act.maxAltitude}
-                      </span>
-                    </div>
+                  <div className="absolute top-3.5 left-3.5">
+                    <span className="bg-white/95 backdrop-blur-md px-2.5 py-0.5 rounded-full text-[11px] font-semibold text-[#0552A2] flex items-center gap-1">
+                      {getSectionIcon(act.section)}
+                      <span>{act.category}</span>
+                    </span>
                   </div>
 
-                  {/* Card Content */}
-                  <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between gap-3">
-                    <div className="flex flex-col gap-1.5">
-                      <div className="flex items-center justify-between text-[11px] text-[#64748B]">
-                        <span>{act.duration}</span>
-                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold border ${getDifficultyBadge(act.difficulty)}`}>
-                          {act.difficulty}
-                        </span>
-                      </div>
+                  <div className="absolute bottom-3 left-3.5 right-3.5 text-white">
+                    <span className="text-[11px] font-medium text-amber-200 block truncate">
+                      {act.region} · {act.maxAltitude}
+                    </span>
+                  </div>
+                </div>
 
-                      <h3 className="font-[family-name:var(--font-quicksand)] text-base font-bold text-[#17212B] group-hover:text-[#0552A2] transition-colors leading-snug line-clamp-1">
-                        {act.title}
-                      </h3>
-
-                      <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs text-[#4B5563] line-clamp-2 leading-relaxed">
-                        {act.description}
-                      </p>
+                <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between gap-3">
+                  <div className="flex flex-col gap-1.5">
+                    <div className="flex items-center justify-between text-[11px] text-[#64748B]">
+                      <span>{act.duration}</span>
+                      <span
+                        className={`px-2 py-0.5 rounded-full text-[10px] font-semibold border ${getDifficultyBadge(
+                          act.difficulty
+                        )}`}
+                      >
+                        {act.difficulty}
+                      </span>
                     </div>
 
-                    {/* Card Footer: Pricing + Action */}
-                    <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
-                      <div>
-                        <span className="text-[11px] text-slate-500">From </span>
-                        <span className="font-[family-name:var(--font-quicksand)] text-sm font-bold text-[#17212B]">
-                          ${act.estimatedCost}
-                        </span>
-                        <span className="text-[11px] text-slate-500"> / person</span>
-                      </div>
+                    <h3 className="font-[family-name:var(--font-quicksand)] text-base font-bold text-[#17212B] group-hover:text-[#0552A2] transition-colors leading-snug line-clamp-1">
+                      {act.title}
+                    </h3>
 
-                      <div className="flex items-center gap-1 text-xs font-semibold text-[#0552A2] group-hover:translate-x-0.5 transition-transform">
-                        <span>View Details</span>
-                        <ArrowUpRight className="h-3.5 w-3.5" />
-                      </div>
+                    <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs text-[#4B5563] line-clamp-2 leading-relaxed">
+                      {act.description}
+                    </p>
+                  </div>
+
+                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+                    <div>
+                      <span className="text-[11px] text-slate-500">From </span>
+                      <span className="font-[family-name:var(--font-quicksand)] text-sm font-bold text-[#17212B]">
+                        ${act.estimatedCost}
+                      </span>
+                      <span className="text-[11px] text-slate-500"> / person</span>
+                    </div>
+
+                    <div className="flex items-center gap-1 text-xs font-semibold text-[#0552A2] group-hover:translate-x-0.5 transition-transform">
+                      <span>View Details</span>
+                      <ArrowUpRight className="h-3.5 w-3.5" />
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
 
-      {/* ── DETAIL MODAL (Quick Specs & Direct Expedition Booking) ────────── */}
+      {/* Detail Modal */}
       <AnimatePresence>
         {selectedActivity && (
           <div
@@ -621,8 +1110,7 @@ export default function ActivitiesSection({ activeId, onNavigate }: ActivitiesSe
               transition={{ duration: 0.22, ease: 'easeOut' }}
               className="bg-white rounded-2xl sm:rounded-3xl max-w-2xl w-full max-h-[76vh] sm:max-h-[80vh] shadow-2xl border border-slate-200 flex flex-col text-left overflow-hidden my-auto shrink-0"
             >
-              {/* Modal Cover Image */}
-              <div className="relative h-32 sm:h-38 w-full overflow-hidden bg-slate-900 shrink-0">
+              <div className="relative h-36 sm:h-40 w-full overflow-hidden bg-slate-900 shrink-0">
                 <Image
                   src={selectedActivity.image}
                   alt={selectedActivity.title}
@@ -635,35 +1123,34 @@ export default function ActivitiesSection({ activeId, onNavigate }: ActivitiesSe
 
                 <button
                   onClick={() => setSelectedActivity(null)}
-                  className="absolute top-3 right-3 h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center transition-colors cursor-pointer shadow-md"
-                  aria-label="Close activity details"
+                  className="absolute top-3 right-3 h-8 w-8 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center transition-colors cursor-pointer"
+                  aria-label="Close details"
                 >
                   <X className="h-4 w-4" />
                 </button>
 
-                <div className="absolute bottom-3 left-4 sm:left-5 right-4 sm:right-5 text-white">
+                <div className="absolute bottom-3 left-5 right-5 text-white">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="bg-white/20 backdrop-blur-md px-2 py-0.5 rounded-full text-[10px] font-bold">
+                    <span className="bg-white/20 backdrop-blur-md px-2.5 py-0.5 rounded-full text-[11px] font-semibold">
                       {selectedActivity.category}
                     </span>
-                    <span className="bg-[#EC1F27] px-2 py-0.5 rounded-full text-[10px] font-bold">
+                    <span className="bg-[#EC1F27] px-2.5 py-0.5 rounded-full text-[11px] font-semibold">
                       {selectedActivity.difficulty}
                     </span>
                   </div>
                   <h2 className="font-[family-name:var(--font-quicksand)] text-base sm:text-lg md:text-xl font-bold leading-tight">
                     {selectedActivity.title}
                   </h2>
-                  <p className="text-[11px] sm:text-xs text-white/90 mt-0.5 flex items-center gap-1.5">
-                    <MapPin className="h-3 w-3 text-rose-400" />
+                  <p className="text-xs text-white/90 mt-0.5 flex items-center gap-1.5">
+                    <MapPin className="h-3.5 w-3.5 text-rose-400" />
                     <span>{selectedActivity.region}</span>
                     <span>·</span>
-                    <span>Max Elevation: {selectedActivity.maxAltitude}</span>
+                    <span>{selectedActivity.maxAltitude}</span>
                   </p>
                 </div>
               </div>
 
-              {/* Scrollable Modal Body */}
-              <div className="p-4 sm:p-5 md:p-6 flex-1 overflow-y-auto flex flex-col gap-4 sm:gap-5 scrollbar-thin">
+              <div className="p-5 sm:p-6 flex-1 overflow-y-auto flex flex-col gap-4 sm:gap-5 scrollbar-thin">
                 <div>
                   <h4 className="font-[family-name:var(--font-quicksand)] text-sm font-bold text-[#17212B] mb-1">
                     Overview
@@ -673,27 +1160,33 @@ export default function ActivitiesSection({ activeId, onNavigate }: ActivitiesSe
                   </p>
                 </div>
 
-                {/* Logistics Grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
                   <div>
                     <span className="text-[11px] text-slate-500 block">Duration</span>
-                    <span className="text-xs font-bold text-[#17212B] mt-0.5 block">{selectedActivity.duration}</span>
+                    <span className="text-xs font-bold text-[#17212B] mt-0.5 block">
+                      {selectedActivity.duration}
+                    </span>
                   </div>
                   <div>
                     <span className="text-[11px] text-slate-500 block">Best Season</span>
-                    <span className="text-xs font-bold text-[#17212B] mt-0.5 block">{selectedActivity.season}</span>
+                    <span className="text-xs font-bold text-[#17212B] mt-0.5 block">
+                      {selectedActivity.season}
+                    </span>
                   </div>
                   <div>
-                    <span className="text-[11px] text-slate-500 block">Max Altitude</span>
-                    <span className="text-xs font-bold text-[#17212B] mt-0.5 block">{selectedActivity.maxAltitude}</span>
+                    <span className="text-[11px] text-slate-500 block">Elevation</span>
+                    <span className="text-xs font-bold text-[#17212B] mt-0.5 block">
+                      {selectedActivity.maxAltitude}
+                    </span>
                   </div>
                   <div>
                     <span className="text-[11px] text-slate-500 block">Est. Cost</span>
-                    <span className="text-xs font-bold text-[#0552A2] mt-0.5 block">${selectedActivity.estimatedCost} / person</span>
+                    <span className="text-xs font-bold text-[#0552A2] mt-0.5 block">
+                      ${selectedActivity.estimatedCost} / person
+                    </span>
                   </div>
                 </div>
 
-                {/* Highlights */}
                 <div>
                   <h4 className="font-[family-name:var(--font-quicksand)] text-sm font-bold text-[#17212B] mb-2">
                     Key Highlights
@@ -708,30 +1201,30 @@ export default function ActivitiesSection({ activeId, onNavigate }: ActivitiesSe
                   </div>
                 </div>
 
-                {/* Compliance & Requirements */}
                 <div className="border-t border-slate-100 pt-3 flex flex-col gap-1.5 text-xs">
-                  <div className="flex items-center justify-between py-1 border-b border-slate-100 text-[#475569]">
-                    <span className="font-semibold text-[#17212B]">Guide Requirement:</span>
-                    <span className="text-right text-[11px] sm:text-xs font-medium">{selectedActivity.guideRequirement}</span>
+                  <div className="flex items-center justify-between py-1 border-b border-slate-100 text-[#475569] gap-3">
+                    <span className="font-semibold text-[#17212B] shrink-0">Guide Requirement:</span>
+                    <span className="text-right text-xs">{selectedActivity.guideRequirement}</span>
                   </div>
-                  <div className="flex items-center justify-between py-1 border-b border-slate-100 text-[#475569]">
-                    <span className="font-semibold text-[#17212B]">Gear Profile:</span>
-                    <span className="text-right text-[11px] sm:text-xs font-medium">{selectedActivity.gearRequirement}</span>
+                  <div className="flex items-center justify-between py-1 border-b border-slate-100 text-[#475569] gap-3">
+                    <span className="font-semibold text-[#17212B] shrink-0">What to Bring:</span>
+                    <span className="text-right text-xs">{selectedActivity.gearRequirement}</span>
                   </div>
-                  <div className="flex items-center justify-between py-1 text-[#475569]">
-                    <span className="font-semibold text-[#17212B]">Permits Included:</span>
-                    <span className="text-right text-[11px] sm:text-xs text-[#0552A2] font-semibold">{selectedActivity.permits.join(', ')}</span>
+                  <div className="flex items-center justify-between py-1 text-[#475569] gap-3">
+                    <span className="font-semibold text-[#17212B] shrink-0">Permits:</span>
+                    <span className="text-right text-xs text-[#0552A2] font-semibold">
+                      {selectedActivity.permits.join(', ')}
+                    </span>
                   </div>
                 </div>
               </div>
 
-              {/* Fixed / Sticky Modal Action Footer */}
-              <div className="p-3.5 sm:p-4 bg-slate-50 border-t border-slate-200/80 flex items-center justify-between gap-3 shrink-0 rounded-b-3xl">
+              <div className="p-4 bg-slate-50 border-t border-slate-200/80 flex items-center justify-between gap-3 shrink-0 rounded-b-3xl">
                 <div className="flex flex-col">
                   <span className="text-[11px] text-slate-500">Estimated Cost</span>
-                  <span className="font-[family-name:var(--font-quicksand)] text-sm sm:text-base font-bold text-[#0552A2]">
+                  <span className="font-[family-name:var(--font-quicksand)] text-base font-bold text-[#0552A2]">
                     ${selectedActivity.estimatedCost}
-                    <span className="text-[11px] font-normal text-slate-500"> / person</span>
+                    <span className="text-xs font-normal text-slate-500"> / person</span>
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -746,9 +1239,9 @@ export default function ActivitiesSection({ activeId, onNavigate }: ActivitiesSe
                       handleBook(selectedActivity);
                       setSelectedActivity(null);
                     }}
-                    className="px-5 py-2 rounded-full bg-[#0552A2] hover:bg-[#043e7b] text-white text-xs font-bold shadow-md transition-all cursor-pointer flex items-center gap-1.5"
+                    className="px-5 py-2 rounded-full bg-[#0552A2] hover:bg-[#043e7b] text-white text-xs font-semibold shadow-sm transition-all cursor-pointer flex items-center gap-1.5"
                   >
-                    <span>Book Expedition</span>
+                    <span>Book Now</span>
                     <ArrowRight className="h-3.5 w-3.5" />
                   </button>
                 </div>
@@ -757,129 +1250,6 @@ export default function ActivitiesSection({ activeId, onNavigate }: ActivitiesSe
           </div>
         )}
       </AnimatePresence>
-
-      {/* ── SPECIFIC DETAILED ACTIVITY SHEET (when URL is e.g. section=trekking) ─ */}
-      {activeId !== 'activities' && (
-        <div className="flex flex-col gap-4 sm:gap-5 max-w-[1440px] w-full mx-auto py-1">
-          {/* Back button */}
-          <button
-            onClick={() => (onNavigate ? onNavigate('activities') : router.push('/dashboard?section=activities'))}
-            className="self-start flex items-center gap-1.5 text-xs font-bold text-[#0552A2] hover:underline cursor-pointer"
-          >
-            <Compass className="h-3.5 w-3.5" />
-            <span>← Back to All Activities</span>
-          </button>
-
-          {/* Hero Banner */}
-          <div className="relative h-48 sm:h-56 md:h-60 lg:h-64 w-full rounded-2xl sm:rounded-3xl overflow-hidden bg-slate-900 shadow-md shrink-0">
-            <Image
-              src={activeActivity.image}
-              alt={activeActivity.title}
-              fill
-              unoptimized
-              priority
-              sizes="100vw"
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
-            <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6 text-white">
-              <div className="flex items-center gap-2 mb-1.5 sm:mb-2">
-                <span className="bg-[#0552A2] px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold">
-                  {activeActivity.category}
-                </span>
-                <span className="bg-white/20 backdrop-blur-md px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold">
-                  {activeActivity.difficulty}
-                </span>
-              </div>
-              <h1 className="font-[family-name:var(--font-quicksand)] text-xl sm:text-2xl md:text-3xl font-bold tracking-tight">
-                {activeActivity.title}
-              </h1>
-              <p className="text-xs sm:text-sm text-white/90 mt-1 flex items-center gap-2">
-                <MapPin className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-[#EC1F27]" />
-                <span>{activeActivity.region}</span>
-                <span>•</span>
-                <span>Altitude: {activeActivity.maxAltitude}</span>
-              </p>
-            </div>
-          </div>
-
-          {/* Details 2-Column Split */}
-          <div className="grid grid-cols-1 xl:grid-cols-12 gap-4 sm:gap-5 items-start">
-            <div className="xl:col-span-7 2xl:col-span-8 flex flex-col gap-4 sm:gap-5 bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-xs">
-              <div>
-                <h3 className="font-[family-name:var(--font-quicksand)] text-base font-bold text-[#17212B] mb-1.5">
-                  Overview
-                </h3>
-                <p className="text-xs sm:text-sm text-[#475569] leading-relaxed">
-                  {activeActivity.description}
-                </p>
-              </div>
-
-              <div>
-                <h3 className="font-[family-name:var(--font-quicksand)] text-base font-bold text-[#17212B] mb-2">
-                  Key Highlights
-                </h3>
-                <div className="flex flex-col gap-2">
-                  {activeActivity.highlights.map((h, i) => (
-                    <div key={i} className="flex items-start gap-2.5 text-xs text-[#475569]">
-                      <CheckCircle2 className="h-4 w-4 text-[#0552A2] shrink-0 mt-0.5" />
-                      <span>{h}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="bg-blue-50/60 p-4 sm:p-5 rounded-2xl border border-blue-200/70 flex flex-col gap-1.5">
-                <span className="font-[family-name:var(--font-quicksand)] text-xs font-bold text-[#0552A2] flex items-center gap-1.5">
-                  <ShieldCheck className="h-4 w-4" />
-                  <span>Safety &amp; Acclimatization Note</span>
-                </span>
-                <p className="text-xs text-[#475569] leading-relaxed">
-                  High-altitude routes require a licensed local guide, steady hydration, and conservative daily elevation gains above 3,000m.
-                </p>
-              </div>
-            </div>
-
-            {/* Logistics Card Sidebar */}
-            <div className="xl:col-span-5 2xl:col-span-4 bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-xs flex flex-col gap-3.5 sm:gap-4">
-              <h3 className="font-[family-name:var(--font-quicksand)] text-sm font-bold text-[#17212B] border-b border-slate-100 pb-2">
-                Trip Details
-              </h3>
-
-              <div className="flex flex-col gap-2.5 text-xs">
-                <div className="flex items-center justify-between py-1 border-b border-slate-100 gap-2">
-                  <span className="text-slate-500 shrink-0">Duration:</span>
-                  <span className="font-bold text-[#17212B] text-right">{activeActivity.duration}</span>
-                </div>
-                <div className="flex items-center justify-between py-1 border-b border-slate-100 gap-2">
-                  <span className="text-slate-500 shrink-0">Best Season:</span>
-                  <span className="font-bold text-[#17212B] text-right">{activeActivity.season}</span>
-                </div>
-                <div className="flex items-center justify-between py-1 border-b border-slate-100 gap-2">
-                  <span className="text-slate-500 shrink-0">Max Elevation:</span>
-                  <span className="font-bold text-[#17212B] text-right">{activeActivity.maxAltitude}</span>
-                </div>
-                <div className="flex items-center justify-between py-1 border-b border-slate-100 gap-2">
-                  <span className="text-slate-500 shrink-0">Guide Requirement:</span>
-                  <span className="font-bold text-[#17212B] text-right">{activeActivity.guideRequirement}</span>
-                </div>
-                <div className="flex items-center justify-between py-1 gap-2">
-                  <span className="text-slate-500 shrink-0">Est. Cost:</span>
-                  <span className="font-bold text-[#0552A2] text-right">${activeActivity.estimatedCost} / person</span>
-                </div>
-              </div>
-
-              <button
-                onClick={() => handleBook(activeActivity)}
-                className="w-full py-3 rounded-full bg-[#0552A2] hover:bg-[#043e7b] text-white text-xs font-semibold shadow-sm transition-all cursor-pointer flex items-center justify-center gap-2 mt-2 active:scale-98"
-              >
-                <span>Book Activity</span>
-                <ArrowRight className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

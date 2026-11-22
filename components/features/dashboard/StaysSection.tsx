@@ -101,11 +101,11 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
         <div className="flex flex-col gap-6 max-w-[1440px] w-full mx-auto py-2">
           {/* Header */}
           <motion.div variants={itemVariants} className="flex flex-col gap-1.5">
-            <h2 className="text-2xl font-black tracking-tight text-[#17212B]">
-              Hotels & Eco-Stays
+            <h2 className="font-[family-name:var(--font-quicksand)] text-2xl sm:text-3xl font-bold tracking-tight text-[#17212B]">
+              Hotels &amp; Stays
             </h2>
-            <p className="text-xs text-[#475569]">
-              Book certified Himalayan stays equipped with heated hearths, local organic dining, oxygen facilities, and panoramic mountain views.
+            <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs sm:text-sm text-[#4B5563]">
+              Book verified hotels, eco-resorts, mountain lodges, and heritage homestays across Nepal.
             </p>
           </motion.div>
 
@@ -125,7 +125,7 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
                 {searchQuery && (
                   <button
                     onClick={() => setSearchQuery('')}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
                   >
                     <X className="w-3.5 h-3.5" />
                   </button>
@@ -133,8 +133,8 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
               </div>
 
               {/* Counter / Info */}
-              <span className="text-[11px] font-mono text-[#64748B] shrink-0 self-center sm:self-auto">
-                Showing <strong className="text-[#0552A2]">{filteredStays.length}</strong> verified properties
+              <span className="text-xs text-[#64748B] shrink-0 self-center sm:self-auto">
+                Showing <strong className="text-[#0552A2]">{filteredStays.length}</strong> properties
               </span>
             </div>
 
@@ -147,9 +147,9 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
                     key={cat.id}
                     type="button"
                     onClick={() => setSelectedCategory(cat.id)}
-                    className={`text-[11px] font-mono px-3 py-1 rounded-full border transition-all cursor-pointer ${
+                    className={`text-xs px-3.5 py-1.5 rounded-full border transition-all cursor-pointer font-semibold ${
                       isActive
-                        ? 'bg-[#0552A2] text-white border-[#0552A2] shadow-2xs font-bold'
+                        ? 'bg-[#0552A2] text-white border-[#0552A2] shadow-2xs'
                         : 'bg-white text-[#475569] border-slate-200 hover:border-slate-300 hover:bg-slate-50'
                     }`}
                   >
@@ -193,17 +193,17 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent pointer-events-none" />
 
                     {/* Top Rating & Type Badges */}
-                    <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-xs text-[10px] font-mono font-bold text-[#0552A2] px-2.5 py-0.5 rounded-full border border-slate-200 shadow-xs flex items-center gap-1">
+                    <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-xs text-[11px] font-semibold text-[#0552A2] px-2.5 py-0.5 rounded-full border border-slate-200 shadow-xs flex items-center gap-1">
                       <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
                       <span>{stay.rating.toFixed(1)}</span>
                     </div>
 
-                    <div className="absolute top-3 right-3 bg-[#0552A2] text-white font-mono text-[9px] font-bold px-2.5 py-0.5 rounded-full shadow-xs">
+                    <div className="absolute top-3 right-3 bg-[#0552A2] text-white text-[11px] font-semibold px-2.5 py-0.5 rounded-full shadow-xs">
                       {stay.type}
                     </div>
 
                     {/* Bottom Location */}
-                    <div className="absolute bottom-2.5 left-3 text-[10px] font-mono text-white/90 font-medium flex items-center gap-1">
+                    <div className="absolute bottom-2.5 left-3 text-[11px] text-white/95 font-medium flex items-center gap-1">
                       <MapPin className="w-3 h-3 text-[#92C4EA]" />
                       <span className="line-clamp-1">{stay.location}</span>
                     </div>
@@ -212,18 +212,18 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
                   {/* Body Content */}
                   <div className="p-4 flex-1 flex flex-col justify-between gap-2.5">
                     <div className="flex flex-col gap-1.5">
-                      <h3 className="text-sm sm:text-base font-bold text-[#17212B] group-hover:text-[#0552A2] transition-colors leading-snug line-clamp-1">
+                      <h3 className="font-[family-name:var(--font-quicksand)] text-sm sm:text-base font-bold text-[#17212B] group-hover:text-[#0552A2] transition-colors leading-snug line-clamp-1">
                         {stay.name}
                       </h3>
-                      <p className="text-xs text-[#475569] leading-relaxed line-clamp-2 min-h-[2.4rem]">
+                      <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs text-[#475569] leading-relaxed line-clamp-2 min-h-[2.4rem]">
                         {stay.description}
                       </p>
                     </div>
 
-                    {/* Feature Notes (no dots) */}
+                    {/* Feature Notes */}
                     <div className="flex flex-wrap items-center gap-1.5">
                       {stay.features.slice(0, 2).map((f, idx) => (
-                        <span key={idx} className="text-[10px] font-mono text-[#475569] bg-slate-50 border border-slate-200/80 px-2 py-0.5 rounded-md line-clamp-1">
+                        <span key={idx} className="text-[11px] text-[#475569] bg-slate-50 border border-slate-200/80 px-2 py-0.5 rounded-md line-clamp-1">
                           {f}
                         </span>
                       ))}
@@ -232,16 +232,16 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
                 </div>
 
                 {/* Bottom Action Divider */}
-                <div className="px-4 pb-3.5 pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+                <div className="px-4 pb-3.5 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs">
                   <div>
-                    <span className="text-[9px] font-mono text-[#64748B] block uppercase">Starting From</span>
-                    <span className="font-mono font-bold text-[#0552A2] text-xs">
-                      ${stay.price} <span className="text-[10px] font-normal text-[#64748B]">/ night</span>
+                    <span className="text-[11px] text-[#64748B] block">Starting from</span>
+                    <span className="font-[family-name:var(--font-quicksand)] font-bold text-[#0552A2] text-sm">
+                      ${stay.price} <span className="text-[11px] font-normal text-[#64748B]">/ night</span>
                     </span>
                   </div>
                   <button
                     type="button"
-                    className="font-bold text-[#0552A2] group-hover:underline flex items-center gap-1.5 cursor-pointer text-xs font-mono"
+                    className="font-semibold text-[#0552A2] group-hover:underline flex items-center gap-1.5 cursor-pointer text-xs"
                   >
                     <span>View Suites</span>
                     <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform duration-200 ease-out" />
@@ -254,13 +254,13 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
           {filteredStays.length === 0 && (
             <div className="bg-white border border-dashed border-slate-300 rounded-2xl p-10 text-center flex flex-col items-center justify-center gap-2">
               <Hotel className="w-8 h-8 text-slate-400" />
-              <h4 className="text-sm font-bold text-[#17212B]">No properties matched your criteria</h4>
-              <p className="text-xs text-[#64748B]">Try clearing your search query or selecting a different category filter.</p>
+              <h4 className="font-[family-name:var(--font-quicksand)] text-sm font-bold text-[#17212B]">No properties matched your search</h4>
+              <p className="text-xs text-[#64748B]">Try clearing your search or selecting a different category.</p>
               <button
                 onClick={() => { setSearchQuery(''); setSelectedCategory('all'); }}
-                className="mt-2 text-xs font-mono font-bold text-[#0552A2] hover:underline"
+                className="mt-2 text-xs font-semibold text-[#0552A2] hover:underline cursor-pointer"
               >
-                Reset All Filters
+                Reset Filters
               </button>
             </div>
           )}
@@ -271,8 +271,12 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
       {activeId === 'transportation' && (
         <div className="flex flex-col gap-6 max-w-[1440px] w-full mx-auto py-2">
           <motion.div variants={itemVariants} className="flex flex-col gap-1.5">
-            <h2 className="text-2xl font-black tracking-tight text-[#17212B]">Himalayan Transportation</h2>
-            <p className="text-xs text-[#475569]">Airport shuttles, high-speed charter flights, cable ropeways, and private rugged 4x4 overland vehicles.</p>
+            <h2 className="font-[family-name:var(--font-quicksand)] text-2xl sm:text-3xl font-bold tracking-tight text-[#17212B]">
+              Transportation
+            </h2>
+            <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs sm:text-sm text-[#4B5563]">
+              Airport transfers, domestic mountain flights, cable cars, and private 4x4 vehicles.
+            </p>
           </motion.div>
 
           <motion.div
@@ -404,17 +408,17 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
               </button>
 
               <div className="flex items-center gap-2 mb-1">
-                <span className="text-[10px] font-mono font-bold text-[#0552A2] uppercase bg-[#0552A2]/10 px-2 py-0.5 rounded-md">
+                <span className="text-[11px] font-semibold text-[#0552A2] bg-[#0552A2]/10 px-2.5 py-0.5 rounded-md">
                   {selectedStay.type}
                 </span>
-                <span className="text-[10px] font-mono text-amber-600 font-bold flex items-center gap-0.5">
-                  <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                <span className="text-xs text-amber-600 font-semibold flex items-center gap-0.5">
+                  <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                   {selectedStay.rating.toFixed(1)} Rating
                 </span>
               </div>
 
-              <h3 className="text-xl font-black text-[#17212B] tracking-tight">{selectedStay.name}</h3>
-              <p className="text-xs font-mono text-[#64748B] flex items-center gap-1 mt-1 mb-4">
+              <h3 className="font-[family-name:var(--font-quicksand)] text-xl font-bold text-[#17212B] tracking-tight">{selectedStay.name}</h3>
+              <p className="text-xs text-[#64748B] flex items-center gap-1 mt-1 mb-4">
                 <MapPin className="w-3.5 h-3.5 text-[#0552A2]" />
                 {selectedStay.location}
               </p>
@@ -422,30 +426,30 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
               {/* Stay Highlights */}
               <div className="flex flex-wrap gap-1.5 mb-5">
                 {selectedStay.features.map((feat, idx) => (
-                  <span key={idx} className="text-[10px] font-mono bg-slate-50 text-slate-700 border border-slate-200 px-2.5 py-0.5 rounded-md">
-                    ✓ {feat}
+                  <span key={idx} className="text-[11px] bg-slate-50 text-slate-700 border border-slate-200 px-2.5 py-0.5 rounded-md">
+                    {feat}
                   </span>
                 ))}
               </div>
 
               {/* Room Previews */}
               <div className="flex flex-col gap-3">
-                <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#0552A2]">
-                  Select Available Suite Options
+                <span className="font-[family-name:var(--font-quicksand)] text-xs font-bold text-[#0552A2]">
+                  Available Rooms &amp; Suites
                 </span>
                 {selectedStay.roomPreviews.map((room) => (
                   <div key={room.name} className="bg-slate-50/70 border border-slate-200/90 p-4 rounded-2xl flex flex-col sm:flex-row justify-between sm:items-center gap-3">
                     <div className="flex-1">
-                      <h4 className="text-xs font-bold text-[#17212B]">{room.name}</h4>
+                      <h4 className="font-[family-name:var(--font-quicksand)] text-xs sm:text-sm font-bold text-[#17212B]">{room.name}</h4>
                       <p className="text-[11px] text-[#475569] mt-0.5 leading-relaxed">{room.info}</p>
                     </div>
                     <div className="flex items-center sm:flex-col sm:items-end justify-between gap-2 shrink-0">
-                      <span className="text-xs font-mono font-bold text-[#0552A2]">${room.price} <span className="text-[10px] font-normal text-slate-500">/ night</span></span>
+                      <span className="font-[family-name:var(--font-quicksand)] text-sm font-bold text-[#0552A2]">${room.price} <span className="text-[11px] font-normal text-slate-500">/ night</span></span>
                       <button 
                         onClick={() => handleBook(selectedStay, room.name, room.price)}
-                        className="bg-[#0552A2] hover:bg-[#044080] text-white font-mono text-[10px] font-bold px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer flex items-center gap-1 shadow-2xs"
+                        className="bg-[#0552A2] hover:bg-[#044080] text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer flex items-center gap-1 shadow-2xs"
                       >
-                        <span>Book Suite</span>
+                        <span>Book Room</span>
                         <ArrowRight className="w-3 h-3" />
                       </button>
                     </div>
@@ -462,9 +466,9 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
                   <div className="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mb-2">
                     <CheckCircle2 className="w-7 h-7" />
                   </div>
-                  <h4 className="text-base font-black text-[#17212B]">Suite Reserved Successfully!</h4>
+                  <h4 className="font-[family-name:var(--font-quicksand)] text-base font-bold text-[#17212B]">Room Reserved</h4>
                   <p className="text-xs text-[#475569] mt-1 max-w-xs leading-relaxed">
-                    Reserved <span className="font-bold text-[#0552A2]">{bookingSuccess}</span>. Your invoice and guest confirmation pass have been added to your Bookings tab.
+                    Reserved <span className="font-bold text-[#0552A2]">{bookingSuccess}</span>. Your confirmation has been added to your Bookings.
                   </p>
                 </motion.div>
               )}
