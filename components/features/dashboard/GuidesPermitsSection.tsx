@@ -204,6 +204,45 @@ const INITIAL_GUIDE_REVIEWS: Record<string, GuideReview[]> = {
   ],
 };
 
+const INITIAL_BUTLER_REVIEWS: Record<string, GuideReview[]> = {
+  'butler-1': [
+    {
+      id: 'rev-b1-1',
+      author: 'Claire Dubois',
+      rating: 5,
+      date: 'May 2026',
+      comment: 'Aarav had our SIM cards, currency, and hotel transfer ready within 15 minutes of landing in Kathmandu.',
+    },
+  ],
+  'butler-2': [
+    {
+      id: 'rev-b2-1',
+      author: 'Oliver Grant',
+      rating: 5,
+      date: 'April 2026',
+      comment: 'Sonam coordinated our Lukla rebooking effortlessly when weather delayed our flight and arranged warm lodge suites.',
+    },
+  ],
+  'butler-3': [
+    {
+      id: 'rev-b3-1',
+      author: 'Kenji Sato',
+      rating: 5,
+      date: 'March 2026',
+      comment: 'Every gear rental and jeep dispatch was punctual and stress-free.',
+    },
+  ],
+  'butler-4': [
+    {
+      id: 'rev-b4-1',
+      author: 'Maya Lin',
+      rating: 5,
+      date: 'May 2026',
+      comment: 'Prerana organized the most thoughtful lakeside dinner in Pokhara and handled all our spa bookings.',
+    },
+  ],
+};
+
 const GUIDE_SPECIALTIES = ['All', 'Mountaineering', 'Trekking', 'Culture', 'Wildlife', 'Spiritual'] as const;
 
 const ROUTE_OPTIONS = [
@@ -252,7 +291,7 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
 
   // Butler inline detail state
   const [selectedButler, setSelectedButler] = useState<Butler | null>(null);
-  const [butlerProfileTab, setButlerProfileTab] = useState<'about' | 'services'>('about');
+  const [butlerProfileTab, setButlerProfileTab] = useState<'about' | 'services' | 'reviews'>('about');
   const [showButlerBooking, setShowButlerBooking] = useState(false);
   const [butlerDays, setButlerDays] = useState(3);
   const [butlerStartDate, setButlerStartDate] = useState('2026-06-05');
@@ -261,9 +300,20 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
 
   // Reviews
   const [guideReviews, setGuideReviews] = useState<Record<string, GuideReview[]>>(INITIAL_GUIDE_REVIEWS);
+  const [butlerReviews, setButlerReviews] = useState<Record<string, GuideReview[]>>(INITIAL_BUTLER_REVIEWS);
   const [reviewAuthor, setReviewAuthor] = useState('Alex Mercer');
   const [reviewRating, setReviewRating] = useState(5);
   const [reviewComment, setReviewComment] = useState('');
+
+  const getButlerStats = (butler: Butler) => {
+    const reviews = butlerReviews[butler.id] || [];
+    if (reviews.length === 0) return { avgRating: butler.rating, count: 0 };
+    const total = reviews.reduce((acc, r) => acc + r.rating, 0);
+    return {
+      avgRating: Number(((butler.rating + total) / (reviews.length + 1)).toFixed(2)),
+      count: reviews.length,
+    };
+  };
 
   const getGuideStats = (guide: Guide) => {
     const reviews = guideReviews[guide.id] || [];
@@ -356,6 +406,24 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
     setGuideReviews((prev) => ({
       ...prev,
       [selectedGuide.id]: [newRev, ...(prev[selectedGuide.id] || [])],
+    }));
+    setReviewComment('');
+    setReviewRating(5);
+  };
+
+  const handleSubmitButlerReview = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedButler || !reviewComment.trim()) return;
+    const newRev: GuideReview = {
+      id: `rev-b-${Date.now()}`,
+      author: reviewAuthor.trim() || 'Traveler',
+      rating: reviewRating,
+      date: 'Just now',
+      comment: reviewComment.trim(),
+    };
+    setButlerReviews((prev) => ({
+      ...prev,
+      [selectedButler.id]: [newRev, ...(prev[selectedButler.id] || [])],
     }));
     setReviewComment('');
     setReviewRating(5);
@@ -619,7 +687,7 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
                           <div>
                             <form
                               onSubmit={handleSubmitReview}
-                              className="p-3.5 rounded-xl border border-slate-200 bg-slate-50/50 mb-4 flex flex-col gap-2.5"
+                              className="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-slate-50/50 mb-5 flex flex-col gap-3"
                             >
                               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                                 <input
@@ -627,10 +695,10 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
                                   value={reviewAuthor}
                                   onChange={(e) => setReviewAuthor(e.target.value)}
                                   placeholder="Your name"
-                                  className="bg-transparent border-0 p-0 text-xs font-semibold text-[#17212B] focus:outline-none sm:w-48"
+                                  className="bg-transparent border-0 p-0 text-sm font-semibold text-[#17212B] focus:outline-none sm:w-52"
                                 />
                                 <div className="flex items-center gap-1">
-                                  <span className="text-[11px] text-[#64748B] mr-1">Rating:</span>
+                                  <span className="text-xs text-[#64748B] mr-1">Rating:</span>
                                   {[1, 2, 3, 4, 5].map((star) => (
                                     <button
                                       key={star}
@@ -640,7 +708,7 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
                                       className="p-0.5 cursor-pointer"
                                     >
                                       <Star
-                                        className={`w-4 h-4 ${
+                                        className={`w-4.5 h-4.5 ${
                                           star <= reviewRating
                                             ? 'fill-amber-400 text-amber-400'
                                             : 'text-slate-300'
@@ -651,18 +719,18 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
                                 </div>
                               </div>
 
-                              <div className="flex gap-2">
-                                <input
-                                  type="text"
+                              <div className="flex flex-col sm:flex-row gap-2.5 sm:items-center">
+                                <textarea
+                                  rows={2}
                                   value={reviewComment}
                                   onChange={(e) => setReviewComment(e.target.value)}
                                   placeholder={`Write a review for ${selectedGuide.name}...`}
                                   required
-                                  className="flex-1 bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs text-[#17212B] focus:outline-none focus:border-[#0552A2]"
+                                  className="flex-1 bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-[#17212B] focus:outline-none focus:border-[#0552A2] resize-none"
                                 />
                                 <button
                                   type="submit"
-                                  className="bg-[#0552A2] hover:bg-[#044080] text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer shrink-0"
+                                  className="bg-[#0552A2] hover:bg-[#044080] text-white text-xs sm:text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors cursor-pointer shrink-0"
                                 >
                                   Post
                                 </button>
@@ -671,29 +739,29 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
 
                             <div className="divide-y divide-slate-100">
                               {reviews.length === 0 ? (
-                                <p className="text-xs text-[#64748B] py-2">
+                                <p className="text-sm text-[#64748B] py-3">
                                   No reviews yet. Be the first to review {selectedGuide.name}.
                                 </p>
                               ) : (
                                 reviews.map((rev) => (
-                                  <div key={rev.id} className="py-3.5 first:pt-1 last:pb-1 flex gap-3">
-                                    <div className="w-8 h-8 rounded-full bg-[#0552A2]/10 text-[#0552A2] font-bold text-xs flex items-center justify-center shrink-0">
+                                  <div key={rev.id} className="py-4 first:pt-1 last:pb-1 flex gap-3.5">
+                                    <div className="w-9 h-9 rounded-full bg-[#0552A2]/10 text-[#0552A2] font-bold text-sm flex items-center justify-center shrink-0">
                                       {rev.author.charAt(0).toUpperCase()}
                                     </div>
                                     <div className="flex-1 min-w-0">
                                       <div className="flex items-center justify-between gap-2">
-                                        <span className="text-xs font-semibold text-[#17212B]">
+                                        <span className="text-sm font-semibold text-[#17212B]">
                                           {rev.author}
                                         </span>
                                         <div className="flex items-center gap-2">
                                           <span className="flex items-center gap-0.5 text-xs font-semibold text-amber-600">
-                                            <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                                            <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                                             {rev.rating}
                                           </span>
-                                          <span className="text-[11px] text-[#64748B]">{rev.date}</span>
+                                          <span className="text-xs text-[#64748B]">{rev.date}</span>
                                         </div>
                                       </div>
-                                      <p className="text-xs text-[#475569] mt-1 leading-relaxed">
+                                      <p className="text-xs sm:text-sm text-[#475569] mt-1.5 leading-relaxed">
                                         {rev.comment}
                                       </p>
                                     </div>
@@ -1119,7 +1187,7 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
                       <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-xs text-[#64748B]">
                         <span className="flex items-center gap-1 font-semibold text-[#17212B]">
                           <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                          {selectedButler.rating.toFixed(1)}
+                          {getButlerStats(selectedButler).avgRating}
                         </span>
                         <span>{selectedButler.experience} years experience</span>
                         <span>{selectedButler.languages.join(', ')}</span>
@@ -1131,6 +1199,7 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
                     {[
                       { id: 'about' as const, label: 'About' },
                       { id: 'services' as const, label: 'Included Services' },
+                      { id: 'reviews' as const, label: `Reviews (${(butlerReviews[selectedButler.id] || []).length})` },
                     ].map((tab) => {
                       const active = butlerProfileTab === tab.id;
                       return (
@@ -1151,7 +1220,7 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
                   </div>
 
                   <div className="p-5 sm:p-6">
-                    {butlerProfileTab === 'about' ? (
+                    {butlerProfileTab === 'about' && (
                       <div className="space-y-4">
                         <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs sm:text-sm text-[#475569] leading-relaxed">
                           {selectedButler.bio}
@@ -1179,7 +1248,9 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
                           </div>
                         </div>
                       </div>
-                    ) : (
+                    )}
+
+                    {butlerProfileTab === 'services' && (
                       <ul className="space-y-2.5 text-xs text-[#475569]">
                         <li className="flex items-start gap-2.5">
                           <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
@@ -1195,6 +1266,190 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
                         </li>
                       </ul>
                     )}
+
+                    {butlerProfileTab === 'reviews' && (() => {
+                      const bReviews = butlerReviews[selectedButler.id] || [];
+                      return (
+                        <div>
+                          <form
+                            onSubmit={handleSubmitButlerReview}
+                            className="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-slate-50/50 mb-5 flex flex-col gap-3"
+                          >
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                              <input
+                                type="text"
+                                value={reviewAuthor}
+                                onChange={(e) => setReviewAuthor(e.target.value)}
+                                placeholder="Your name"
+                                className="bg-transparent border-0 p-0 text-sm font-semibold text-[#17212B] focus:outline-none sm:w-52"
+                              />
+                              <div className="flex items-center gap-1">
+                                <span className="text-xs text-[#64748B] mr-1">Rating:</span>
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                  <button
+                                    key={star}
+                                    type="button"
+                                    aria-label={`Rate ${star} stars`}
+                                    onClick={() => setReviewRating(star)}
+                                    className="p-0.5 cursor-pointer"
+                                  >
+                                    <Star
+                                      className={`w-4.5 h-4.5 ${
+                                        star <= reviewRating
+                                          ? 'fill-amber-400 text-amber-400'
+                                          : 'text-slate-300'
+                                      }`}
+                                    />
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+
+                            <div className="flex flex-col sm:flex-row gap-2.5 sm:items-center">
+                              <textarea
+                                rows={2}
+                                value={reviewComment}
+                                onChange={(e) => setReviewComment(e.target.value)}
+                                placeholder={`Write a review for ${selectedButler.name}...`}
+                                required
+                                className="flex-1 bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-[#17212B] focus:outline-none focus:border-[#0552A2] resize-none"
+                              />
+                              <button
+                                type="submit"
+                                className="bg-[#0552A2] hover:bg-[#044080] text-white text-xs sm:text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors cursor-pointer shrink-0"
+                              >
+                                Post
+                              </button>
+                            </div>
+                          </form>
+
+                          <div className="divide-y divide-slate-100">
+                            {bReviews.length === 0 ? (
+                              <p className="text-sm text-[#64748B] py-3">
+                                No reviews yet. Be the first to review {selectedButler.name}.
+                              </p>
+                            ) : (
+                              bReviews.map((rev) => (
+                                <div key={rev.id} className="py-4 first:pt-1 last:pb-1 flex gap-3.5">
+                                  <div className="w-9 h-9 rounded-full bg-[#0552A2]/10 text-[#0552A2] font-bold text-sm flex items-center justify-center shrink-0">
+                                    {rev.author.charAt(0).toUpperCase()}
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <div className="flex items-center justify-between gap-2">
+                                      <span className="text-sm font-semibold text-[#17212B]">
+                                        {rev.author}
+                                      </span>
+                                      <div className="flex items-center gap-2">
+                                        <span className="flex items-center gap-0.5 text-xs font-semibold text-amber-600">
+                                          <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                                          {rev.rating}
+                                        </span>
+                                        <span className="text-xs text-[#64748B]">{rev.date}</span>
+                                      </div>
+                                    </div>
+                                    <p className="text-xs sm:text-sm text-[#475569] mt-1.5 leading-relaxed">
+                                      {rev.comment}
+                                    </p>
+                                  </div>
+                                </div>
+                              ))
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })()}
+
+                    {butlerProfileTab === 'reviews' && (() => {
+                      const bReviews = butlerReviews[selectedButler.id] || [];
+                      return (
+                        <div>
+                          <form
+                            onSubmit={handleSubmitButlerReview}
+                            className="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-slate-50/50 mb-5 flex flex-col gap-3"
+                          >
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                              <input
+                                type="text"
+                                value={reviewAuthor}
+                                onChange={(e) => setReviewAuthor(e.target.value)}
+                                placeholder="Your name"
+                                className="bg-transparent border-0 p-0 text-sm font-semibold text-[#17212B] focus:outline-none sm:w-52"
+                              />
+                              <div className="flex items-center gap-1">
+                                <span className="text-xs text-[#64748B] mr-1">Rating:</span>
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                  <button
+                                    key={star}
+                                    type="button"
+                                    aria-label={`Rate ${star} stars`}
+                                    onClick={() => setReviewRating(star)}
+                                    className="p-0.5 cursor-pointer"
+                                  >
+                                    <Star
+                                      className={`w-4.5 h-4.5 ${
+                                        star <= reviewRating
+                                          ? 'fill-amber-400 text-amber-400'
+                                          : 'text-slate-300'
+                                      }`}
+                                    />
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+
+                            <div className="flex flex-col sm:flex-row gap-2.5 sm:items-center">
+                              <textarea
+                                rows={2}
+                                value={reviewComment}
+                                onChange={(e) => setReviewComment(e.target.value)}
+                                placeholder={`Write a review for ${selectedButler.name}...`}
+                                required
+                                className="flex-1 bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-[#17212B] focus:outline-none focus:border-[#0552A2] resize-none"
+                              />
+                              <button
+                                type="submit"
+                                className="bg-[#0552A2] hover:bg-[#044080] text-white text-xs sm:text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors cursor-pointer shrink-0"
+                              >
+                                Post
+                              </button>
+                            </div>
+                          </form>
+
+                          <div className="divide-y divide-slate-100">
+                            {bReviews.length === 0 ? (
+                              <p className="text-sm text-[#64748B] py-3">
+                                No reviews yet. Be the first to review {selectedButler.name}.
+                              </p>
+                            ) : (
+                              bReviews.map((rev) => (
+                                <div key={rev.id} className="py-4 first:pt-1 last:pb-1 flex gap-3.5">
+                                  <div className="w-9 h-9 rounded-full bg-[#0552A2]/10 text-[#0552A2] font-bold text-sm flex items-center justify-center shrink-0">
+                                    {rev.author.charAt(0).toUpperCase()}
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <div className="flex items-center justify-between gap-2">
+                                      <span className="text-sm font-semibold text-[#17212B]">
+                                        {rev.author}
+                                      </span>
+                                      <div className="flex items-center gap-2">
+                                        <span className="flex items-center gap-0.5 text-xs font-semibold text-amber-600">
+                                          <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                                          {rev.rating}
+                                        </span>
+                                        <span className="text-xs text-[#64748B]">{rev.date}</span>
+                                      </div>
+                                    </div>
+                                    <p className="text-xs sm:text-sm text-[#475569] mt-1.5 leading-relaxed">
+                                      {rev.comment}
+                                    </p>
+                                  </div>
+                                </div>
+                              ))
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })()}
                   </div>
                 </div>
 
