@@ -223,21 +223,6 @@ export default function DashboardPage() {
     );
   }
 
-  const getActiveItemDetails = () => {
-    if (active === 'profile') {
-      return { groupTitle: 'Account', itemLabel: 'Profile' };
-    }
-    for (const group of NAV_GROUPS) {
-      const found = group.items.find(item => item.id === active);
-      if (found) {
-        return { groupTitle: group.title, itemLabel: found.label };
-      }
-    }
-    return { groupTitle: 'Discover', itemLabel: 'Home' };
-  };
-
-  const activeDetails = getActiveItemDetails();
-
   // Dynamic weather mappings based on active section
   const getWeatherInfo = () => {
     if (['trekking', 'mountaineering'].includes(active)) {
@@ -780,28 +765,6 @@ export default function DashboardPage() {
               transition={{ duration: 0.2, ease: 'easeOut' }}
               className="flex-1 flex flex-col min-w-0 relative bg-white transition-[margin,width] duration-350 ease-[cubic-bezier(0.22,1,0.36,1)]"
             >
-              {/* Context breadcrumb & Search toolbar */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between px-3 sm:px-4 py-1.5 sm:py-2 bg-white border-b border-slate-200/70 select-none relative z-10 gap-2 sm:gap-3">
-                <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
-                  <span className="uppercase tracking-wider font-semibold text-slate-500">{activeDetails.groupTitle}</span>
-                  <span className="text-slate-300">/</span>
-                  <span className="text-[#0552A2] font-bold">{activeDetails.itemLabel}</span>
-                </div>
-
-                <div className="flex items-center w-full sm:max-w-xs relative">
-                  <span className="absolute left-3 text-slate-400 flex items-center justify-center pointer-events-none">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <circle cx="11" cy="11" r="8" />
-                      <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                    </svg>
-                  </span>
-                  <input
-                    type="text"
-                    placeholder="Search destinations, guides, stays..."
-                    className="w-full bg-slate-50 border border-slate-200 text-xs rounded-full pl-9 pr-4 py-1.5 text-[#17212B] focus:outline-none focus:border-[#0552A2] focus:bg-white transition-colors"
-                  />
-                </div>
-              </div>
 
               {/* Main scrollable body */}
               <main className="flex-1 overflow-y-auto p-2.5 sm:p-3.5 md:p-4 pb-16 md:pb-4 min-h-0 relative z-10 scrollbar-thin">
