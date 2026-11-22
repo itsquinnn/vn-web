@@ -13,7 +13,6 @@ import {
   ShieldCheck,
   Heart,
   Search,
-  MapPin,
   X,
 } from 'lucide-react';
 import {
@@ -27,15 +26,15 @@ interface DashboardHomeProps {
 }
 
 const PLACE_FILTERS = [
-  { id: 'All', label: 'All Nepal', keywords: [] as string[] },
-  { id: 'everest', label: 'Everest & Koshi', keywords: ['koshi', 'everest', 'ilam'] },
-  { id: 'gandaki', label: 'Pokhara & Annapurna', keywords: ['gandaki', 'ghandruk', 'bandipur', 'mustang'] },
-  { id: 'mustang', label: 'Upper Mustang', keywords: ['mustang'] },
-  { id: 'chitwan', label: 'Chitwan & Bardia', keywords: ['chitwan', 'bardia'] },
-  { id: 'karnali', label: 'Rara & Dolpo', keywords: ['karnali', 'rara', 'dolpo'] },
-  { id: 'bagmati', label: 'Bagmati & Rolwaling', keywords: ['bagmati', 'dolakha', 'tsho-rolpa'] },
-  { id: 'madhesh', label: 'Janakpur & Madhesh', keywords: ['madhesh', 'janakpur'] },
-  { id: 'west', label: 'Far West (Khaptad)', keywords: ['sudurpashchim', 'khaptad'] },
+  { id: 'All', label: 'All Nepal', imageUrl: '/pictures/annapurna-1624804396.jpg', keywords: [] as string[] },
+  { id: 'everest', label: 'Everest', imageUrl: '/pictures/Everest_tk_trekker_(5)-1630474503.jpg', keywords: ['koshi', 'everest', 'ilam'] },
+  { id: 'gandaki', label: 'Pokhara', imageUrl: '/pictures/Pokhara_ss_lt_(4)-1624818140.jpg', keywords: ['gandaki', 'ghandruk', 'bandipur', 'mustang'] },
+  { id: 'mustang', label: 'Mustang', imageUrl: '/pictures/mustang_tk_people-1624440754.jpeg', keywords: ['mustang'] },
+  { id: 'chitwan', label: 'Chitwan', imageUrl: '/pictures/Chitwan_ss_lt_(17)-1624813756.jpg', keywords: ['chitwan', 'bardia'] },
+  { id: 'karnali', label: 'Rara & Dolpo', imageUrl: '/pictures/shey-1626727697.jpeg', keywords: ['karnali', 'rara', 'dolpo'] },
+  { id: 'bagmati', label: 'Kathmandu', imageUrl: '/pictures/Kathmandu_Durbar_Square___Susheel_Shrestha-1629279698.jpg', keywords: ['bagmati', 'dolakha', 'tsho-rolpa'] },
+  { id: 'madhesh', label: 'Janakpur', imageUrl: '/pictures/Janakpur_ss_pilgrimage_(1)-1624818475.jpg', keywords: ['madhesh', 'janakpur'] },
+  { id: 'west', label: 'Khaptad', imageUrl: '/pictures/Khaptad_taan_trekker_(6)-1624819036.jpg', keywords: ['sudurpashchim', 'khaptad'] },
 ];
 
 export default function DashboardHome({ onNavigate }: DashboardHomeProps) {
@@ -109,26 +108,26 @@ export default function DashboardHome({ onNavigate }: DashboardHomeProps) {
         )}
       </AnimatePresence>
 
-      {/* Namaste Greeting + Search + Place Selector */}
-      <div className="space-y-4 pb-2">
+      {/* Namaste Greeting (left) + Search (right) */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="font-[family-name:var(--font-quicksand)] text-2xl sm:text-3xl font-bold text-[#17212B] tracking-tight">
             Namaste, {firstName}
           </h1>
           <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs sm:text-sm text-[#4B5563] mt-1">
-            From Himalayan passes to quiet tea hills — pick a place below to tailor your recommendations.
+            From Himalayan passes to quiet tea hills — explore Nepal at your own pace.
           </p>
         </div>
 
         {/* Search Input */}
-        <div className="relative max-w-xl">
+        <div className="relative w-full md:w-80 lg:w-96 shrink-0">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search places, valleys, national parks, or regions..."
-            className="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-9 py-2.5 text-xs sm:text-sm text-[#17212B] placeholder:text-slate-400 focus:outline-none focus:border-[#0552A2] transition-colors"
+            placeholder="Search places, valleys, or regions..."
+            className="w-full bg-white border border-slate-200 rounded-full pl-10 pr-9 py-2.5 text-xs sm:text-sm text-[#17212B] placeholder:text-slate-400 focus:outline-none focus:border-[#0552A2] transition-colors"
           />
           {searchQuery && (
             <button
@@ -140,37 +139,60 @@ export default function DashboardHome({ onNavigate }: DashboardHomeProps) {
             </button>
           )}
         </div>
-
-        {/* Places Selector */}
-        <div className="space-y-2">
-          <p className="font-[family-name:var(--font-quicksand)] text-xs font-bold text-[#17212B] flex items-center gap-1.5">
-            <MapPin className="h-3.5 w-3.5 text-[#0552A2]" />
-            <span>Where in Nepal are you dreaming of going?</span>
-          </p>
-          <div className="flex flex-wrap gap-1.5">
-            {PLACE_FILTERS.map((place) => {
-              const active = selectedPlace === place.id;
-              return (
-                <button
-                  key={place.id}
-                  type="button"
-                  onClick={() => setSelectedPlace(place.id)}
-                  className={`text-xs px-3 py-1.5 rounded-full font-semibold transition-colors cursor-pointer border ${
-                    active
-                      ? 'bg-[#0552A2] text-white border-[#0552A2]'
-                      : 'bg-white text-[#4B5563] border-slate-200 hover:border-slate-300 hover:bg-slate-50'
-                  }`}
-                >
-                  {place.label}
-                </button>
-              );
-            })}
-          </div>
-        </div>
       </div>
 
-      {/* Quick Travel Actions */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      {/* Quick Actions: Compact SVG+Label on Mobile, 4-Column Cards on Desktop */}
+      <div className="grid grid-cols-4 gap-2 sm:hidden">
+        <button
+          onClick={() => onNavigate?.('customize')}
+          className="flex flex-col items-center gap-1.5 cursor-pointer group text-center"
+        >
+          <span className="h-10 w-10 rounded-full bg-blue-50 text-[#0552A2] group-hover:bg-[#0552A2] group-hover:text-white transition-colors flex items-center justify-center">
+            <SlidersHorizontal className="h-4 w-4" />
+          </span>
+          <span className="font-[family-name:var(--font-quicksand)] text-[11px] font-bold text-[#17212B] group-hover:text-[#0552A2] whitespace-nowrap">
+            Plan Travel
+          </span>
+        </button>
+
+        <button
+          onClick={() => onNavigate?.('hotels')}
+          className="flex flex-col items-center gap-1.5 cursor-pointer group text-center"
+        >
+          <span className="h-10 w-10 rounded-full bg-blue-50 text-[#0552A2] group-hover:bg-[#0552A2] group-hover:text-white transition-colors flex items-center justify-center">
+            <Hotel className="h-4 w-4" />
+          </span>
+          <span className="font-[family-name:var(--font-quicksand)] text-[11px] font-bold text-[#17212B] group-hover:text-[#0552A2] whitespace-nowrap">
+            Find Stays
+          </span>
+        </button>
+
+        <button
+          onClick={() => onNavigate?.('explore')}
+          className="flex flex-col items-center gap-1.5 cursor-pointer group text-center"
+        >
+          <span className="h-10 w-10 rounded-full bg-blue-50 text-[#0552A2] group-hover:bg-[#0552A2] group-hover:text-white transition-colors flex items-center justify-center">
+            <Compass className="h-4 w-4" />
+          </span>
+          <span className="font-[family-name:var(--font-quicksand)] text-[11px] font-bold text-[#17212B] group-hover:text-[#0552A2] whitespace-nowrap">
+            Destinations
+          </span>
+        </button>
+
+        <button
+          onClick={() => onNavigate?.('permits')}
+          className="flex flex-col items-center gap-1.5 cursor-pointer group text-center"
+        >
+          <span className="h-10 w-10 rounded-full bg-blue-50 text-[#0552A2] group-hover:bg-[#0552A2] group-hover:text-white transition-colors flex items-center justify-center">
+            <ShieldCheck className="h-4 w-4" />
+          </span>
+          <span className="font-[family-name:var(--font-quicksand)] text-[11px] font-bold text-[#17212B] group-hover:text-[#0552A2] whitespace-nowrap">
+            Permits
+          </span>
+        </button>
+      </div>
+
+      <div className="hidden sm:grid sm:grid-cols-4 gap-3">
         <button
           onClick={() => onNavigate?.('customize')}
           className="p-3.5 rounded-2xl bg-white border border-slate-200/80 hover:border-[#0552A2]/40 hover:bg-blue-50/30 text-left transition-all cursor-pointer flex items-center gap-3 group"
@@ -232,6 +254,58 @@ export default function DashboardHome({ onNavigate }: DashboardHomeProps) {
         </button>
       </div>
 
+      {/* Places Circular Image Horizontal Scroll */}
+      <div className="space-y-3">
+        <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+          <h2 className="font-[family-name:var(--font-quicksand)] text-lg sm:text-xl font-bold text-[#17212B]">
+            Where in Nepal are you dreaming of going?
+          </h2>
+          <span className="text-xs text-[#64748B]">
+            Pick a region to filter recommendations
+          </span>
+        </div>
+
+        <div className="flex items-start gap-4 sm:gap-5 overflow-x-auto py-1.5 px-1 scrollbar-none">
+          {PLACE_FILTERS.map((place) => {
+            const active = selectedPlace === place.id;
+            return (
+              <button
+                key={place.id}
+                type="button"
+                onClick={() => setSelectedPlace(place.id)}
+                className="group flex flex-col items-center gap-2 shrink-0 cursor-pointer text-center focus:outline-none"
+              >
+                <div
+                  className={`relative h-16 w-16 sm:h-[70px] sm:w-[70px] rounded-full overflow-hidden transition-all duration-200 bg-slate-100 ${
+                    active
+                      ? 'ring-2 ring-[#0552A2] ring-offset-2 shadow-sm'
+                      : 'ring-1 ring-slate-200 group-hover:ring-[#0552A2]/50'
+                  }`}
+                >
+                  <Image
+                    src={place.imageUrl}
+                    alt={place.label}
+                    fill
+                    unoptimized
+                    sizes="70px"
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                <span
+                  className={`font-[family-name:var(--font-ibm-plex-sans)] text-xs leading-tight whitespace-nowrap transition-colors ${
+                    active
+                      ? 'font-bold text-[#0552A2]'
+                      : 'font-medium text-[#4B5563] group-hover:text-[#17212B]'
+                  }`}
+                >
+                  {place.label}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       {/* Recommended Destinations */}
       <div>
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-4 sm:mb-5 gap-3">
@@ -284,7 +358,7 @@ export default function DashboardHome({ onNavigate }: DashboardHomeProps) {
         ) : (
           <motion.div
             layout
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5"
+            className="flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 overflow-x-auto sm:overflow-visible snap-x snap-mandatory pb-2 sm:pb-0 scrollbar-none"
           >
             {filteredRecommendations.map((dest) => {
               const isWishlisted = wishlist.some((w) => w.slug === dest.slug);
@@ -296,7 +370,7 @@ export default function DashboardHome({ onNavigate }: DashboardHomeProps) {
                     layout: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
                     opacity: { duration: 0.25 },
                   }}
-                  className="group rounded-2xl bg-white border border-slate-200/80 overflow-hidden shadow-xs hover:shadow-md transition-[border-color,box-shadow,transform] duration-300 ease-out flex flex-col justify-between transform-gpu will-change-transform"
+                  className="w-[82vw] max-w-[320px] sm:w-auto sm:max-w-none shrink-0 snap-start group rounded-2xl bg-white border border-slate-200/80 overflow-hidden shadow-xs hover:shadow-md transition-[border-color,box-shadow,transform] duration-300 ease-out flex flex-col justify-between transform-gpu will-change-transform"
                 >
                   <div className="relative h-44 sm:h-48 w-full overflow-hidden bg-[#17212B]">
                     <Image
