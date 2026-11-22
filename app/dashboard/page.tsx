@@ -102,23 +102,18 @@ const NAV_GROUPS: NavGroup[] = [
 
 export default function DashboardPage() {
   const router = useRouter();
-  const [active, setActive] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const sp = new URLSearchParams(window.location.search);
-      return sp.get('section') || sp.get('from') || 'home';
-    }
-    return 'home';
-  });
+  const [active, setActive] = useState('home');
   const [previousActive, setPreviousActive] = useState('explore');
 
   useEffect(() => {
-    const handlePopState = () => {
+    const syncFromUrl = () => {
       const sp = new URLSearchParams(window.location.search);
-      const section = sp.get('section') || 'home';
+      const section = sp.get('section') || sp.get('from') || 'home';
       setActive(section);
     };
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
+    syncFromUrl();
+    window.addEventListener('popstate', syncFromUrl);
+    return () => window.removeEventListener('popstate', syncFromUrl);
   }, []);
 
   const handleActiveChange = (newActiveId: string) => {

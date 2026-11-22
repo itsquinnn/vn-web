@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useTravelStore } from '@/store/useTravelStore';
-import { useRouter } from 'next/navigation';
-import DashboardHome from './DashboardHome';
+import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useTravelStore } from "@/store/useTravelStore";
+import { useRouter } from "next/navigation";
+import DashboardHome from "./DashboardHome";
 import {
   MapPin,
   ArrowLeft,
@@ -17,8 +17,8 @@ import {
   UserPlus,
   UserCheck,
   ClipboardList,
-  User
-} from 'lucide-react';
+  User,
+} from "lucide-react";
 
 interface DiscoverSectionProps {
   activeId: string;
@@ -27,71 +27,92 @@ interface DiscoverSectionProps {
 
 const DESTINATIONS = [
   {
-    id: 'everest',
-    name: 'Mount Everest Base Camp',
-    elevation: '5,364 m',
-    region: 'Khumbu',
-    image: '/pictures/Everest_tk_trekker_(5)-1630474503.jpg',
-    description: 'Walk in the footsteps of legends to the base of the world\'s highest peak.',
-    details: 'The trek to Everest Base Camp is a grand pilgrimage through Sherpa country, high suspended bridges, and ancient Buddhist monasteries.'
+    id: "everest",
+    name: "Mount Everest Base Camp",
+    elevation: "5,364 m",
+    region: "Khumbu",
+    image: "/pictures/Everest_tk_trekker_(5)-1630474503.jpg",
+    description:
+      "Walk in the footsteps of legends to the base of the world's highest peak.",
+    details:
+      "The trek to Everest Base Camp is a grand pilgrimage through Sherpa country, high suspended bridges, and ancient Buddhist monasteries.",
   },
   {
-    id: 'pokhara',
-    name: 'Phewa Lake, Pokhara',
-    elevation: '822 m',
-    region: 'Kaski',
-    image: '/pictures/Pokhara_ss_lt_(4)-1624818140.jpg',
-    description: 'A tranquil lakeside resort town with raw mountain reflections.',
-    details: 'Relax in standard lakeside tea houses or paddle under the clear gaze of Machapuchare (Fishtail Peak) and the Annapurna range.'
+    id: "pokhara",
+    name: "Phewa Lake, Pokhara",
+    elevation: "822 m",
+    region: "Kaski",
+    image: "/pictures/Pokhara_ss_lt_(4)-1624818140.jpg",
+    description:
+      "A tranquil lakeside resort town with raw mountain reflections.",
+    details:
+      "Relax in standard lakeside tea houses or paddle under the clear gaze of Machapuchare (Fishtail Peak) and the Annapurna range.",
   },
   {
-    id: 'kathmandu',
-    name: 'Boudhanath Stupa',
-    elevation: '1,400 m',
-    region: 'Kathmandu',
-    image: '/pictures/boudha-1624805151.jpg',
-    description: 'One of the largest spherical stupas in the world.',
-    details: 'A beacon of ancient spirituality decorated with thousands of prayer flags waving in the gentle breeze, surrounded by peaceful monasteries.'
+    id: "kathmandu",
+    name: "Boudhanath Stupa",
+    elevation: "1,400 m",
+    region: "Kathmandu",
+    image: "/pictures/boudha-1624805151.jpg",
+    description: "One of the largest spherical stupas in the world.",
+    details:
+      "A beacon of ancient spirituality decorated with thousands of prayer flags waving in the gentle breeze, surrounded by peaceful monasteries.",
   },
   {
-    id: 'chitwan',
-    name: 'Chitwan Wildlife Sanctuary',
-    elevation: '150 m',
-    region: 'Chitwan',
-    image: '/pictures/Chitwan_ss_lt_(17)-1624813756.jpg',
-    description: 'Deep subtropical jungles where rare rhinos roam free.',
-    details: 'Experience guided canoe safaris and dense jungle exploration looking for tigers, leopards, and crocodiles.'
+    id: "chitwan",
+    name: "Chitwan Wildlife Sanctuary",
+    elevation: "150 m",
+    region: "Chitwan",
+    image: "/pictures/Chitwan_ss_lt_(17)-1624813756.jpg",
+    description: "Deep subtropical jungles where rare rhinos roam free.",
+    details:
+      "Experience guided canoe safaris and dense jungle exploration looking for tigers, leopards, and crocodiles.",
   },
   {
-    id: 'mustang',
-    name: 'Lo Manthang, Upper Mustang',
-    elevation: '3,840 m',
-    region: 'Mustang',
-    image: '/pictures/mustang_tk_people-1624440754.jpeg',
-    description: 'A walled city in the high-altitude trans-Himalayan desert.',
-    details: 'Explore ancient red cliffs, sky caves, and the preserved fortress palace of the former Kingdom of Lo.'
-  }
+    id: "mustang",
+    name: "Lo Manthang, Upper Mustang",
+    elevation: "3,840 m",
+    region: "Mustang",
+    image: "/pictures/mustang_tk_people-1624440754.jpeg",
+    description: "A walled city in the high-altitude trans-Himalayan desert.",
+    details:
+      "Explore ancient red cliffs, sky caves, and the preserved fortress palace of the former Kingdom of Lo.",
+  },
 ];
 
-export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectionProps) {
-  const { feedPosts, addFeedPost, likeFeedPost, addFeedComment, currentUser } = useTravelStore();
+export default function DiscoverSection({
+  activeId,
+  onNavigate,
+}: DiscoverSectionProps) {
+  const { feedPosts, addFeedPost, likeFeedPost, addFeedComment, currentUser } =
+    useTravelStore();
   const router = useRouter();
 
-  const [postContent, setPostContent] = useState('');
-  const [postLocation, setPostLocation] = useState('');
-  const [selectedImage, setSelectedImage] = useState('/pictures/Everest_tk_trekker_(5)-1630474503.jpg');
-  const [activeCommentPostId, setActiveCommentPostId] = useState<string | null>(null);
-  const [commentInputs, setCommentInputs] = useState<Record<string, string>>({});
+  const [postContent, setPostContent] = useState("");
+  const [postLocation, setPostLocation] = useState("");
+  const [selectedImage, setSelectedImage] = useState(
+    "/pictures/Everest_tk_trekker_(5)-1630474503.jpg",
+  );
+  const [activeCommentPostId, setActiveCommentPostId] = useState<string | null>(
+    null,
+  );
+  const [commentInputs, setCommentInputs] = useState<Record<string, string>>(
+    {},
+  );
   const [imageSelectorOpen, setImageSelectorOpen] = useState(false);
-  const [selectedProfileUser, setSelectedProfileUser] = useState<any | null>(null);
-  const [activeProfileTab, setActiveProfileTab] = useState<'posts' | 'trips' | 'gallery' | 'gear'>('posts');
+  const [selectedProfileUser, setSelectedProfileUser] = useState<any | null>(
+    null,
+  );
+  const [activeProfileTab, setActiveProfileTab] = useState<
+    "posts" | "trips" | "gallery" | "gear"
+  >("posts");
   const [copied, setCopied] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    setActiveProfileTab('posts');
+    setActiveProfileTab("posts");
     setIsFollowing(false);
   }, [selectedProfileUser]);
 
@@ -114,34 +135,51 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
   };
 
   const handleCommenterClick = (userName: string) => {
-    const foundPost = feedPosts.find(p => p.userName.toLowerCase() === userName.toLowerCase());
+    const foundPost = feedPosts.find(
+      (p) => p.userName.toLowerCase() === userName.toLowerCase(),
+    );
     if (foundPost) {
       setSelectedProfileUser({
         userId: foundPost.userId,
         name: foundPost.userName,
         avatar: foundPost.userAvatar,
         role: foundPost.userRole,
-        location: foundPost.location
+        location: foundPost.location,
       });
     } else {
-      const slug = userName.toLowerCase().replace(/\s+/g, '_');
+      const slug = userName.toLowerCase().replace(/\s+/g, "_");
       setSelectedProfileUser({
         userId: slug,
         name: userName,
-        avatar: '/pictures/mustang_tk_people-1624440754.jpeg',
-        role: 'Explorer',
-        location: 'Nepal'
+        avatar: "/pictures/mustang_tk_people-1624440754.jpeg",
+        role: "Explorer",
+        location: "Nepal",
       });
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const MOCK_PHOTOS = [
-    { name: 'Everest Peaks', url: '/pictures/Everest_tk_trekker_(5)-1630474503.jpg' },
-    { name: 'Phewa Lakeside', url: '/pictures/Pokhara_ss_lt_(4)-1624818140.jpg' },
-    { name: 'Chitwan Jungle Tiger', url: '/pictures/Chitwan_ss_jungleactivities-1630491399.JPG' },
-    { name: 'Ancient Bhaktapur', url: '/pictures/Bhaktapur_ss_lt_(2)-1629279885.jpg' },
-    { name: 'Kathmandu Gateway', url: '/pictures/Kathmandu_Durbar_Square___Susheel_Shrestha-1629279698.jpg' },
+    {
+      name: "Everest Peaks",
+      url: "/pictures/Everest_tk_trekker_(5)-1630474503.jpg",
+    },
+    {
+      name: "Phewa Lakeside",
+      url: "/pictures/Pokhara_ss_lt_(4)-1624818140.jpg",
+    },
+    {
+      name: "Chitwan Jungle Tiger",
+      url: "/pictures/Chitwan_ss_jungleactivities-1630491399.JPG",
+    },
+    {
+      name: "Ancient Bhaktapur",
+      url: "/pictures/Bhaktapur_ss_lt_(2)-1629279885.jpg",
+    },
+    {
+      name: "Kathmandu Gateway",
+      url: "/pictures/Kathmandu_Durbar_Square___Susheel_Shrestha-1629279698.jpg",
+    },
   ];
 
   const containerVariants: any = {
@@ -149,13 +187,13 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.4, ease: 'easeOut', staggerChildren: 0.08 }
-    }
+      transition: { duration: 0.4, ease: "easeOut", staggerChildren: 0.08 },
+    },
   };
 
   const itemVariants: any = {
     hidden: { opacity: 0, y: 10 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.3 } }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
   };
 
   return (
@@ -170,23 +208,38 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
           className="w-full text-left"
         >
           {/* ── HOME VIEW ────────────────────────────────────────────────── */}
-          {activeId === 'home' && (
-            selectedProfileUser ? (
+          {activeId === "home" &&
+            (selectedProfileUser ? (
               <div className="animate-in fade-in duration-300">
                 {/* Cover Banner - breaks out of parent p-6/md:p-10 on top + sides */}
                 <div
                   className="relative h-44 overflow-hidden"
                   style={{
-                    marginTop: '-1.5rem',
-                    marginLeft: '-1.5rem',
-                    marginRight: '-1.5rem',
-                    width: 'calc(100% + 3rem)',
+                    marginTop: "-1.5rem",
+                    marginLeft: "-1.5rem",
+                    marginRight: "-1.5rem",
+                    width: "calc(100% + 3rem)",
                   }}
                 >
                   {/* md override via a pseudo-style trick using a style tag approach isn't possible, 
                     so we use the closest Tailwind responsive inline workaround */}
-                  <img src={getDiscoverProfileDetails(selectedProfileUser.name, selectedProfileUser.role).banner} alt="Cover" className="w-full h-full object-cover" />
-                  <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, transparent 35%, rgba(255,254,250,0.9))' }} />
+                  <img
+                    src={
+                      getDiscoverProfileDetails(
+                        selectedProfileUser.name,
+                        selectedProfileUser.role,
+                      ).banner
+                    }
+                    alt="Cover"
+                    className="w-full h-full object-cover"
+                  />
+                  <div
+                    className="absolute inset-0"
+                    style={{
+                      background:
+                        "linear-gradient(to bottom, transparent 35%, rgba(255,254,250,0.9))",
+                    }}
+                  />
 
                   {/* Back Button - top left inside banner */}
                   <button
@@ -200,8 +253,8 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                   {/* Share Button - top right inside banner */}
                   <button
                     onClick={() => {
-                      if (typeof window !== 'undefined') {
-                        const profileLink = `${window.location.origin}/user/${selectedProfileUser.userId || '048291'}`;
+                      if (typeof window !== "undefined") {
+                        const profileLink = `${window.location.origin}/user/${selectedProfileUser.userId || "048291"}`;
                         navigator.clipboard.writeText(profileLink);
                         setCopied(true);
                         setTimeout(() => setCopied(false), 2000);
@@ -210,14 +263,18 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                     className="absolute top-4 right-4 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/80 backdrop-blur-md border border-[#92C4EA]/25 text-[9px] font-mono font-bold text-[#475569] hover:text-[#0552A2] hover:bg-white transition-all cursor-pointer active:scale-95 uppercase tracking-wider"
                   >
                     <Share2 className="h-3 w-3" />
-                    <span>{copied ? 'Copied! ✨' : 'Share'}</span>
+                    <span>{copied ? "Copied! ✨" : "Share"}</span>
                   </button>
                 </div>
 
                 {/* ── Profile Info Card (overlaps banner) ── */}
                 <div
                   className="relative z-10 mx-4 -mt-10 rounded-2xl"
-                  style={{ background: 'rgba(255,254,250,0.96)', border: '1px solid rgba(194,147,103,0.14)', boxShadow: '0 4px 24px rgba(61,45,39,0.07)' }}
+                  style={{
+                    background: "rgba(255,254,250,0.96)",
+                    border: "1px solid rgba(194,147,103,0.14)",
+                    boxShadow: "0 4px 24px rgba(61,45,39,0.07)",
+                  }}
                 >
                   {/* Top row: Avatar + Name/Role/Location + Follow */}
                   <div className="flex items-end gap-4 px-5 pt-4 pb-3">
@@ -225,23 +282,40 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                     <div className="relative shrink-0 -mt-10">
                       <div
                         className="h-20 w-20 rounded-full overflow-hidden border-4 shadow-md p-0.5"
-                        style={{ borderColor: '#FFFEFA', background: 'linear-gradient(45deg, #0552A2, #044080)' }}
+                        style={{
+                          borderColor: "#FFFEFA",
+                          background:
+                            "linear-gradient(45deg, #0552A2, #044080)",
+                        }}
                       >
                         <div className="h-full w-full rounded-full overflow-hidden bg-[#E2E8F0]">
-                          <img src={selectedProfileUser.avatar} alt={selectedProfileUser.name} className="h-full w-full object-cover" />
+                          <img
+                            src={selectedProfileUser.avatar}
+                            alt={selectedProfileUser.name}
+                            className="h-full w-full object-cover"
+                          />
                         </div>
                       </div>
                       <span
                         className="absolute bottom-1 right-1 h-5 w-5 rounded-full flex items-center justify-center border text-[8px] font-black text-white"
-                        style={{ background: 'linear-gradient(135deg,#0552A2,#044080)', borderColor: '#FFFEFA' }}
+                        style={{
+                          background: "linear-gradient(135deg,#0552A2,#044080)",
+                          borderColor: "#FFFEFA",
+                        }}
                         title="Verified Explorer"
-                      >✓</span>
+                      >
+                        ✓
+                      </span>
                     </div>
 
                     {/* Name + Role + Location */}
                     <div className="flex-1 min-w-0 pb-0.5">
-                      <h1 className="text-lg font-black text-[#17212B] tracking-tight leading-none">{selectedProfileUser.name}</h1>
-                      <span className="text-[8.5px] font-mono font-bold uppercase tracking-widest text-[#0552A2] mt-0.5 block">{selectedProfileUser.role}</span>
+                      <h1 className="text-lg font-black text-[#17212B] tracking-tight leading-none">
+                        {selectedProfileUser.name}
+                      </h1>
+                      <span className="text-[8.5px] font-mono font-bold uppercase tracking-widest text-[#0552A2] mt-0.5 block">
+                        {selectedProfileUser.role}
+                      </span>
                       {selectedProfileUser.location && (
                         <span className="text-[8.5px] font-mono text-[#64748B] flex items-center gap-1 mt-1">
                           <MapPin className="h-2.5 w-2.5 text-[#0552A2]" />
@@ -254,58 +328,115 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                     <button
                       onClick={() => setIsFollowing(!isFollowing)}
                       className="shrink-0 text-[9px] font-mono font-bold uppercase tracking-wider px-4 py-2 rounded-xl cursor-pointer transition-all active:scale-95 flex items-center gap-1.5 text-white"
-                      style={{ background: isFollowing ? 'linear-gradient(135deg, #475569, #5C463C)' : 'linear-gradient(135deg, #0552A2, #044080)' }}
+                      style={{
+                        background: isFollowing
+                          ? "linear-gradient(135deg, #475569, #5C463C)"
+                          : "linear-gradient(135deg, #0552A2, #044080)",
+                      }}
                     >
-                      {isFollowing ? <UserCheck className="h-3 w-3" /> : <UserPlus className="h-3 w-3" />}
-                      {isFollowing ? 'Following' : 'Follow'}
+                      {isFollowing ? (
+                        <UserCheck className="h-3 w-3" />
+                      ) : (
+                        <UserPlus className="h-3 w-3" />
+                      )}
+                      {isFollowing ? "Following" : "Follow"}
                     </button>
                   </div>
 
                   {/* Divider */}
-                  <div className="mx-5" style={{ height: '1px', background: 'rgba(194,147,103,0.12)' }} />
+                  <div
+                    className="mx-5"
+                    style={{
+                      height: "1px",
+                      background: "rgba(194,147,103,0.12)",
+                    }}
+                  />
 
                   {/* Stats row */}
                   <div className="flex items-center gap-0 px-5 py-2.5">
                     {[
-                      { label: 'Posts', value: String(feedPosts.filter(p => p.userName === selectedProfileUser.name).length) },
-                      { label: 'Followers', value: getDiscoverProfileDetails(selectedProfileUser.name, selectedProfileUser.role).followers },
-                      { label: 'Following', value: getDiscoverProfileDetails(selectedProfileUser.name, selectedProfileUser.role).following },
+                      {
+                        label: "Posts",
+                        value: String(
+                          feedPosts.filter(
+                            (p) => p.userName === selectedProfileUser.name,
+                          ).length,
+                        ),
+                      },
+                      {
+                        label: "Followers",
+                        value: getDiscoverProfileDetails(
+                          selectedProfileUser.name,
+                          selectedProfileUser.role,
+                        ).followers,
+                      },
+                      {
+                        label: "Following",
+                        value: getDiscoverProfileDetails(
+                          selectedProfileUser.name,
+                          selectedProfileUser.role,
+                        ).following,
+                      },
                     ].map((s, i) => (
-                      <div key={s.label} className={`flex-1 text-center font-mono ${i < 2 ? 'border-r border-[#92C4EA]/20' : ''}`}>
-                        <span className="block text-sm font-black text-[#17212B]">{s.value}</span>
-                        <span className="block text-[7.5px] uppercase tracking-widest text-[#64748B]">{s.label}</span>
+                      <div
+                        key={s.label}
+                        className={`flex-1 text-center font-mono ${i < 2 ? "border-r border-[#92C4EA]/20" : ""}`}
+                      >
+                        <span className="block text-sm font-black text-[#17212B]">
+                          {s.value}
+                        </span>
+                        <span className="block text-[7.5px] uppercase tracking-widest text-[#64748B]">
+                          {s.label}
+                        </span>
                       </div>
                     ))}
                   </div>
 
                   {/* Divider */}
-                  <div className="mx-5" style={{ height: '1px', background: 'rgba(194,147,103,0.12)' }} />
+                  <div
+                    className="mx-5"
+                    style={{
+                      height: "1px",
+                      background: "rgba(194,147,103,0.12)",
+                    }}
+                  />
 
                   {/* Bio */}
                   <p className="px-5 py-3 text-[11px] text-[#475569] leading-relaxed">
-                    {getDiscoverProfileDetails(selectedProfileUser.name, selectedProfileUser.role).bio}
+                    {
+                      getDiscoverProfileDetails(
+                        selectedProfileUser.name,
+                        selectedProfileUser.role,
+                      ).bio
+                    }
                   </p>
                 </div>
 
                 {/* Elegant Tab Buttons */}
-                <div className="mt-4 mb-3 flex p-1 rounded-xl font-mono"
-                  style={{ background: 'rgba(194,147,103,0.05)', border: '1px solid rgba(194,147,103,0.12)' }}>
+                <div
+                  className="mt-4 mb-3 flex p-1 rounded-xl font-mono"
+                  style={{
+                    background: "rgba(194,147,103,0.05)",
+                    border: "1px solid rgba(194,147,103,0.12)",
+                  }}
+                >
                   {[
-                    { id: 'posts', label: 'Chronicles', icon: ClipboardList },
-                    { id: 'trips', label: 'Past Trips', icon: Compass },
-                    { id: 'gallery', label: 'Gallery', icon: Camera },
-                    { id: 'gear', label: 'Gear & Bio', icon: Activity },
-                  ].map(tab => {
+                    { id: "posts", label: "Chronicles", icon: ClipboardList },
+                    { id: "trips", label: "Past Trips", icon: Compass },
+                    { id: "gallery", label: "Gallery", icon: Camera },
+                    { id: "gear", label: "Gear & Bio", icon: Activity },
+                  ].map((tab) => {
                     const IconComponent = tab.icon;
                     const isActive = activeProfileTab === tab.id;
                     return (
                       <button
                         key={tab.id}
                         onClick={() => setActiveProfileTab(tab.id as any)}
-                        className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[9px] font-bold uppercase tracking-wider transition-all cursor-pointer ${isActive
-                            ? 'bg-white text-[#0552A2] shadow-xs scale-102 font-black'
-                            : 'text-[#8C766C] hover:text-[#5C463C]'
-                          }`}
+                        className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[9px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                          isActive
+                            ? "bg-white text-[#0552A2] shadow-xs scale-102 font-black"
+                            : "text-[#8C766C] hover:text-[#5C463C]"
+                        }`}
                       >
                         <IconComponent className="h-3 w-3 shrink-0" />
                         <span className="hidden sm:inline">{tab.label}</span>
@@ -316,7 +447,7 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
 
                 {/* TAB CONTENT */}
                 <AnimatePresence mode="wait">
-                  {activeProfileTab === 'posts' && (
+                  {activeProfileTab === "posts" && (
                     <motion.div
                       key="posts"
                       initial={{ opacity: 0, y: 12 }}
@@ -325,13 +456,20 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                       transition={{ duration: 0.25 }}
                       className="flex flex-col gap-6"
                     >
-                      {feedPosts.filter(p => p.userName === selectedProfileUser.name).length === 0 ? (
+                      {feedPosts.filter(
+                        (p) => p.userName === selectedProfileUser.name,
+                      ).length === 0 ? (
                         <div className="text-center py-12 bg-white border border-slate-200/90 rounded-2xl shadow-xs">
-                          <p className="text-xs font-mono text-[#64748B]">No chronicles published yet by this traveler.</p>
+                          <p className="text-xs font-mono text-[#64748B]">
+                            No chronicles published yet by this traveler.
+                          </p>
                         </div>
                       ) : (
                         feedPosts
-                          .filter((post) => post.userName === selectedProfileUser.name)
+                          .filter(
+                            (post) =>
+                              post.userName === selectedProfileUser.name,
+                          )
                           .map((post) => (
                             <div
                               key={post.id}
@@ -341,17 +479,37 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                               <div className="flex items-center justify-between p-4.5 pb-2">
                                 <div className="flex items-center gap-3">
                                   <div className="h-9 w-9 rounded-full overflow-hidden border border-slate-200 bg-slate-100">
-                                    <img src={post.userAvatar} alt={post.userName} className="h-full w-full object-cover" />
+                                    <img
+                                      src={post.userAvatar}
+                                      alt={post.userName}
+                                      className="h-full w-full object-cover"
+                                    />
                                   </div>
                                   <div>
-                                    <h4 className="text-xs font-bold text-[#17212B]">{post.userName}</h4>
+                                    <h4 className="text-xs font-bold text-[#17212B]">
+                                      {post.userName}
+                                    </h4>
                                     <div className="flex items-center gap-1.5 mt-0.5">
-                                      <span className="text-[8px] font-mono text-[#0552A2] font-bold uppercase tracking-wider">{post.userRole}</span>
+                                      <span className="text-[8px] font-mono text-[#0552A2] font-bold uppercase tracking-wider">
+                                        {post.userRole}
+                                      </span>
                                       {post.location && (
                                         <>
-                                          <span className="text-[#64748B] text-[8px]">•</span>
+                                          <span className="text-[#64748B] text-[8px]">
+                                            •
+                                          </span>
                                           <span className="text-[8px] font-mono text-[#475569] flex items-center gap-0.5">
-                                            <svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2a8 8 0 00-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 00-8-8z" /><circle cx="12" cy="10" r="3" /></svg>
+                                            <svg
+                                              viewBox="0 0 24 24"
+                                              width="9"
+                                              height="9"
+                                              fill="none"
+                                              stroke="currentColor"
+                                              strokeWidth="2"
+                                            >
+                                              <path d="M12 2a8 8 0 00-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 00-8-8z" />
+                                              <circle cx="12" cy="10" r="3" />
+                                            </svg>
                                             {post.location}
                                           </span>
                                         </>
@@ -359,7 +517,9 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                                     </div>
                                   </div>
                                 </div>
-                                <span className="text-[8px] font-mono text-[#64748B]">{post.timestamp}</span>
+                                <span className="text-[8px] font-mono text-[#64748B]">
+                                  {post.timestamp}
+                                </span>
                               </div>
 
                               {/* Post Content */}
@@ -370,7 +530,11 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                               {/* Post Image */}
                               {post.image && (
                                 <div className="w-full overflow-hidden border-y border-slate-100 max-h-72">
-                                  <img src={post.image} alt="Chronicle scene" className="w-full object-cover max-h-72" />
+                                  <img
+                                    src={post.image}
+                                    alt="Chronicle scene"
+                                    className="w-full object-cover max-h-72"
+                                  />
                                 </div>
                               )}
 
@@ -378,18 +542,48 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                               <div className="flex items-center gap-4 px-4.5 py-3 border-t border-slate-100 mt-1">
                                 <button
                                   onClick={() => likeFeedPost(post.id)}
-                                  className={`flex items-center gap-1.5 text-[10px] font-medium transition-colors cursor-pointer ${post.likedByUser ? 'text-pink-500' : 'text-[#475569] hover:text-pink-500'}`}
+                                  className={`flex items-center gap-1.5 text-[10px] font-medium transition-colors cursor-pointer ${post.likedByUser ? "text-pink-500" : "text-[#475569] hover:text-pink-500"}`}
                                 >
-                                  <svg viewBox="0 0 24 24" width="13" height="13" fill={post.likedByUser ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" /></svg>
-                                  <span className="font-mono">{post.likes}</span>
+                                  <svg
+                                    viewBox="0 0 24 24"
+                                    width="13"
+                                    height="13"
+                                    fill={
+                                      post.likedByUser ? "currentColor" : "none"
+                                    }
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                  >
+                                    <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+                                  </svg>
+                                  <span className="font-mono">
+                                    {post.likes}
+                                  </span>
                                 </button>
 
                                 <button
-                                  onClick={() => setActiveCommentPostId(activeCommentPostId === post.id ? null : post.id)}
+                                  onClick={() =>
+                                    setActiveCommentPostId(
+                                      activeCommentPostId === post.id
+                                        ? null
+                                        : post.id,
+                                    )
+                                  }
                                   className="flex items-center gap-1.5 text-[10px] font-medium text-[#475569] hover:text-[#0552A2] transition-colors cursor-pointer"
                                 >
-                                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
-                                  <span className="font-mono">{post.comments.length}</span>
+                                  <svg
+                                    viewBox="0 0 24 24"
+                                    width="13"
+                                    height="13"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                  >
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                                  </svg>
+                                  <span className="font-mono">
+                                    {post.comments.length}
+                                  </span>
                                 </button>
                               </div>
 
@@ -397,23 +591,36 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                               {post.comments.length > 0 && (
                                 <div className="px-4.5 pb-3 pt-1 border-t border-slate-100 flex flex-col gap-2">
                                   {post.comments.map((comment) => (
-                                    <div key={comment.id} className="flex items-start gap-2 text-left">
+                                    <div
+                                      key={comment.id}
+                                      className="flex items-start gap-2 text-left"
+                                    >
                                       <div
-                                        onClick={() => handleCommenterClick(comment.userName)}
+                                        onClick={() =>
+                                          handleCommenterClick(comment.userName)
+                                        }
                                         className="h-5 w-5 rounded-full overflow-hidden border border-slate-200 bg-slate-100 shrink-0 flex items-center justify-center text-[#0552A2] cursor-pointer hover:scale-95 transition-transform"
                                       >
                                         <User className="h-2.5 w-2.5 text-[#0552A2]" />
                                       </div>
                                       <div className="flex-1 bg-slate-50 rounded-xl px-3 py-1.5 border border-slate-200">
                                         <span
-                                          onClick={() => handleCommenterClick(comment.userName)}
+                                          onClick={() =>
+                                            handleCommenterClick(
+                                              comment.userName,
+                                            )
+                                          }
                                           className="text-[10px] font-bold text-[#17212B] cursor-pointer hover:text-[#0552A2] hover:underline transition-colors block"
                                         >
                                           {comment.userName}
                                         </span>
-                                        <p className="text-[10px] text-[#475569] mt-0.5 leading-relaxed">{comment.text}</p>
+                                        <p className="text-[10px] text-[#475569] mt-0.5 leading-relaxed">
+                                          {comment.text}
+                                        </p>
                                       </div>
-                                      <span className="text-[7px] font-mono text-[#64748B] self-end mb-1 shrink-0">{comment.timestamp}</span>
+                                      <span className="text-[7px] font-mono text-[#64748B] self-end mb-1 shrink-0">
+                                        {comment.timestamp}
+                                      </span>
                                     </div>
                                   ))}
                                 </div>
@@ -423,12 +630,26 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                               {activeCommentPostId === post.id && (
                                 <div className="px-4.5 pb-4.5 pt-2 border-t border-[#92C4EA]/10 flex gap-2">
                                   <input
-                                    value={commentInputs[post.id] || ''}
-                                    onChange={(e) => setCommentInputs(prev => ({ ...prev, [post.id]: e.target.value }))}
+                                    value={commentInputs[post.id] || ""}
+                                    onChange={(e) =>
+                                      setCommentInputs((prev) => ({
+                                        ...prev,
+                                        [post.id]: e.target.value,
+                                      }))
+                                    }
                                     onKeyDown={(e) => {
-                                      if (e.key === 'Enter' && commentInputs[post.id]?.trim()) {
-                                        addFeedComment(post.id, commentInputs[post.id]);
-                                        setCommentInputs(prev => ({ ...prev, [post.id]: '' }));
+                                      if (
+                                        e.key === "Enter" &&
+                                        commentInputs[post.id]?.trim()
+                                      ) {
+                                        addFeedComment(
+                                          post.id,
+                                          commentInputs[post.id],
+                                        );
+                                        setCommentInputs((prev) => ({
+                                          ...prev,
+                                          [post.id]: "",
+                                        }));
                                       }
                                     }}
                                     placeholder="Write a comment... (Press Enter)"
@@ -437,14 +658,33 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                                   <button
                                     onClick={() => {
                                       if (commentInputs[post.id]?.trim()) {
-                                        addFeedComment(post.id, commentInputs[post.id]);
-                                        setCommentInputs(prev => ({ ...prev, [post.id]: '' }));
+                                        addFeedComment(
+                                          post.id,
+                                          commentInputs[post.id],
+                                        );
+                                        setCommentInputs((prev) => ({
+                                          ...prev,
+                                          [post.id]: "",
+                                        }));
                                       }
                                     }}
-                                    style={{ background: 'linear-gradient(135deg, #0552A2 0%, #044080 100%)' }}
+                                    style={{
+                                      background:
+                                        "linear-gradient(135deg, #0552A2 0%, #044080 100%)",
+                                    }}
                                     className="h-7 w-7 rounded-xl flex items-center justify-center text-white cursor-pointer active:scale-95 transition-all"
                                   >
-                                    <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" /></svg>
+                                    <svg
+                                      viewBox="0 0 24 24"
+                                      width="11"
+                                      height="11"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      strokeWidth="2.5"
+                                    >
+                                      <line x1="22" y1="2" x2="11" y2="13" />
+                                      <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                                    </svg>
                                   </button>
                                 </div>
                               )}
@@ -454,7 +694,7 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                     </motion.div>
                   )}
 
-                  {activeProfileTab === 'trips' && (
+                  {activeProfileTab === "trips" && (
                     <motion.div
                       key="trips"
                       initial={{ opacity: 0, y: 12 }}
@@ -463,28 +703,41 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                       transition={{ duration: 0.25 }}
                       className="flex flex-col gap-5 text-left"
                     >
-                      {getDiscoverProfileDetails(selectedProfileUser.name, selectedProfileUser.role).pastTrips.map((trip: any, idx: number) => (
+                      {getDiscoverProfileDetails(
+                        selectedProfileUser.name,
+                        selectedProfileUser.role,
+                      ).pastTrips.map((trip: any, idx: number) => (
                         <div
                           key={idx}
                           className="bg-white/80 border border-[#92C4EA]/25 rounded-2xl p-4.5 flex flex-col md:flex-row gap-4 hover:border-[#0552A2]/30 transition-colors shadow-sm"
                         >
-                          <img src={trip.image} alt={trip.title} className="w-full md:w-36 h-24 object-cover rounded-xl border border-[#92C4EA]/20 shrink-0" />
+                          <img
+                            src={trip.image}
+                            alt={trip.title}
+                            className="w-full md:w-36 h-24 object-cover rounded-xl border border-[#92C4EA]/20 shrink-0"
+                          />
                           <div className="flex-1 flex flex-col justify-center gap-1.5">
                             <div className="flex items-center gap-2">
                               <span className="text-[8px] font-mono font-bold text-white bg-[#0552A2] px-2 py-0.5 rounded uppercase tracking-wider">
                                 {trip.date}
                               </span>
-                              <span className="text-[9px] font-mono text-[#64748B]">{trip.elevation} • {trip.region}</span>
+                              <span className="text-[9px] font-mono text-[#64748B]">
+                                {trip.elevation} • {trip.region}
+                              </span>
                             </div>
-                            <h3 className="text-sm font-black text-[#17212B] mt-1">{trip.title}</h3>
-                            <p className="text-[11px] text-[#475569] leading-relaxed">{trip.description}</p>
+                            <h3 className="text-sm font-black text-[#17212B] mt-1">
+                              {trip.title}
+                            </h3>
+                            <p className="text-[11px] text-[#475569] leading-relaxed">
+                              {trip.description}
+                            </p>
                           </div>
                         </div>
                       ))}
                     </motion.div>
                   )}
 
-                  {activeProfileTab === 'gallery' && (
+                  {activeProfileTab === "gallery" && (
                     <motion.div
                       key="gallery"
                       initial={{ opacity: 0, y: 12 }}
@@ -493,22 +746,31 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                       transition={{ duration: 0.25 }}
                       className="grid grid-cols-2 sm:grid-cols-3 gap-3"
                     >
-                      {getDiscoverProfileDetails(selectedProfileUser.name, selectedProfileUser.role).gallery.map((imgUrl: string, idx: number) => (
+                      {getDiscoverProfileDetails(
+                        selectedProfileUser.name,
+                        selectedProfileUser.role,
+                      ).gallery.map((imgUrl: string, idx: number) => (
                         <motion.div
                           key={idx}
                           whileHover={{ scale: 1.02 }}
                           className="relative aspect-square rounded-2xl overflow-hidden border border-[#0552A2]/15 bg-[#F8FAFC] shadow-xs cursor-pointer group"
                         >
-                          <img src={imgUrl} alt={`Gallery capture ${idx + 1}`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                          <img
+                            src={imgUrl}
+                            alt={`Gallery capture ${idx + 1}`}
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
                           <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                            <span className="text-white text-[10px] font-mono tracking-widest font-black uppercase">Vibe · 100%</span>
+                            <span className="text-white text-[10px] font-mono tracking-widest font-black uppercase">
+                              Vibe · 100%
+                            </span>
                           </div>
                         </motion.div>
                       ))}
                     </motion.div>
                   )}
 
-                  {activeProfileTab === 'gear' && (
+                  {activeProfileTab === "gear" && (
                     <motion.div
                       key="gear"
                       initial={{ opacity: 0, y: 12 }}
@@ -518,22 +780,41 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                       className="flex flex-col gap-6 text-left"
                     >
                       <div className="bg-white/80 border border-[#0552A2]/15 rounded-2xl p-5 shadow-xs">
-                        <h3 className="text-xs font-mono font-bold uppercase text-[#0552A2] tracking-wider mb-2.5">Traveler Bio & Vision</h3>
+                        <h3 className="text-xs font-mono font-bold uppercase text-[#0552A2] tracking-wider mb-2.5">
+                          Traveler Bio & Vision
+                        </h3>
                         <p className="text-[11px] text-[#475569] leading-relaxed">
-                          Dedicated Himalayan pathfinder. Believes in soft ecological footprints, supporting local sherpa economies, and preserving the deep historical artifacts and oral histories of the high valleys. Currently mapping remote tea houses and tracking microclimate shifts above 3,500m.
+                          Dedicated Himalayan pathfinder. Believes in soft
+                          ecological footprints, supporting local sherpa
+                          economies, and preserving the deep historical
+                          artifacts and oral histories of the high valleys.
+                          Currently mapping remote tea houses and tracking
+                          microclimate shifts above 3,500m.
                         </p>
                       </div>
 
                       <div className="bg-white/80 border border-[#0552A2]/15 rounded-2xl p-5 shadow-xs flex flex-col gap-3">
-                        <h3 className="text-xs font-mono font-bold uppercase text-[#0552A2] tracking-wider mb-1">Calibrated Gear Pack</h3>
-                        {getDiscoverProfileDetails(selectedProfileUser.name, selectedProfileUser.role).gear.map((g: any, idx: number) => (
-                          <div key={idx} className="flex gap-3 items-start border-b border-[#F8FAFC] pb-2.5 last:border-0 last:pb-0">
+                        <h3 className="text-xs font-mono font-bold uppercase text-[#0552A2] tracking-wider mb-1">
+                          Calibrated Gear Pack
+                        </h3>
+                        {getDiscoverProfileDetails(
+                          selectedProfileUser.name,
+                          selectedProfileUser.role,
+                        ).gear.map((g: any, idx: number) => (
+                          <div
+                            key={idx}
+                            className="flex gap-3 items-start border-b border-[#F8FAFC] pb-2.5 last:border-0 last:pb-0"
+                          >
                             <div className="h-6 w-6 rounded-lg bg-blue-50 border border-[#0552A2]/20 flex items-center justify-center text-[11px] font-bold text-[#0552A2] mt-0.5 font-mono shrink-0">
                               0{idx + 1}
                             </div>
                             <div>
-                              <h4 className="text-[11px] font-bold text-[#17212B]">{g.name}</h4>
-                              <p className="text-[10px] text-[#64748B] mt-0.5 leading-normal">{g.desc}</p>
+                              <h4 className="text-[11px] font-bold text-[#17212B]">
+                                {g.name}
+                              </h4>
+                              <p className="text-[10px] text-[#64748B] mt-0.5 leading-normal">
+                                {g.desc}
+                              </p>
                             </div>
                           </div>
                         ))}
@@ -544,7 +825,10 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
               </div>
             ) : (
               <div className="flex flex-col gap-8 max-w-[1440px] w-full mx-auto py-4">
-                <motion.div variants={itemVariants} className="flex flex-col gap-3">
+                <motion.div
+                  variants={itemVariants}
+                  className="flex flex-col gap-3"
+                >
                   <span className="text-[10px] font-mono font-bold tracking-widest text-[#0552A2] uppercase">
                     Welcome to Nepal
                   </span>
@@ -553,7 +837,9 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                     Natural & Spiritual Wonder.
                   </h1>
                   <p className="text-sm text-[#475569] max-w-xl leading-relaxed">
-                    Discover a land where giant snow peaks meet sub-tropical forests, and centuries of preserved culture blend into a soft, welcoming sanctuary.
+                    Discover a land where giant snow peaks meet sub-tropical
+                    forests, and centuries of preserved culture blend into a
+                    soft, welcoming sanctuary.
                   </p>
                 </motion.div>
 
@@ -568,52 +854,91 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                     className="w-full h-full object-cover opacity-90 transition-transform duration-700 hover:scale-102"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#17212B]/90 via-transparent to-transparent flex flex-col justify-end p-6 md:p-8">
-                    <span className="text-[9px] font-mono font-bold uppercase text-[#92C4EA] tracking-widest">Featured Expedition</span>
-                    <h2 className="text-xl md:text-2xl font-bold text-white mt-1">Sagarmatha Everest National Park</h2>
+                    <span className="text-[9px] font-mono font-bold uppercase text-[#92C4EA] tracking-widest">
+                      Featured Expedition
+                    </span>
+                    <h2 className="text-xl md:text-2xl font-bold text-white mt-1">
+                      Sagarmatha Everest National Park
+                    </h2>
                     <p className="text-xs text-white/80 mt-1.5 max-w-lg leading-relaxed">
-                      Embark on an adventure of a lifetime through giant mountains, glacier bridges, and Sherpa villages.
+                      Embark on an adventure of a lifetime through giant
+                      mountains, glacier bridges, and Sherpa villages.
                     </p>
                   </div>
                 </motion.div>
 
                 {/* Quick Info Grid */}
-                <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+                <motion.div
+                  variants={itemVariants}
+                  className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6"
+                >
                   <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-xs flex flex-col gap-2 text-left">
-                    <span className="text-[10px] font-mono font-bold text-[#0552A2] uppercase">01 / Altitudes</span>
-                    <h3 className="text-sm font-bold text-[#17212B]">8,848m Peak</h3>
-                    <p className="text-xs text-[#475569] leading-relaxed">Mount Everest rules the skyline along with seven other 8,000m+ giants.</p>
+                    <span className="text-[10px] font-mono font-bold text-[#0552A2] uppercase">
+                      01 / Altitudes
+                    </span>
+                    <h3 className="text-sm font-bold text-[#17212B]">
+                      8,848m Peak
+                    </h3>
+                    <p className="text-xs text-[#475569] leading-relaxed">
+                      Mount Everest rules the skyline along with seven other
+                      8,000m+ giants.
+                    </p>
                   </div>
                   <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-xs flex flex-col gap-2 text-left">
-                    <span className="text-[10px] font-mono font-bold text-[#0552A2] uppercase">02 / Biodiversity</span>
-                    <h3 className="text-sm font-bold text-[#17212B]">Subtropical to Arctic</h3>
-                    <p className="text-xs text-[#475569] leading-relaxed">Explore habitats ranging from wild tiger sanctuaries to thin, freezing glaciers.</p>
+                    <span className="text-[10px] font-mono font-bold text-[#0552A2] uppercase">
+                      02 / Biodiversity
+                    </span>
+                    <h3 className="text-sm font-bold text-[#17212B]">
+                      Subtropical to Arctic
+                    </h3>
+                    <p className="text-xs text-[#475569] leading-relaxed">
+                      Explore habitats ranging from wild tiger sanctuaries to
+                      thin, freezing glaciers.
+                    </p>
                   </div>
                   <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-xs flex flex-col gap-2 text-left">
-                    <span className="text-[10px] font-mono font-bold text-[#0552A2] uppercase">03 / Sanctuary</span>
-                    <h3 className="text-sm font-bold text-[#17212B]">Zen & Hospitality</h3>
-                    <p className="text-xs text-[#475569] leading-relaxed">Rest in premium eco-resorts and authentic homestays rooted in ancient warmth.</p>
+                    <span className="text-[10px] font-mono font-bold text-[#0552A2] uppercase">
+                      03 / Sanctuary
+                    </span>
+                    <h3 className="text-sm font-bold text-[#17212B]">
+                      Zen & Hospitality
+                    </h3>
+                    <p className="text-xs text-[#475569] leading-relaxed">
+                      Rest in premium eco-resorts and authentic homestays rooted
+                      in ancient warmth.
+                    </p>
                   </div>
                 </motion.div>
 
                 {/* ── COMMUNITY TRAVEL DIARIES ── */}
-                <motion.div variants={itemVariants} className="flex flex-col gap-6 mt-4">
+                <motion.div
+                  variants={itemVariants}
+                  className="flex flex-col gap-6 mt-4"
+                >
                   <div className="flex flex-col gap-1 border-b border-slate-200/80 pb-3 text-left">
                     <span className="text-[10px] font-mono font-bold tracking-widest text-[#0552A2] uppercase">
                       Traveler Diaries
                     </span>
-                    <h2 className="text-xl font-bold tracking-tight text-[#17212B]">Community Chronicles</h2>
-                    <p className="text-xs text-[#475569]">Share your journeys and check out live updates from fellow adventurers in Nepal.</p>
+                    <h2 className="text-xl font-bold tracking-tight text-[#17212B]">
+                      Community Chronicles
+                    </h2>
+                    <p className="text-xs text-[#475569]">
+                      Share your journeys and check out live updates from fellow
+                      adventurers in Nepal.
+                    </p>
                   </div>
 
                   {/* Premium Post Composer */}
-                  <div
-                    className="rounded-2xl p-4 sm:p-5 flex flex-col gap-4 bg-white border border-slate-200/90 shadow-xs"
-                  >
+                  <div className="rounded-2xl p-4 sm:p-5 flex flex-col gap-4 bg-white border border-slate-200/90 shadow-xs">
                     {/* Text Input Area */}
                     <div className="flex gap-3">
                       <div className="h-9 w-9 rounded-full overflow-hidden border-2 border-[#0552A2]/20 flex-shrink-0 bg-slate-100 flex items-center justify-center">
                         {currentUser?.avatar ? (
-                          <img src={currentUser.avatar} alt={currentUser.name} className="h-full w-full object-cover" />
+                          <img
+                            src={currentUser.avatar}
+                            alt={currentUser.name}
+                            className="h-full w-full object-cover"
+                          />
                         ) : (
                           <User className="h-4 w-4 text-[#0552A2]" />
                         )}
@@ -638,20 +963,28 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                                 setSelectedImage(photo.url);
                                 setImageSelectorOpen(false);
                               }}
-                              className={`relative rounded-lg overflow-hidden aspect-video cursor-pointer border-2 transition-all ${selectedImage === photo.url ? 'border-[#0552A2] scale-98 shadow-sm' : 'border-transparent opacity-70 hover:opacity-100'}`}
+                              className={`relative rounded-lg overflow-hidden aspect-video cursor-pointer border-2 transition-all ${selectedImage === photo.url ? "border-[#0552A2] scale-98 shadow-sm" : "border-transparent opacity-70 hover:opacity-100"}`}
                             >
-                              <img src={photo.url} alt={photo.name} className="h-full w-full object-cover" />
+                              <img
+                                src={photo.url}
+                                alt={photo.name}
+                                className="h-full w-full object-cover"
+                              />
                               <div className="absolute inset-0 bg-black/25 flex items-end justify-center p-1">
-                                <span className="text-[7px] text-white font-mono truncate">{photo.name}</span>
+                                <span className="text-[7px] text-white font-mono truncate">
+                                  {photo.name}
+                                </span>
                               </div>
                             </div>
                           ))}
                           <div
                             onClick={() => {
-                              setSelectedImage('');
+                              setSelectedImage("");
                               setImageSelectorOpen(false);
                             }}
-                            style={{ border: '1px dashed rgba(194,147,103,0.4)' }}
+                            style={{
+                              border: "1px dashed rgba(194,147,103,0.4)",
+                            }}
                             className="rounded-lg aspect-video cursor-pointer hover:bg-[#F2F8FD]/50 flex flex-col items-center justify-center text-[8px] font-mono text-[#64748B]"
                           >
                             No Photo
@@ -661,7 +994,25 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                             onClick={() => fileInputRef.current?.click()}
                             className="aspect-video rounded-lg border-2 border-dashed border-[#92C4EA]/40 hover:border-[#0552A2]/40 flex flex-col items-center justify-center gap-1 text-[8px] font-mono text-[#64748B] hover:text-[#17212B] cursor-pointer transition-all"
                           >
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" /></svg>
+                            <svg
+                              width="10"
+                              height="10"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2.5"
+                            >
+                              <rect
+                                x="3"
+                                y="3"
+                                width="18"
+                                height="18"
+                                rx="2"
+                                ry="2"
+                              />
+                              <circle cx="8.5" cy="8.5" r="1.5" />
+                              <polyline points="21 15 16 10 5 21" />
+                            </svg>
                             <span>Upload</span>
                           </button>
                           <input
@@ -679,17 +1030,50 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                     <div className="flex items-center justify-between border-t border-[#92C4EA]/12 pt-3">
                       <div className="flex items-center gap-3">
                         <button
-                          onClick={() => setImageSelectorOpen(!imageSelectorOpen)}
-                          style={{ background: 'rgba(194,147,103,0.06)', border: '1px solid rgba(194,147,103,0.18)' }}
+                          onClick={() =>
+                            setImageSelectorOpen(!imageSelectorOpen)
+                          }
+                          style={{
+                            background: "rgba(194,147,103,0.06)",
+                            border: "1px solid rgba(194,147,103,0.18)",
+                          }}
                           className="flex items-center gap-1.5 text-[9px] font-semibold text-[#0552A2] hover:text-white px-3 py-1.5 rounded-lg hover:bg-[#0552A2] active:scale-95 transition-all cursor-pointer"
                         >
-                          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" /></svg>
+                          <svg
+                            width="11"
+                            height="11"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                          >
+                            <rect
+                              x="3"
+                              y="3"
+                              width="18"
+                              height="18"
+                              rx="2"
+                              ry="2"
+                            />
+                            <circle cx="8.5" cy="8.5" r="1.5" />
+                            <polyline points="21 15 16 10 5 21" />
+                          </svg>
                           <span>Photo</span>
                         </button>
 
                         <div className="relative flex items-center">
                           <span className="absolute left-2.5 text-[#64748B] pointer-events-none opacity-80">
-                            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M12 2a8 8 0 00-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 00-8-8z" /><circle cx="12" cy="10" r="3" /></svg>
+                            <svg
+                              width="9"
+                              height="9"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="3"
+                            >
+                              <path d="M12 2a8 8 0 00-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 00-8-8z" />
+                              <circle cx="12" cy="10" r="3" />
+                            </svg>
                           </span>
                           <input
                             type="text"
@@ -704,11 +1088,19 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                       <button
                         onClick={() => {
                           if (postContent.trim()) {
-                            addFeedPost(postContent, postLocation, selectedImage);
-                            setPostContent('');
+                            addFeedPost(
+                              postContent,
+                              postLocation,
+                              selectedImage,
+                            );
+                            setPostContent("");
                           }
                         }}
-                        style={{ background: 'linear-gradient(135deg, #0552A2 0%, #044080 100%)', boxShadow: '0 4px 10px rgba(194,147,103,0.18)' }}
+                        style={{
+                          background:
+                            "linear-gradient(135deg, #0552A2 0%, #044080 100%)",
+                          boxShadow: "0 4px 10px rgba(194,147,103,0.18)",
+                        }}
                         className="text-white text-[10px] font-bold px-4.5 py-1.5 rounded-lg hover:opacity-90 active:scale-95 transition-all cursor-pointer"
                       >
                         Publish Chronicle
@@ -722,7 +1114,11 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                     className="flex flex-col gap-6"
                   >
                     {feedPosts
-                      .filter((post) => !selectedProfileUser || post.userName === selectedProfileUser.name)
+                      .filter(
+                        (post) =>
+                          !selectedProfileUser ||
+                          post.userName === selectedProfileUser.name,
+                      )
                       .map((post) => (
                         <div
                           key={post.id}
@@ -738,13 +1134,20 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                                     name: post.userName,
                                     avatar: post.userAvatar,
                                     role: post.userRole,
-                                    location: post.location
+                                    location: post.location,
                                   });
-                                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                                  window.scrollTo({
+                                    top: 0,
+                                    behavior: "smooth",
+                                  });
                                 }}
                                 className="h-9 w-9 rounded-full overflow-hidden border border-slate-200 bg-slate-100 cursor-pointer hover:scale-95 transition-transform"
                               >
-                                <img src={post.userAvatar} alt={post.userName} className="h-full w-full object-cover" />
+                                <img
+                                  src={post.userAvatar}
+                                  alt={post.userName}
+                                  className="h-full w-full object-cover"
+                                />
                               </div>
                               <div>
                                 <h4
@@ -754,21 +1157,38 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                                       name: post.userName,
                                       avatar: post.userAvatar,
                                       role: post.userRole,
-                                      location: post.location
+                                      location: post.location,
                                     });
-                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                    window.scrollTo({
+                                      top: 0,
+                                      behavior: "smooth",
+                                    });
                                   }}
                                   className="text-xs font-bold text-[#17212B] cursor-pointer hover:text-[#0552A2] transition-colors"
                                 >
                                   {post.userName}
                                 </h4>
                                 <div className="flex items-center gap-1.5 mt-0.5">
-                                  <span className="text-[8px] font-mono text-[#0552A2] font-bold uppercase tracking-wider">{post.userRole}</span>
+                                  <span className="text-[8px] font-mono text-[#0552A2] font-bold uppercase tracking-wider">
+                                    {post.userRole}
+                                  </span>
                                   {post.location && (
                                     <>
-                                      <span className="text-[#64748B] text-[8px]">•</span>
+                                      <span className="text-[#64748B] text-[8px]">
+                                        •
+                                      </span>
                                       <span className="text-[8px] font-mono text-[#475569] flex items-center gap-0.5">
-                                        <svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2a8 8 0 00-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 00-8-8z" /><circle cx="12" cy="10" r="3" /></svg>
+                                        <svg
+                                          viewBox="0 0 24 24"
+                                          width="9"
+                                          height="9"
+                                          fill="none"
+                                          stroke="currentColor"
+                                          strokeWidth="2"
+                                        >
+                                          <path d="M12 2a8 8 0 00-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 00-8-8z" />
+                                          <circle cx="12" cy="10" r="3" />
+                                        </svg>
                                         {post.location}
                                       </span>
                                     </>
@@ -776,7 +1196,9 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                                 </div>
                               </div>
                             </div>
-                            <span className="text-[8px] font-mono text-[#64748B]">{post.timestamp}</span>
+                            <span className="text-[8px] font-mono text-[#64748B]">
+                              {post.timestamp}
+                            </span>
                           </div>
 
                           {/* Post Content */}
@@ -787,7 +1209,11 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                           {/* Post Image Showcase */}
                           {post.image && (
                             <div className="w-full overflow-hidden border-y border-slate-100 max-h-72">
-                              <img src={post.image} alt="Chronicle scene" className="w-full object-cover max-h-72" />
+                              <img
+                                src={post.image}
+                                alt="Chronicle scene"
+                                className="w-full object-cover max-h-72"
+                              />
                             </div>
                           )}
 
@@ -796,19 +1222,47 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                             {/* Like Action */}
                             <button
                               onClick={() => likeFeedPost(post.id)}
-                              className={`flex items-center gap-1.5 text-[10px] font-medium transition-colors cursor-pointer ${post.likedByUser ? 'text-pink-500' : 'text-[#475569] hover:text-pink-500'}`}
+                              className={`flex items-center gap-1.5 text-[10px] font-medium transition-colors cursor-pointer ${post.likedByUser ? "text-pink-500" : "text-[#475569] hover:text-pink-500"}`}
                             >
-                              <svg viewBox="0 0 24 24" width="13" height="13" fill={post.likedByUser ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" /></svg>
+                              <svg
+                                viewBox="0 0 24 24"
+                                width="13"
+                                height="13"
+                                fill={
+                                  post.likedByUser ? "currentColor" : "none"
+                                }
+                                stroke="currentColor"
+                                strokeWidth="2"
+                              >
+                                <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+                              </svg>
                               <span className="font-mono">{post.likes}</span>
                             </button>
 
                             {/* Comment Toggle Action */}
                             <button
-                              onClick={() => setActiveCommentPostId(activeCommentPostId === post.id ? null : post.id)}
+                              onClick={() =>
+                                setActiveCommentPostId(
+                                  activeCommentPostId === post.id
+                                    ? null
+                                    : post.id,
+                                )
+                              }
                               className="flex items-center gap-1.5 text-[10px] font-medium text-[#475569] hover:text-[#0552A2] transition-colors cursor-pointer"
                             >
-                              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
-                              <span className="font-mono">{post.comments.length}</span>
+                              <svg
+                                viewBox="0 0 24 24"
+                                width="13"
+                                height="13"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                              >
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                              </svg>
+                              <span className="font-mono">
+                                {post.comments.length}
+                              </span>
                             </button>
                           </div>
 
@@ -816,23 +1270,34 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                           {post.comments.length > 0 && (
                             <div className="px-4.5 pb-3 pt-1 border-t border-slate-100 flex flex-col gap-2">
                               {post.comments.map((comment) => (
-                                <div key={comment.id} className="flex items-start gap-2 text-left">
+                                <div
+                                  key={comment.id}
+                                  className="flex items-start gap-2 text-left"
+                                >
                                   <div
-                                    onClick={() => handleCommenterClick(comment.userName)}
+                                    onClick={() =>
+                                      handleCommenterClick(comment.userName)
+                                    }
                                     className="h-5 w-5 rounded-full overflow-hidden border border-slate-200 bg-slate-100 shrink-0 flex items-center justify-center text-[#0552A2] cursor-pointer hover:scale-95 transition-transform"
                                   >
                                     <User className="h-2.5 w-2.5 text-[#0552A2]" />
                                   </div>
                                   <div className="flex-1 bg-slate-50 rounded-xl px-3 py-1.5 border border-slate-200">
                                     <span
-                                      onClick={() => handleCommenterClick(comment.userName)}
+                                      onClick={() =>
+                                        handleCommenterClick(comment.userName)
+                                      }
                                       className="text-[10px] font-bold text-[#17212B] cursor-pointer hover:text-[#0552A2] hover:underline transition-colors block"
                                     >
                                       {comment.userName}
                                     </span>
-                                    <p className="text-[10px] text-[#475569] mt-0.5 leading-relaxed">{comment.text}</p>
+                                    <p className="text-[10px] text-[#475569] mt-0.5 leading-relaxed">
+                                      {comment.text}
+                                    </p>
                                   </div>
-                                  <span className="text-[7px] font-mono text-[#64748B] self-end mb-1 shrink-0">{comment.timestamp}</span>
+                                  <span className="text-[7px] font-mono text-[#64748B] self-end mb-1 shrink-0">
+                                    {comment.timestamp}
+                                  </span>
                                 </div>
                               ))}
                             </div>
@@ -842,12 +1307,26 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                           {activeCommentPostId === post.id && (
                             <div className="px-4.5 pb-4.5 pt-2 border-t border-[#92C4EA]/10 flex gap-2">
                               <input
-                                value={commentInputs[post.id] || ''}
-                                onChange={(e) => setCommentInputs(prev => ({ ...prev, [post.id]: e.target.value }))}
+                                value={commentInputs[post.id] || ""}
+                                onChange={(e) =>
+                                  setCommentInputs((prev) => ({
+                                    ...prev,
+                                    [post.id]: e.target.value,
+                                  }))
+                                }
                                 onKeyDown={(e) => {
-                                  if (e.key === 'Enter' && commentInputs[post.id]?.trim()) {
-                                    addFeedComment(post.id, commentInputs[post.id]);
-                                    setCommentInputs(prev => ({ ...prev, [post.id]: '' }));
+                                  if (
+                                    e.key === "Enter" &&
+                                    commentInputs[post.id]?.trim()
+                                  ) {
+                                    addFeedComment(
+                                      post.id,
+                                      commentInputs[post.id],
+                                    );
+                                    setCommentInputs((prev) => ({
+                                      ...prev,
+                                      [post.id]: "",
+                                    }));
                                   }
                                 }}
                                 placeholder="Write a comment... (Press Enter)"
@@ -856,38 +1335,66 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                               <button
                                 onClick={() => {
                                   if (commentInputs[post.id]?.trim()) {
-                                    addFeedComment(post.id, commentInputs[post.id]);
-                                    setCommentInputs(prev => ({ ...prev, [post.id]: '' }));
+                                    addFeedComment(
+                                      post.id,
+                                      commentInputs[post.id],
+                                    );
+                                    setCommentInputs((prev) => ({
+                                      ...prev,
+                                      [post.id]: "",
+                                    }));
                                   }
                                 }}
-                                style={{ background: 'linear-gradient(135deg, #0552A2 0%, #044080 100%)' }}
+                                style={{
+                                  background:
+                                    "linear-gradient(135deg, #0552A2 0%, #044080 100%)",
+                                }}
                                 className="h-7 w-7 rounded-xl flex items-center justify-center text-white cursor-pointer active:scale-95 transition-all"
                               >
-                                <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" /></svg>
+                                <svg
+                                  viewBox="0 0 24 24"
+                                  width="11"
+                                  height="11"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2.5"
+                                >
+                                  <line x1="22" y1="2" x2="11" y2="13" />
+                                  <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                                </svg>
                               </button>
                             </div>
                           )}
-
                         </div>
                       ))}
                   </motion.div>
                 </motion.div>
               </div>
-            )
-          )}
+            ))}
 
           {/* ── EXPLORE VIEW ──────────────────────────────────────────────── */}
-          {activeId === 'explore' && (
+          {activeId === "explore" && (
             <div className="flex flex-col gap-6 max-w-[1440px] w-full mx-auto py-4">
-              <motion.div variants={itemVariants} className="flex flex-col gap-1.5">
-                <h2 className="text-2xl font-black tracking-tight text-[#17212B]">Discover Curated Havens</h2>
-                <p className="text-xs text-[#475569]">Select from our handpicked destinations to see local altitude grids and travel stories.</p>
+              <motion.div
+                variants={itemVariants}
+                className="flex flex-col gap-1.5"
+              >
+                <h2 className="text-2xl font-black tracking-tight text-[#17212B]">
+                  Discover Curated Havens
+                </h2>
+                <p className="text-xs text-[#475569]">
+                  Select from our handpicked destinations to see local altitude
+                  grids and travel stories.
+                </p>
               </motion.div>
 
               <motion.div
                 layout="position"
                 className="grid gap-5 auto-card-grid"
-                style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))' }}
+                style={{
+                  gridTemplateColumns:
+                    "repeat(auto-fill, minmax(min(100%, 280px), 1fr))",
+                }}
               >
                 {DESTINATIONS.map((d, index) => (
                   <motion.div
@@ -898,9 +1405,17 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                     transition={{
                       layout: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
                       opacity: { duration: 0.28, delay: index * 0.04 },
-                      y: { duration: 0.28, delay: index * 0.04, ease: [0.22, 1, 0.36, 1] }
+                      y: {
+                        duration: 0.28,
+                        delay: index * 0.04,
+                        ease: [0.22, 1, 0.36, 1],
+                      },
                     }}
-                    onClick={() => onNavigate ? onNavigate(d.id) : router.push('/info/' + d.id)}
+                    onClick={() =>
+                      onNavigate
+                        ? onNavigate(d.id)
+                        : router.push("/info/" + d.id)
+                    }
                     className="group bg-white border border-slate-200/90 rounded-2xl overflow-hidden hover:border-[#0552A2]/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] shadow-xs cursor-pointer active:scale-[0.985] flex flex-col justify-between transform-gpu will-change-transform"
                   >
                     <div>
@@ -932,10 +1447,10 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                     </div>
 
                     <div className="px-4 pb-3.5 pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
-                      <span className="text-[10px] font-mono text-slate-400">View Details</span>
-                      <button
-                        className="font-bold text-[#0552A2] group-hover:underline flex items-center gap-1.5 cursor-pointer"
-                      >
+                      <span className="text-[10px] font-mono text-slate-400">
+                        View Details
+                      </span>
+                      <button className="font-bold text-[#0552A2] group-hover:underline flex items-center gap-1.5 cursor-pointer">
                         <span>Explore</span>
                         <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform duration-200 ease-out" />
                       </button>
@@ -947,18 +1462,29 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
           )}
 
           {/* ── POPULAR VIEW ──────────────────────────────────────────────── */}
-          {activeId === 'popular' && (
+          {activeId === "popular" && (
             <div className="flex flex-col gap-6 max-w-[1440px] w-full mx-auto py-4">
-              <motion.div variants={itemVariants} className="flex flex-col gap-1.5">
-                <h2 className="text-2xl font-black tracking-tight text-[#17212B]">Popular Journeys</h2>
-                <p className="text-xs text-[#475569]">Most loved paths by worldwide travelers seeking adventure, peace, and culture.</p>
+              <motion.div
+                variants={itemVariants}
+                className="flex flex-col gap-1.5"
+              >
+                <h2 className="text-2xl font-black tracking-tight text-[#17212B]">
+                  Popular Journeys
+                </h2>
+                <p className="text-xs text-[#475569]">
+                  Most loved paths by worldwide travelers seeking adventure,
+                  peace, and culture.
+                </p>
               </motion.div>
 
               {/* Destination Cards in Responsive Grid */}
               <motion.div
                 layout="position"
                 className="grid gap-5 auto-card-grid"
-                style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))' }}
+                style={{
+                  gridTemplateColumns:
+                    "repeat(auto-fill, minmax(min(100%, 280px), 1fr))",
+                }}
               >
                 {DESTINATIONS.map((d, index) => (
                   <motion.div
@@ -969,9 +1495,17 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                     transition={{
                       layout: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
                       opacity: { duration: 0.28, delay: index * 0.04 },
-                      y: { duration: 0.28, delay: index * 0.04, ease: [0.22, 1, 0.36, 1] }
+                      y: {
+                        duration: 0.28,
+                        delay: index * 0.04,
+                        ease: [0.22, 1, 0.36, 1],
+                      },
                     }}
-                    onClick={() => onNavigate ? onNavigate(d.id) : router.push('/info/' + d.id)}
+                    onClick={() =>
+                      onNavigate
+                        ? onNavigate(d.id)
+                        : router.push("/info/" + d.id)
+                    }
                     className="group bg-white border border-slate-200/90 rounded-2xl overflow-hidden hover:border-[#0552A2]/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] shadow-xs cursor-pointer active:scale-[0.985] flex flex-col justify-between transform-gpu will-change-transform"
                   >
                     <div>
@@ -1006,7 +1540,9 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                     </div>
 
                     <div className="px-4 pb-3.5 pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
-                      <span className="text-[10px] font-mono text-slate-400">Trending Journey</span>
+                      <span className="text-[10px] font-mono text-slate-400">
+                        Trending Journey
+                      </span>
                       <button
                         type="button"
                         className="font-bold text-[#0552A2] group-hover:underline flex items-center gap-1.5 cursor-pointer"
@@ -1022,17 +1558,28 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
           )}
 
           {/* ── ATTRACTIONS VIEW ──────────────────────────────────────────── */}
-          {activeId === 'attractions' && (
+          {activeId === "attractions" && (
             <div className="flex flex-col gap-6 max-w-[1440px] w-full mx-auto py-4">
-              <motion.div variants={itemVariants} className="flex flex-col gap-1.5">
-                <h2 className="text-2xl font-black tracking-tight text-[#17212B]">Iconic Landmarks</h2>
-                <p className="text-xs text-[#475569]">The spiritual monuments, ancient valleys, and high glaciers defining our geography.</p>
+              <motion.div
+                variants={itemVariants}
+                className="flex flex-col gap-1.5"
+              >
+                <h2 className="text-2xl font-black tracking-tight text-[#17212B]">
+                  Iconic Landmarks
+                </h2>
+                <p className="text-xs text-[#475569]">
+                  The spiritual monuments, ancient valleys, and high glaciers
+                  defining our geography.
+                </p>
               </motion.div>
 
               <motion.div
                 layout="position"
                 className="grid gap-5 auto-card-grid"
-                style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))' }}
+                style={{
+                  gridTemplateColumns:
+                    "repeat(auto-fill, minmax(min(100%, 280px), 1fr))",
+                }}
               >
                 {DESTINATIONS.map((d, index) => (
                   <motion.div
@@ -1043,9 +1590,17 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                     transition={{
                       layout: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
                       opacity: { duration: 0.28, delay: index * 0.04 },
-                      y: { duration: 0.28, delay: index * 0.04, ease: [0.22, 1, 0.36, 1] }
+                      y: {
+                        duration: 0.28,
+                        delay: index * 0.04,
+                        ease: [0.22, 1, 0.36, 1],
+                      },
                     }}
-                    onClick={() => onNavigate ? onNavigate(d.id) : router.push('/info/' + d.id)}
+                    onClick={() =>
+                      onNavigate
+                        ? onNavigate(d.id)
+                        : router.push("/info/" + d.id)
+                    }
                     className="group bg-white border border-slate-200/90 rounded-2xl overflow-hidden hover:border-[#0552A2]/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] shadow-xs cursor-pointer active:scale-[0.985] flex flex-col justify-between transform-gpu will-change-transform"
                   >
                     <div>
@@ -1077,10 +1632,10 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                     </div>
 
                     <div className="px-4 pb-3.5 pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
-                      <span className="text-[10px] font-mono text-slate-400">View Details</span>
-                      <button
-                        className="font-bold text-[#0552A2] group-hover:underline flex items-center gap-1.5 cursor-pointer"
-                      >
+                      <span className="text-[10px] font-mono text-slate-400">
+                        View Details
+                      </span>
+                      <button className="font-bold text-[#0552A2] group-hover:underline flex items-center gap-1.5 cursor-pointer">
                         <span>Explore</span>
                         <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform duration-200 ease-out" />
                       </button>
@@ -1092,136 +1647,171 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
           )}
         </motion.div>
       </AnimatePresence>
-
     </>
   );
 }
 
 const getDiscoverProfileDetails = (username: string, role: string) => {
-  if (username === 'Maya Dev') {
+  if (username === "Maya Dev") {
     return {
-      bio: 'Cultural researcher & Himalayan ethnographer. Documenting Newari architecture & monastic traditions in the valleys. 🏯✨',
-      followers: '4.8k', following: '342',
-      banner: '/pictures/Bhaktapur_ss_lt_(2)-1629279885.jpg',
+      bio: "Cultural researcher & Himalayan ethnographer. Documenting Newari architecture & monastic traditions in the valleys. 🏯✨",
+      followers: "4.8k",
+      following: "342",
+      banner: "/pictures/Bhaktapur_ss_lt_(2)-1629279885.jpg",
       pastTrips: [
         {
-          title: 'Bhaktapur Heritage Walk',
-          date: 'April 2026',
-          elevation: '1,400m',
-          region: 'Kathmandu Valley',
-          description: 'Studying the intricate details of Nyatapola Temple and woodcarving architecture.',
-          image: '/pictures/Bhaktapur_ss_lt_(2)-1629279885.jpg',
+          title: "Bhaktapur Heritage Walk",
+          date: "April 2026",
+          elevation: "1,400m",
+          region: "Kathmandu Valley",
+          description:
+            "Studying the intricate details of Nyatapola Temple and woodcarving architecture.",
+          image: "/pictures/Bhaktapur_ss_lt_(2)-1629279885.jpg",
         },
         {
-          title: 'Lumbini Sacred Garden Trek',
-          date: 'January 2026',
-          elevation: '150m',
-          region: 'Rupandehi',
-          description: 'Analyzing Ashokan Pillar inscriptions and early monastic layout.',
-          image: '/pictures/Lumbini_tk_pilgrimage_(3)-1624819677.jpg',
+          title: "Lumbini Sacred Garden Trek",
+          date: "January 2026",
+          elevation: "150m",
+          region: "Rupandehi",
+          description:
+            "Analyzing Ashokan Pillar inscriptions and early monastic layout.",
+          image: "/pictures/Lumbini_tk_pilgrimage_(3)-1624819677.jpg",
         },
         {
-          title: 'Phoksundo Lake Expedition',
-          date: 'October 2025',
-          elevation: '3,611m',
-          region: 'Dolpo',
-          description: 'Documenting the unique Tibetan Bon culture and turquoise alpine waters.',
-          image: '/pictures/shey-1626727697.jpeg',
-        }
+          title: "Phoksundo Lake Expedition",
+          date: "October 2025",
+          elevation: "3,611m",
+          region: "Dolpo",
+          description:
+            "Documenting the unique Tibetan Bon culture and turquoise alpine waters.",
+          image: "/pictures/shey-1626727697.jpeg",
+        },
       ],
       gallery: [
-        '/pictures/Bhaktapur_ss_lt_(2)-1629279885.jpg',
-        '/pictures/Lumbini_tk_pilgrimage_(3)-1624819677.jpg',
-        '/pictures/shey-1626727697.jpeg',
-        '/pictures/Pokhara_ss_lt_(4)-1624818140.jpg',
-        '/pictures/annapurna-1624804396.jpg',
-        '/pictures/Chitwan_ss_lt_(17)-1624813756.jpg'
+        "/pictures/Bhaktapur_ss_lt_(2)-1629279885.jpg",
+        "/pictures/Lumbini_tk_pilgrimage_(3)-1624819677.jpg",
+        "/pictures/shey-1626727697.jpeg",
+        "/pictures/Pokhara_ss_lt_(4)-1624818140.jpg",
+        "/pictures/annapurna-1624804396.jpg",
+        "/pictures/Chitwan_ss_lt_(17)-1624813756.jpg",
       ],
       gear: [
-        { name: 'Leica SL2-S Camera', desc: 'Fitted with weather-proof primes for rugged heritage shoots.' },
-        { name: 'Hand-woven Monastic Notebook', desc: 'For rapid ethnographical field notes & architectural sketches.' },
-        { name: 'Smart Altitude Biosensor', desc: 'Tracks heart rate variance during high-altitude walkabouts.' }
-      ]
+        {
+          name: "Leica SL2-S Camera",
+          desc: "Fitted with weather-proof primes for rugged heritage shoots.",
+        },
+        {
+          name: "Hand-woven Monastic Notebook",
+          desc: "For rapid ethnographical field notes & architectural sketches.",
+        },
+        {
+          name: "Smart Altitude Biosensor",
+          desc: "Tracks heart rate variance during high-altitude walkabouts.",
+        },
+      ],
     };
   }
-  if (username === 'Liam Patterson') {
+  if (username === "Liam Patterson") {
     return {
       bio: "High-altitude climber & alpine photographer. Driven to capture the raw power of Nepal's 8,000ers. 🏔️❄️",
-      followers: '12.4k', following: '512',
-      banner: '/pictures/Everest_tk_trekker_(5)-1630474503.jpg',
+      followers: "12.4k",
+      following: "512",
+      banner: "/pictures/Everest_tk_trekker_(5)-1630474503.jpg",
       pastTrips: [
         {
-          title: 'Everest Base Camp High-Camp',
-          date: 'May 2026',
-          elevation: '5,364m',
-          region: 'Khumbu Valley',
-          description: 'Successfully reached Base Camp under clear skies and completed photography series.',
-          image: '/pictures/Everest_tk_trekker_(5)-1630474503.jpg',
+          title: "Everest Base Camp High-Camp",
+          date: "May 2026",
+          elevation: "5,364m",
+          region: "Khumbu Valley",
+          description:
+            "Successfully reached Base Camp under clear skies and completed photography series.",
+          image: "/pictures/Everest_tk_trekker_(5)-1630474503.jpg",
         },
         {
-          title: 'Thorong La Pass Crossing',
-          date: 'March 2026',
-          elevation: '5,416m',
-          region: 'Annapurna Valley',
-          description: 'Trekking through active snowstorms. Documented frozen water falls and tea houses.',
-          image: '/pictures/annapurna-1624804396.jpg',
+          title: "Thorong La Pass Crossing",
+          date: "March 2026",
+          elevation: "5,416m",
+          region: "Annapurna Valley",
+          description:
+            "Trekking through active snowstorms. Documented frozen water falls and tea houses.",
+          image: "/pictures/annapurna-1624804396.jpg",
         },
         {
-          title: 'Mera Peak Summit Attempt',
-          date: 'November 2025',
-          elevation: '6,476m',
-          region: 'Hinku Valley',
-          description: 'Alpine mountaineering in sub-zero temperatures. Captured panoramic summit view of 5 peaks.',
-          image: '/pictures/Manaslu_View_from_Lho-1624808940.jpg',
-        }
+          title: "Mera Peak Summit Attempt",
+          date: "November 2025",
+          elevation: "6,476m",
+          region: "Hinku Valley",
+          description:
+            "Alpine mountaineering in sub-zero temperatures. Captured panoramic summit view of 5 peaks.",
+          image: "/pictures/Manaslu_View_from_Lho-1624808940.jpg",
+        },
       ],
       gallery: [
-        '/pictures/Everest_tk_trekker_(5)-1630474503.jpg',
-        '/pictures/annapurna-1624804396.jpg',
-        '/pictures/Manaslu_View_from_Lho-1624808940.jpg',
-        '/pictures/Dhaulagiri_1626729219-1635169360.jpeg',
-        '/pictures/Choyou_1626729673-1635169288.jpeg',
-        '/pictures/everest_(1)-1624869402.jpg'
+        "/pictures/Everest_tk_trekker_(5)-1630474503.jpg",
+        "/pictures/annapurna-1624804396.jpg",
+        "/pictures/Manaslu_View_from_Lho-1624808940.jpg",
+        "/pictures/Dhaulagiri_1626729219-1635169360.jpeg",
+        "/pictures/Choyou_1626729673-1635169288.jpeg",
+        "/pictures/everest_(1)-1624869402.jpg",
       ],
       gear: [
-        { name: 'Quantum Pressurized Shell', desc: 'Heated Gore-Tex layer calibrated to -30 degrees Celsius.' },
-        { name: 'La Sportiva Mountaineering Boots', desc: 'High traction double-insulated smart boots with steel spikes.' },
-        { name: 'O2 Concentrator Pack', desc: 'Provides supplemental oxygen flow at altitudes above 5,000m.' }
-      ]
+        {
+          name: "Quantum Pressurized Shell",
+          desc: "Heated Gore-Tex layer calibrated to -30 degrees Celsius.",
+        },
+        {
+          name: "La Sportiva Mountaineering Boots",
+          desc: "High traction double-insulated smart boots with steel spikes.",
+        },
+        {
+          name: "O2 Concentrator Pack",
+          desc: "Provides supplemental oxygen flow at altitudes above 5,000m.",
+        },
+      ],
     };
   }
   return {
     bio: `Himalayan wanderer & registered ${role.toLowerCase()}. Documenting trail logs, local tea-houses, and hidden lakes. 🗺️🎒`,
-    followers: '840', following: '190',
-    banner: '/pictures/Pokhara_oy_lt_(2)-1624817867.jpg',
+    followers: "840",
+    following: "190",
+    banner: "/pictures/Pokhara_oy_lt_(2)-1624817867.jpg",
     pastTrips: [
       {
-        title: 'Phewa Lake Kayak Tour',
-        date: 'May 2026',
-        elevation: '822m',
-        region: 'Pokhara Kaski',
-        description: 'Relaxed paddle around the Tal Barahi Temple with mirror reflections of Machapuchare.',
-        image: '/pictures/Pokhara_ss_lt_(4)-1624818140.jpg',
+        title: "Phewa Lake Kayak Tour",
+        date: "May 2026",
+        elevation: "822m",
+        region: "Pokhara Kaski",
+        description:
+          "Relaxed paddle around the Tal Barahi Temple with mirror reflections of Machapuchare.",
+        image: "/pictures/Pokhara_ss_lt_(4)-1624818140.jpg",
       },
       {
-        title: 'Chitwan Jungle Safari',
-        date: 'February 2026',
-        elevation: '150m',
-        region: 'Chitwan',
-        description: 'Jungle exploration, spotted two one-horned rhinos near the Rapti river banks.',
-        image: '/pictures/Chitwan_ss_lt_(17)-1624813756.jpg',
-      }
+        title: "Chitwan Jungle Safari",
+        date: "February 2026",
+        elevation: "150m",
+        region: "Chitwan",
+        description:
+          "Jungle exploration, spotted two one-horned rhinos near the Rapti river banks.",
+        image: "/pictures/Chitwan_ss_lt_(17)-1624813756.jpg",
+      },
     ],
     gallery: [
-      '/pictures/Pokhara_oy_lt_(2)-1624817867.jpg',
-      '/pictures/Pokhara_ss_lt_(4)-1624818140.jpg',
-      '/pictures/Chitwan_ss_lt_(17)-1624813756.jpg',
-      '/pictures/Everest_tk_trekker_(5)-1630474503.jpg'
+      "/pictures/Pokhara_oy_lt_(2)-1624817867.jpg",
+      "/pictures/Pokhara_ss_lt_(4)-1624818140.jpg",
+      "/pictures/Chitwan_ss_lt_(17)-1624813756.jpg",
+      "/pictures/Everest_tk_trekker_(5)-1630474503.jpg",
     ],
     gear: [
-      { name: 'Osprey 50L Backpack', desc: 'Sturdy, light-weight back support pack for multiday treks.' },
-      { name: 'Leki Carbon Trekking Poles', desc: 'Antishock carbon poles for safety over rock slides.' }
-    ]
+      {
+        name: "Osprey 50L Backpack",
+        desc: "Sturdy, light-weight back support pack for multiday treks.",
+      },
+      {
+        name: "Leki Carbon Trekking Poles",
+        desc: "Antishock carbon poles for safety over rock slides.",
+      },
+    ],
   };
 };
 
+1;
