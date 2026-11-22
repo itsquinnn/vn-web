@@ -17,10 +17,279 @@ import {
   Compass,
   ShieldCheck,
   BadgeCheck,
-  BedDouble,
   MessageSquare,
   Send,
+  Thermometer,
+  Clock,
+  Mountain,
+  Camera,
+  ExternalLink,
+  ImagePlus,
 } from 'lucide-react';
+
+function getNepalStayInfo(stay: Stay) {
+  const elevMatch = stay.location.match(/([\d,]+)\s*m/i);
+  const elevationMeters = elevMatch ? Number(elevMatch[1].replace(/,/g, '')) : null;
+  const isHighAltitude = elevationMeters !== null && elevationMeters >= 2800;
+
+  let heating = 'In-room heater, hot shower & backup inverter power';
+  let access = 'Private road transfer from Kathmandu or Pokhara';
+
+  if (stay.type === 'Luxury') {
+    heating = 'Central climate control, heated bedding & 24/7 generator backup';
+  } else if (stay.type === 'Mountain Lodge') {
+    heating = 'Heated electric blankets, dining hearth & solar/generator power';
+  } else if (stay.type === 'Eco Resort') {
+    heating = 'Solar hot water, wood/electric heating & off-grid battery bank';
+  }
+
+  if (stay.location.includes('Khumbu') || stay.location.includes('Syangboche')) {
+    access = '35 min flight to Lukla + guided trail ascent or helicopter pad';
+  } else if (stay.location.includes('Mustang')) {
+    access = '25 min scenic flight from Pokhara to Jomsom + 4x4 transfer';
+  } else if (stay.location.includes('Langtang')) {
+    access = '6 hr drive to Syabrubesi + multi-day scenic valley trek';
+  } else if (stay.location.includes('Rara')) {
+    access = 'Domestic flight to Talcha Airport + 2 hr lakeside trail walk';
+  } else if (stay.location.includes('Chitwan')) {
+    access = '25 min flight to Bharatpur + 40 min lodge 4x4 transfer';
+  } else if (stay.location.includes('Kathmandu')) {
+    access = '20 min private drive from Tribhuvan International Airport (TIA)';
+  } else if (stay.location.includes('Pokhara')) {
+    access = '25 min flight from Kathmandu + 20 min valley transfer';
+  }
+
+  return {
+    elevationMeters,
+    isHighAltitude,
+    heating,
+    access,
+    policy: 'Check-in 14:00 · Check-out 11:00 · Free date shift if domestic mountain flights are delayed by weather.',
+  };
+}
+
+function getStayGallery(stay: Stay) {
+  const baseItems = [
+    { src: stay.image, label: `${stay.name} — Exterior`, tag: 'Property' },
+    ...stay.roomPreviews.map((r) => ({ src: r.image, label: r.name, tag: 'Suite' })),
+  ];
+
+  let surroundings: { src: string; label: string; tag: string }[] = [
+    { src: '/pictures/annapurna-1624804396.jpg', label: 'Himalayan Horizon View', tag: 'View' },
+    { src: '/pictures/pokhara-1624821141.jpg', label: 'Valley Morning Light', tag: 'Surroundings' },
+    { src: '/pictures/mountainviewing_pg_nature-1624432650.jpeg', label: 'Ridge Panorama', tag: 'View' },
+  ];
+
+  if (stay.location.includes('Kathmandu')) {
+    surroundings = [
+      { src: '/pictures/boudha-1624805151.jpg', label: 'Boudhanath Stupa (10 min)', tag: 'Nearby' },
+      { src: '/pictures/pashupatinath_bagmati_aarati_pilgrimage_in_kathmandu_nepal-1624432580.jpeg', label: 'Pashupatinath Evening Aarati', tag: 'Nearby' },
+      { src: '/pictures/Bhaktapur_ss_lt_(2)-1629279885.jpg', label: 'Newari Heritage Architecture', tag: 'Culture' },
+    ];
+  } else if (stay.location.includes('Syangboche') || stay.location.includes('Khumbu')) {
+    surroundings = [
+      { src: '/pictures/everest_(1)-1624869402.jpg', label: 'Mt. Everest & Lhotse Panorama', tag: 'View' },
+      { src: '/pictures/The_Glaciers_in_the_Khumbu_Region_of_Nepal_Himalaya_2-1765456544.jpeg', label: 'Khumbu Glacier Valley', tag: 'View' },
+      { src: '/pictures/ebc_tk_adventure_2-1624450606.jpeg', label: 'Trail Toward Namche & EBC', tag: 'Trail' },
+    ];
+  } else if (stay.location.includes('Pokhara')) {
+    surroundings = [
+      { src: '/pictures/Pokhara_ss_lt_(4)-1624818140.jpg', label: 'Phewa Lake & Machhapuchhre', tag: 'View' },
+      { src: '/pictures/pokhara-1624821141.jpg', label: 'Pokhara Valley Reflections', tag: 'Surroundings' },
+      { src: '/pictures/poonhill_pg_adventure-1624431033.jpeg', label: 'Annapurna Sunrise Ridge', tag: 'View' },
+    ];
+  } else if (stay.location.includes('Chitwan')) {
+    surroundings = [
+      { src: '/pictures/Chitwan_ss_jungleactivities-1630491399.JPG', label: 'Rapti River Canoeing', tag: 'Safari' },
+      { src: '/pictures/chitwan-1624804397.jpg', label: 'Chitwan Wildlife Habitat', tag: 'Nature' },
+      { src: '/pictures/junglesafari_ss_nature-1624432644.jpeg', label: 'Sal Forest & Grasslands', tag: 'Surroundings' },
+    ];
+  } else if (stay.location.includes('Mustang')) {
+    surroundings = [
+      { src: '/pictures/Muktinath_tk_pilgrimage-1624859283.jpg', label: 'Lower Mustang Canyon', tag: 'View' },
+      { src: '/pictures/mustang_tk_people-1624440754.jpeg', label: 'Mustang Heritage Trail', tag: 'Culture' },
+      { src: '/pictures/Dhaulagiri_1626729219-1635169360.jpeg', label: 'Nilgiri & Dhaulagiri Peaks', tag: 'View' },
+    ];
+  }
+
+  return [...baseItems, ...surroundings].slice(0, 6);
+}
+
+interface NearbyArea {
+  name: string;
+  distance: string;
+  note: string;
+  image: string;
+}
+
+function getStayNearbyPlaces(stay: Stay): NearbyArea[] {
+  if (stay.location.includes('Kathmandu')) {
+    return [
+      {
+        name: 'Pashupatinath Temple',
+        distance: '1.2 km · 5 min',
+        note: 'Sacred Bagmati riverfront ghats & evening aarati',
+        image: '/pictures/pashupatinath_bagmati_aarati_pilgrimage_in_kathmandu_nepal-1624432580.jpeg',
+      },
+      {
+        name: 'Boudhanath Stupa',
+        distance: '2.8 km · 10 min',
+        note: 'UNESCO stupa, rooftop cafes & prayer wheels',
+        image: '/pictures/boudha-1624805151.jpg',
+      },
+      {
+        name: 'Kathmandu Durbar Square',
+        distance: '5.4 km · 20 min',
+        note: 'Royal Newari courtyards & Kumari Ghar',
+        image: '/pictures/Kathmandu_Durbar_Square___Susheel_Shrestha-1629279698.jpg',
+      },
+      {
+        name: 'Patan & Bhaktapur Heritage',
+        distance: '20–35 min drive',
+        note: 'Ancient woodcarving & pottery squares',
+        image: '/pictures/Bhaktapur_ss_lt_(2)-1629279885.jpg',
+      },
+    ];
+  }
+  if (stay.location.includes('Syangboche') || stay.location.includes('Khumbu')) {
+    return [
+      {
+        name: 'Namche Bazaar',
+        distance: '1.5 hr scenic hike',
+        note: 'Sherpa capital, gear shops & Saturday market',
+        image: '/pictures/Everest_tk_trekker_(5)-1630474503.jpg',
+      },
+      {
+        name: 'Everest View Ridge',
+        distance: '15 min walk',
+        note: 'Unobstructed 360° Everest, Lhotse & Ama Dablam',
+        image: '/pictures/everest_(1)-1624869402.jpg',
+      },
+      {
+        name: 'Khumbu Glacier Trail',
+        distance: 'Day hike access',
+        note: 'High-altitude alpine moraine & yak pastures',
+        image: '/pictures/The_Glaciers_in_the_Khumbu_Region_of_Nepal_Himalaya_2-1765456544.jpeg',
+      },
+      {
+        name: 'Khumjung Monastery',
+        distance: '45 min walk',
+        note: 'Historic Sherpa monastery & alpine valley',
+        image: '/pictures/ebc_tk_adventure_2-1624450606.jpeg',
+      },
+    ];
+  }
+  if (stay.location.includes('Pokhara')) {
+    return [
+      {
+        name: 'Phewa Lake Lakeside',
+        distance: '20 min drive',
+        note: 'Wooden boat rides, cafes & evening promenade',
+        image: '/pictures/Pokhara_ss_lt_(4)-1624818140.jpg',
+      },
+      {
+        name: 'World Peace Pagoda',
+        distance: '25 min',
+        note: 'Hilltop stupa overlooking lake & Annapurnas',
+        image: '/pictures/pokhara-1624821141.jpg',
+      },
+      {
+        name: 'Sarangkot Sunrise Point',
+        distance: '35 min drive',
+        note: 'Golden dawn over Machhapuchhre & Dhaulagiri',
+        image: '/pictures/poonhill_pg_adventure-1624431033.jpeg',
+      },
+      {
+        name: 'Annapurna Foothills',
+        distance: 'Trailhead nearby',
+        note: 'Day hikes through terraced villages & forests',
+        image: '/pictures/annapurna-1624804396.jpg',
+      },
+    ];
+  }
+  if (stay.location.includes('Chitwan')) {
+    return [
+      {
+        name: 'Rapti River Sunset Bank',
+        distance: '2 min walk',
+        note: 'Dugout canoeing & rhino sightings at dusk',
+        image: '/pictures/Chitwan_ss_jungleactivities-1630491399.JPG',
+      },
+      {
+        name: 'Chitwan Core Jungle',
+        distance: 'Direct access',
+        note: 'Jeep safari for one-horned rhino & Bengal tiger',
+        image: '/pictures/chitwan-1624804397.jpg',
+      },
+      {
+        name: 'Sal Forest Birding Trail',
+        distance: '10 min walk',
+        note: 'Guided naturalist walk through riverine grasslands',
+        image: '/pictures/junglesafari_ss_nature-1624432644.jpeg',
+      },
+      {
+        name: 'Tharu Cultural Village',
+        distance: '10 min',
+        note: 'Traditional mud-house craft & stick dance',
+        image: '/pictures/Chitwan_ss_lt_(17)-1624813756.jpg',
+      },
+    ];
+  }
+  if (stay.location.includes('Mustang')) {
+    return [
+      {
+        name: 'Muktinath Temple',
+        distance: '1 hr drive',
+        note: 'Sacred 108-spout pilgrimage at 3,710m',
+        image: '/pictures/Muktinath_tk_pilgrimage-1624859283.jpg',
+      },
+      {
+        name: 'Marpha Apple Village',
+        distance: '20 min drive',
+        note: 'Whitewashed stone alleys & local apple orchards',
+        image: '/pictures/mustang_tk_people-1624440754.jpeg',
+      },
+      {
+        name: 'Nilgiri & Dhaulagiri Face',
+        distance: 'Panoramic view',
+        note: 'Dramatic trans-Himalayan desert canyon peaks',
+        image: '/pictures/Dhaulagiri_1626729219-1635169360.jpeg',
+      },
+      {
+        name: 'Upper Mustang Gate',
+        distance: 'Trail access',
+        note: 'Ancient red cliffs, caves & Tibetan monasteries',
+        image: '/pictures/shey-1626727697.jpeg',
+      },
+    ];
+  }
+  return [
+    {
+      name: 'Mountain Ridge Viewpoint',
+      distance: '15–30 min walk',
+      note: 'Sunrise & sunset Himalayan horizon views',
+      image: '/pictures/mountainviewing_pg_nature-1624432650.jpeg',
+    },
+    {
+      name: 'Heritage Village Bazaar',
+      distance: '10 min walk',
+      note: 'Local stone-paved streets, tea shops & crafts',
+      image: '/pictures/Ghale_Gaon_Photo_001-1634812841.jpg',
+    },
+    {
+      name: 'Rhododendron & Pine Trails',
+      distance: 'Direct trailhead',
+      note: 'Guided half-day nature & ridge hikes',
+      image: '/pictures/gurans_trekking_ar-1624440965.jpeg',
+    },
+    {
+      name: 'Alpine Valley Panorama',
+      distance: 'Scenic day trip',
+      note: 'Quiet mountain pass & glacial river valley',
+      image: '/pictures/Manaslu_View_from_Lho-1624808940.jpg',
+    },
+  ];
+}
 
 interface StaysSectionProps {
   activeId: string;
@@ -38,9 +307,11 @@ const CATEGORIES = [
 interface StayReview {
   id: string;
   author: string;
+  title?: string;
   rating: number;
   date: string;
   comment: string;
+  photos?: string[];
 }
 
 const INITIAL_STAY_REVIEWS: Record<string, StayReview[]> = {
@@ -83,7 +354,8 @@ function createStayBookingRefs() {
 export default function StaysSection({ activeId }: StaysSectionProps) {
   const { stays, addBooking } = useTravelStore();
   const [selectedStay, setSelectedStay] = useState<Stay | null>(null);
-  const [stayProfileTab, setStayProfileTab] = useState<'about' | 'rooms' | 'reviews'>('about');
+  const [stayProfileTab, setStayProfileTab] = useState<'about' | 'rooms' | 'photos' | 'location' | 'reviews'>('about');
+  const [previewPhoto, setPreviewPhoto] = useState<{ src: string; label: string; tag: string } | null>(null);
   const [showStayBooking, setShowStayBooking] = useState(false);
   const [showStayChat, setShowStayChat] = useState(false);
   const [stayChatInput, setStayChatInput] = useState('');
@@ -92,12 +364,15 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
   const [stayCheckIn, setStayCheckIn] = useState('2026-06-05');
   const [stayNights, setStayNights] = useState(3);
   const [stayGuests, setStayGuests] = useState(2);
+  const [includeTransfer, setIncludeTransfer] = useState(false);
+  const [arrivalNote, setArrivalNote] = useState('');
   const [stayBookedBanner, setStayBookedBanner] = useState<string | null>(null);
 
   const [stayReviews, setStayReviews] = useState<Record<string, StayReview[]>>(INITIAL_STAY_REVIEWS);
-  const [reviewAuthor, setReviewAuthor] = useState('Alex Mercer');
+  const [reviewTitle, setReviewTitle] = useState('');
   const [reviewRating, setReviewRating] = useState(5);
   const [reviewComment, setReviewComment] = useState('');
+  const [reviewPhotos, setReviewPhotos] = useState<string[]>([]);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -180,7 +455,8 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
   };
 
   const handleBook = (stay: Stay, roomName: string, price: number) => {
-    const total = price * stayNights;
+    const transferFee = includeTransfer ? 25 : 0;
+    const total = price * stayNights + transferFee;
     const start = new Date(`${stayCheckIn}T00:00:00`);
     const end = new Date(start);
     end.setDate(end.getDate() + stayNights);
@@ -190,13 +466,20 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
         : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     const dateRange = Number.isNaN(start.getTime()) ? `${stayNights} nights` : `${fmt(start)} - ${fmt(end)}`;
 
+    const extraParts = [
+      `${stayNights} ${stayNights === 1 ? 'night' : 'nights'}`,
+      `${stayGuests} ${stayGuests === 1 ? 'guest' : 'guests'}`,
+      ...(includeTransfer ? ['Pickup Transfer (+$25)'] : []),
+      ...(arrivalNote.trim() ? [`Arrival: ${arrivalNote.trim()}`] : []),
+    ];
+
     const { id, invoiceNo } = createStayBookingRefs();
     addBooking({
       id,
       type: 'Hotel',
       title: `${stay.name} — ${roomName}`,
       date: dateRange,
-      details: `${stayNights} ${stayNights === 1 ? 'night' : 'nights'} · ${stayGuests} ${stayGuests === 1 ? 'guest' : 'guests'}`,
+      details: extraParts.join(' · '),
       cost: total,
       status: 'Confirmed',
       invoiceNo,
@@ -206,22 +489,40 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
     setTimeout(() => setStayBookedBanner(null), 4000);
   };
 
+  const handleReviewPhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []).slice(0, Math.max(0, 4 - reviewPhotos.length));
+    files.forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (typeof reader.result === 'string') {
+          setReviewPhotos((prev) => (prev.length < 4 ? [...prev, reader.result as string] : prev));
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+    e.target.value = '';
+  };
+
   const handleSubmitStayReview = (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedStay || !reviewComment.trim()) return;
     const newRev: StayReview = {
       id: `rev-s-${Date.now()}`,
-      author: reviewAuthor.trim() || 'Traveler',
+      author: 'Alex Mercer',
+      title: reviewTitle.trim() || undefined,
       rating: reviewRating,
       date: 'Just now',
       comment: reviewComment.trim(),
+      photos: reviewPhotos.length > 0 ? reviewPhotos : undefined,
     };
     setStayReviews((prev) => ({
       ...prev,
       [selectedStay.id]: [newRev, ...(prev[selectedStay.id] || [])],
     }));
+    setReviewTitle('');
     setReviewComment('');
     setReviewRating(5);
+    setReviewPhotos([]);
   };
 
   return (
@@ -352,10 +653,12 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
                   </div>
 
                   {/* Profile Tabs */}
-                  <div className="flex border-t border-b border-slate-100 px-5 sm:px-6 gap-6">
+                  <div className="flex border-t border-b border-slate-100 px-5 sm:px-6 gap-5 sm:gap-6 overflow-x-auto scrollbar-none">
                     {[
                       { id: 'about' as const, label: 'About' },
                       { id: 'rooms' as const, label: `Rooms & Suites (${selectedStay.roomPreviews.length})` },
+                      { id: 'photos' as const, label: 'Photos & Views' },
+                      { id: 'location' as const, label: 'Location & Nearby' },
                       { id: 'reviews' as const, label: `Reviews (${reviews.length})` },
                     ].map((tab) => {
                       const active = stayProfileTab === tab.id;
@@ -363,8 +666,11 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
                         <button
                           key={tab.id}
                           type="button"
-                          onClick={() => setStayProfileTab(tab.id)}
-                          className={`py-3 text-xs font-semibold border-b-2 transition-colors cursor-pointer ${
+                          onClick={() => {
+                            setStayProfileTab(tab.id);
+                            setPreviewPhoto(null);
+                          }}
+                          className={`py-3 text-xs font-semibold border-b-2 transition-colors cursor-pointer whitespace-nowrap shrink-0 ${
                             active
                               ? 'border-[#0552A2] text-[#0552A2]'
                               : 'border-transparent text-[#64748B] hover:text-[#17212B]'
@@ -378,28 +684,70 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
 
                   {/* Tab Content */}
                   <div className="p-5 sm:p-6">
-                    {stayProfileTab === 'about' && (
-                      <div className="space-y-4">
-                        <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs sm:text-sm text-[#475569] leading-relaxed">
-                          {selectedStay.description}
-                        </p>
-                        <div className="border-t border-slate-100 pt-4">
-                          <h3 className="text-xs font-semibold text-[#17212B] mb-2.5">
-                            Property Highlights &amp; Amenities
-                          </h3>
-                          <div className="flex flex-wrap gap-2">
-                            {selectedStay.features.map((feat, idx) => (
-                              <span
-                                key={idx}
-                                className="text-xs bg-slate-50 text-[#334155] border border-slate-200/80 px-3 py-1 rounded-lg"
-                              >
-                                {feat}
-                              </span>
-                            ))}
+                    {stayProfileTab === 'about' && (() => {
+                      const stayInfo = getNepalStayInfo(selectedStay);
+                      return (
+                        <div className="space-y-5">
+                          <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs sm:text-sm text-[#475569] leading-relaxed">
+                            {selectedStay.description}
+                          </p>
+
+                          {stayInfo.isHighAltitude && (
+                            <div className="bg-amber-50/70 border border-amber-200/80 rounded-xl px-4 py-3 flex items-start gap-2.5 text-xs text-amber-950">
+                              <Mountain className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                              <div>
+                                <span className="font-semibold block">
+                                  High-Altitude Stay ({stayInfo.elevationMeters?.toLocaleString()}m)
+                                </span>
+                                <span className="text-[11px] text-amber-900/90">
+                                  Plan 1–2 acclimatization nights at lower elevation before arrival and hydrate well.
+                                </span>
+                              </div>
+                            </div>
+                          )}
+
+                          <div className="border-t border-slate-100 pt-4">
+                            <h3 className="text-xs font-semibold text-[#17212B] mb-2.5">
+                              Property Highlights &amp; Amenities
+                            </h3>
+                            <div className="flex flex-wrap gap-2">
+                              {selectedStay.features.map((feat, idx) => (
+                                <span
+                                  key={idx}
+                                  className="text-xs bg-slate-50 text-[#334155] border border-slate-200/80 px-3 py-1 rounded-lg"
+                                >
+                                  {feat}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+
+                          <div className="divide-y divide-slate-100 border-t border-slate-100 pt-2">
+                            <div className="py-3 flex items-start gap-3">
+                              <Plane className="w-4 h-4 text-[#0552A2] shrink-0 mt-0.5" />
+                              <div>
+                                <p className="text-xs font-semibold text-[#17212B]">Access &amp; Transit</p>
+                                <p className="text-xs text-[#64748B] mt-0.5">{stayInfo.access}</p>
+                              </div>
+                            </div>
+                            <div className="py-3 flex items-start gap-3">
+                              <Thermometer className="w-4 h-4 text-[#0552A2] shrink-0 mt-0.5" />
+                              <div>
+                                <p className="text-xs font-semibold text-[#17212B]">Heating, Hot Water &amp; Power</p>
+                                <p className="text-xs text-[#64748B] mt-0.5">{stayInfo.heating}</p>
+                              </div>
+                            </div>
+                            <div className="py-3 flex items-start gap-3">
+                              <Clock className="w-4 h-4 text-[#0552A2] shrink-0 mt-0.5" />
+                              <div>
+                                <p className="text-xs font-semibold text-[#17212B]">Check-in &amp; Weather Policy</p>
+                                <p className="text-xs text-[#64748B] mt-0.5">{stayInfo.policy}</p>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    )}
+                      );
+                    })()}
 
                     {stayProfileTab === 'rooms' && (
                       <div className="divide-y divide-slate-100">
@@ -408,10 +756,14 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
                           return (
                             <div
                               key={room.name}
-                              className="py-4 first:pt-1 last:pb-1 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                              className="py-4 first:pt-1 last:pb-1 flex flex-col sm:flex-row sm:items-center justify-between gap-3.5"
                             >
-                              <div className="flex items-start gap-3">
-                                <BedDouble className="w-4 h-4 text-[#0552A2] shrink-0 mt-0.5" />
+                              <div className="flex items-start gap-3.5">
+                                <img
+                                  src={room.image}
+                                  alt={room.name}
+                                  className="w-24 h-20 rounded-xl object-cover border border-slate-200 shrink-0 bg-slate-100"
+                                />
                                 <div>
                                   <h4 className="text-sm font-bold text-[#17212B]">{room.name}</h4>
                                   <p className="text-xs text-[#475569] mt-0.5 leading-relaxed">{room.info}</p>
@@ -443,94 +795,356 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
                       </div>
                     )}
 
-                    {stayProfileTab === 'reviews' && (
-                      <div>
-                        <form
-                          onSubmit={handleSubmitStayReview}
-                          className="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-slate-50/50 mb-5 flex flex-col gap-3"
-                        >
-                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                            <input
-                              type="text"
-                              value={reviewAuthor}
-                              onChange={(e) => setReviewAuthor(e.target.value)}
-                              placeholder="Your name"
-                              className="bg-transparent border-0 p-0 text-sm font-semibold text-[#17212B] focus:outline-none sm:w-52"
-                            />
-                            <div className="flex items-center gap-1">
-                              <span className="text-xs text-[#64748B] mr-1">Rating:</span>
-                              {[1, 2, 3, 4, 5].map((star) => (
-                                <button
-                                  key={star}
-                                  type="button"
-                                  aria-label={`Rate ${star} stars`}
-                                  onClick={() => setReviewRating(star)}
-                                  className="p-0.5 cursor-pointer"
-                                >
-                                  <Star
-                                    className={`w-4.5 h-4.5 ${
-                                      star <= reviewRating
-                                        ? 'fill-amber-400 text-amber-400'
-                                        : 'text-slate-300'
-                                    }`}
-                                  />
-                                </button>
+                    {stayProfileTab === 'photos' && (() => {
+                      const gallery = getStayGallery(selectedStay);
+                      return (
+                        <div className="space-y-4">
+                          <div className="flex items-center justify-between">
+                            <p className="text-xs text-[#64748B] flex items-center gap-1.5">
+                              <Camera className="w-3.5 h-3.5 text-[#0552A2]" />
+                              <span>Property exterior, suites, and surrounding views at {selectedStay.name}</span>
+                            </p>
+                          </div>
+
+                          {previewPhoto && (
+                            <div className="relative rounded-2xl overflow-hidden border border-slate-200 bg-slate-950">
+                              <img
+                                src={previewPhoto.src}
+                                alt={previewPhoto.label}
+                                className="w-full max-h-80 object-cover"
+                              />
+                              <button
+                                type="button"
+                                aria-label="Close photo preview"
+                                onClick={() => setPreviewPhoto(null)}
+                                className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/95 hover:bg-white text-[#17212B] flex items-center justify-center shadow-sm cursor-pointer"
+                              >
+                                <X className="w-4 h-4" />
+                              </button>
+                              <div className="px-4 py-2.5 bg-white border-t border-slate-100 flex items-center justify-between text-xs">
+                                <span className="font-semibold text-[#17212B]">{previewPhoto.label}</span>
+                                <span className="text-[11px] font-medium text-[#0552A2]">{previewPhoto.tag}</span>
+                              </div>
+                            </div>
+                          )}
+
+                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                            {gallery.map((photo) => (
+                              <button
+                                key={photo.label}
+                                type="button"
+                                onClick={() => setPreviewPhoto(photo)}
+                                className="group relative aspect-[4/3] rounded-xl overflow-hidden bg-slate-100 text-left cursor-pointer"
+                              >
+                                <img
+                                  src={photo.src}
+                                  alt={photo.label}
+                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
+                                <span className="absolute top-2 left-2 bg-white/90 text-[#17212B] text-[10px] font-semibold px-2 py-0.5 rounded-full">
+                                  {photo.tag}
+                                </span>
+                                <span className="absolute bottom-2 left-2.5 right-2.5 text-[11px] font-medium text-white line-clamp-1">
+                                  {photo.label}
+                                </span>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })()}
+
+                    {stayProfileTab === 'location' && (() => {
+                      const stayInfo = getNepalStayInfo(selectedStay);
+                      const nearby = getStayNearbyPlaces(selectedStay);
+                      const [lat, lng] = selectedStay.coords;
+                      return (
+                        <div className="space-y-6 text-xs">
+                          <div>
+                            <h4 className="font-[family-name:var(--font-quicksand)] text-sm font-bold text-[#17212B] mb-1">
+                              Getting Here
+                            </h4>
+                            <p className="text-[#475569] leading-relaxed">{stayInfo.access}</p>
+                          </div>
+
+                          <div className="border-t border-slate-100 pt-4">
+                            <h4 className="font-[family-name:var(--font-quicksand)] text-sm font-bold text-[#17212B] mb-3">
+                              Around {selectedStay.location}
+                            </h4>
+                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+                              {nearby.map((place) => (
+                                <div key={place.name} className="group">
+                                  <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-slate-100 mb-2">
+                                    <img
+                                      src={place.image}
+                                      alt={place.name}
+                                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                    />
+                                  </div>
+                                  <p className="font-semibold text-[#17212B] text-xs leading-snug line-clamp-1">
+                                    {place.name}
+                                  </p>
+                                  <p className="text-[11px] text-[#0552A2] font-medium mt-0.5">
+                                    {place.distance}
+                                  </p>
+                                  <p className="text-[11px] text-[#64748B] line-clamp-2 mt-0.5 leading-relaxed">
+                                    {place.note}
+                                  </p>
+                                </div>
                               ))}
                             </div>
                           </div>
 
-                          <div className="flex flex-col sm:flex-row gap-2.5 sm:items-center">
-                            <textarea
-                              rows={2}
-                              value={reviewComment}
-                              onChange={(e) => setReviewComment(e.target.value)}
-                              placeholder={`Write a review for ${selectedStay.name}...`}
-                              required
-                              className="flex-1 bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-[#17212B] focus:outline-none focus:border-[#0552A2] resize-none"
-                            />
-                            <button
-                              type="submit"
-                              className="bg-[#0552A2] hover:bg-[#044080] text-white text-xs sm:text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors cursor-pointer shrink-0"
-                            >
-                              Post
-                            </button>
-                          </div>
-                        </form>
+                          <div className="border-t border-slate-100 pt-4">
+                            <div className="flex items-center justify-between gap-2 mb-3">
+                              <div>
+                                <h4 className="font-[family-name:var(--font-quicksand)] text-sm font-bold text-[#17212B]">
+                                  Hotel Location
+                                </h4>
+                                <p className="text-[11px] text-[#64748B]">
+                                  {selectedStay.name} · {selectedStay.location}
+                                </p>
+                              </div>
+                              <a
+                                href={`https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=14/${lat}/${lng}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 text-xs font-semibold text-[#0552A2] hover:underline shrink-0"
+                              >
+                                <span>Open Map</span>
+                                <ExternalLink className="w-3.5 h-3.5" />
+                              </a>
+                            </div>
 
-                        <div className="divide-y divide-slate-100">
-                          {reviews.length === 0 ? (
-                            <p className="text-sm text-[#64748B] py-3">
-                              No reviews yet. Be the first to review {selectedStay.name}.
-                            </p>
-                          ) : (
-                            reviews.map((rev) => (
-                              <div key={rev.id} className="py-4 first:pt-1 last:pb-1 flex gap-3.5">
-                                <div className="w-9 h-9 rounded-full bg-[#0552A2]/10 text-[#0552A2] font-bold text-sm flex items-center justify-center shrink-0">
-                                  {rev.author.charAt(0).toUpperCase()}
+                            <div className="relative w-full h-64 sm:h-72 rounded-2xl overflow-hidden border border-slate-200 bg-slate-100">
+                              <iframe
+                                title={`${selectedStay.name} location map`}
+                                width="100%"
+                                height="100%"
+                                frameBorder="0"
+                                scrolling="no"
+                                src={`https://www.openstreetmap.org/export/embed.html?bbox=${lng - 0.025}%2C${lat - 0.015}%2C${lng + 0.025}%2C${lat + 0.015}&layer=mapnik&marker=${lat}%2C${lng}`}
+                                className="w-full h-full"
+                                key={`${selectedStay.id}-${lat}-${lng}`}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })()}
+
+                    {stayProfileTab === 'reviews' && (() => {
+                      const ratingCounts = [5, 4, 3, 2, 1].map((star) => ({
+                        star,
+                        count: reviews.filter((r) => r.rating === star).length,
+                      }));
+
+                      return (
+                        <div className="space-y-6">
+                          {/* Rating Breakdown + Borderless Review Composer Together */}
+                          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 pb-6 border-b border-slate-100 items-start">
+                            {/* Left: Rating Summary (Non-clickable display) */}
+                            <div className="lg:col-span-5 flex flex-col sm:flex-row lg:flex-col gap-4">
+                              <div className="flex items-center gap-3">
+                                <span className="font-[family-name:var(--font-quicksand)] text-4xl font-bold text-[#17212B] leading-none">
+                                  {stats.avgRating}
+                                </span>
+                                <div>
+                                  <div className="flex items-center gap-0.5">
+                                    {[1, 2, 3, 4, 5].map((s) => (
+                                      <Star
+                                        key={s}
+                                        className={`w-3.5 h-3.5 ${
+                                          s <= Math.round(stats.avgRating)
+                                            ? 'fill-amber-400 text-amber-400'
+                                            : 'text-slate-200'
+                                        }`}
+                                      />
+                                    ))}
+                                  </div>
+                                  <span className="font-[family-name:var(--font-ibm-plex-sans)] text-xs text-[#64748B] block mt-0.5">
+                                    {reviews.length} {reviews.length === 1 ? 'review' : 'reviews'}
+                                  </span>
                                 </div>
-                                <div className="flex-1 min-w-0">
-                                  <div className="flex items-center justify-between gap-2">
-                                    <span className="text-sm font-semibold text-[#17212B]">
-                                      {rev.author}
-                                    </span>
-                                    <div className="flex items-center gap-2">
-                                      <span className="flex items-center gap-0.5 text-xs font-semibold text-amber-600">
-                                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                                        {rev.rating}
+                              </div>
+
+                              <div className="flex-1 space-y-1.5">
+                                {ratingCounts.map(({ star, count }) => {
+                                  const pct = reviews.length > 0 ? Math.round((count / reviews.length) * 100) : 0;
+                                  return (
+                                    <div key={star} className="flex items-center gap-2.5 text-xs">
+                                      <span className="w-7 text-left font-semibold text-[#17212B] flex items-center gap-0.5 shrink-0">
+                                        {star}
+                                        <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                                      </span>
+                                      <div className="flex-1 h-2 rounded-full bg-slate-100 overflow-hidden">
+                                        <div
+                                          className="h-full rounded-full bg-amber-400 transition-all duration-300"
+                                          style={{ width: `${pct}%` }}
+                                        />
+                                      </div>
+                                      <span className="w-5 text-right text-[11px] text-[#64748B] tabular-nums">
+                                        {count}
+                                      </span>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+
+                            {/* Right: Clean Review Composer (No outer box, with Title + Photo upload) */}
+                            <form
+                              onSubmit={handleSubmitStayReview}
+                              className="lg:col-span-7 space-y-3"
+                            >
+                              <div className="flex flex-wrap items-center justify-between gap-2">
+                                <span className="font-[family-name:var(--font-quicksand)] text-sm font-bold text-[#17212B]">
+                                  Write a Review
+                                </span>
+                                <div className="flex items-center gap-1">
+                                  {[1, 2, 3, 4, 5].map((star) => (
+                                    <button
+                                      key={star}
+                                      type="button"
+                                      aria-label={`Rate ${star} stars`}
+                                      onClick={() => setReviewRating(star)}
+                                      className="p-0.5 cursor-pointer"
+                                    >
+                                      <Star
+                                        className={`w-4.5 h-4.5 transition-colors ${
+                                          star <= reviewRating
+                                            ? 'fill-amber-400 text-amber-400'
+                                            : 'text-slate-300'
+                                        }`}
+                                      />
+                                    </button>
+                                  ))}
+                                  <span className="text-xs font-semibold text-[#17212B] ml-1.5">
+                                    {reviewRating}/5
+                                  </span>
+                                </div>
+                              </div>
+
+                              <input
+                                type="text"
+                                value={reviewTitle}
+                                onChange={(e) => setReviewTitle(e.target.value)}
+                                placeholder="Review title (e.g. Peaceful courtyard & warm hospitality)"
+                                className="w-full bg-slate-50/70 border border-slate-200 rounded-xl px-3.5 py-2 font-[family-name:var(--font-ibm-plex-sans)] text-xs sm:text-sm text-[#17212B] placeholder:text-slate-400 focus:outline-none focus:border-[#0552A2] focus:bg-white transition-colors"
+                              />
+
+                              <textarea
+                                rows={2}
+                                value={reviewComment}
+                                onChange={(e) => setReviewComment(e.target.value)}
+                                placeholder={`Share your stay experience at ${selectedStay.name}...`}
+                                required
+                                className="w-full bg-slate-50/70 border border-slate-200 rounded-xl px-3.5 py-2.5 font-[family-name:var(--font-ibm-plex-sans)] text-xs sm:text-sm text-[#17212B] placeholder:text-slate-400 focus:outline-none focus:border-[#0552A2] focus:bg-white transition-colors resize-none"
+                              />
+
+                              {reviewPhotos.length > 0 && (
+                                <div className="flex flex-wrap gap-2">
+                                  {reviewPhotos.map((src, idx) => (
+                                    <div key={idx} className="relative w-16 h-16 rounded-lg overflow-hidden border border-slate-200">
+                                      <img src={src} alt={`Upload preview ${idx + 1}`} className="w-full h-full object-cover" />
+                                      <button
+                                        type="button"
+                                        aria-label="Remove photo"
+                                        onClick={() =>
+                                          setReviewPhotos((prev) => prev.filter((_, i) => i !== idx))
+                                        }
+                                        className="absolute top-0.5 right-0.5 w-5 h-5 rounded-full bg-black/70 text-white flex items-center justify-center cursor-pointer"
+                                      >
+                                        <X className="w-3 h-3" />
+                                      </button>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+
+                              <div className="flex items-center justify-between gap-3">
+                                <label className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0552A2] hover:bg-[#0552A2]/8 px-3 py-1.5 rounded-lg transition-colors cursor-pointer">
+                                  <ImagePlus className="w-4 h-4" />
+                                  <span>Add Photos ({reviewPhotos.length}/4)</span>
+                                  <input
+                                    type="file"
+                                    accept="image/*"
+                                    multiple
+                                    onChange={handleReviewPhotoUpload}
+                                    className="hidden"
+                                  />
+                                </label>
+
+                                <button
+                                  type="submit"
+                                  className="bg-[#0552A2] hover:bg-[#044080] text-white font-[family-name:var(--font-quicksand)] text-xs sm:text-sm font-bold px-5 py-2 rounded-xl transition-colors cursor-pointer"
+                                >
+                                  Post Review
+                                </button>
+                              </div>
+                            </form>
+                          </div>
+
+                          {/* Review Feed */}
+                          <div className="divide-y divide-slate-100">
+                            {reviews.length === 0 ? (
+                              <p className="font-[family-name:var(--font-ibm-plex-sans)] text-sm text-[#64748B] py-3">
+                                No reviews yet. Be the first to review {selectedStay.name}.
+                              </p>
+                            ) : (
+                              reviews.map((rev) => (
+                                <div key={rev.id} className="py-4 first:pt-1 last:pb-1 flex gap-3.5">
+                                  <div className="w-9 h-9 rounded-full bg-[#0552A2]/10 text-[#0552A2] font-bold text-sm flex items-center justify-center shrink-0">
+                                    {rev.author.charAt(0).toUpperCase()}
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <div className="flex items-center justify-between gap-2">
+                                      <span className="font-[family-name:var(--font-quicksand)] text-sm font-bold text-[#17212B]">
+                                        {rev.author}
                                       </span>
                                       <span className="text-xs text-[#64748B]">{rev.date}</span>
                                     </div>
+                                    <div className="flex items-center gap-0.5 mt-0.5">
+                                      {[1, 2, 3, 4, 5].map((s) => (
+                                        <Star
+                                          key={s}
+                                          className={`w-3.5 h-3.5 ${
+                                            s <= rev.rating
+                                              ? 'fill-amber-400 text-amber-400'
+                                              : 'text-slate-200'
+                                          }`}
+                                        />
+                                      ))}
+                                    </div>
+                                    {rev.title && (
+                                      <p className="font-[family-name:var(--font-quicksand)] text-sm font-bold text-[#17212B] mt-2">
+                                        {rev.title}
+                                      </p>
+                                    )}
+                                    <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs sm:text-sm text-[#475569] mt-1 leading-relaxed">
+                                      {rev.comment}
+                                    </p>
+                                    {rev.photos && rev.photos.length > 0 && (
+                                      <div className="flex flex-wrap gap-2 mt-2.5">
+                                        {rev.photos.map((photoUrl, idx) => (
+                                          <img
+                                            key={idx}
+                                            src={photoUrl}
+                                            alt={`${rev.author} review photo ${idx + 1}`}
+                                            className="w-24 h-20 rounded-xl object-cover border border-slate-200"
+                                          />
+                                        ))}
+                                      </div>
+                                    )}
                                   </div>
-                                  <p className="text-xs sm:text-sm text-[#475569] mt-1.5 leading-relaxed">
-                                    {rev.comment}
-                                  </p>
                                 </div>
-                              </div>
-                            ))
-                          )}
+                              ))
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      );
+                    })()}
                   </div>
                 </motion.div>
 
@@ -708,15 +1322,46 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
                           ))}
                         </select>
                       </label>
+
+                      <label className="flex items-start gap-2.5 bg-white border border-slate-200 rounded-lg p-2.5 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={includeTransfer}
+                          onChange={(e) => setIncludeTransfer(e.target.checked)}
+                          className="mt-0.5 rounded border-slate-300 text-[#0552A2] focus:ring-[#0552A2]"
+                        />
+                        <div className="flex-1">
+                          <span className="text-xs font-semibold text-[#17212B] block">
+                            Airport / Trailhead Pickup (+$25)
+                          </span>
+                          <span className="text-[11px] text-[#64748B]">
+                            Driver meets you at TIA arrival gate or trailhead.
+                          </span>
+                        </div>
+                      </label>
+
+                      <label className="flex flex-col gap-1">
+                        <span className="text-[11px] font-medium text-[#475569]">
+                          Arrival Time / Flight # (Optional)
+                        </span>
+                        <input
+                          type="text"
+                          value={arrivalNote}
+                          onChange={(e) => setArrivalNote(e.target.value)}
+                          placeholder="e.g. QR 652 · 14:30 or late check-in"
+                          className="bg-white border border-slate-200 rounded-lg px-2.5 py-2 text-xs text-[#17212B] focus:outline-none focus:border-[#0552A2]"
+                        />
+                      </label>
                     </div>
 
                     <div className="border-t border-slate-200/80 pt-3 flex items-center justify-between">
                       <div>
                         <span className="text-[11px] text-[#64748B] block">
-                          Total ({stayNights} {stayNights === 1 ? 'night' : 'nights'})
+                          Total ({stayNights} {stayNights === 1 ? 'night' : 'nights'}
+                          {includeTransfer ? ' + pickup' : ''})
                         </span>
                         <span className="font-[family-name:var(--font-quicksand)] text-lg font-bold text-[#0552A2]">
-                          ${activeRoom.price * stayNights}
+                          ${activeRoom.price * stayNights + (includeTransfer ? 25 : 0)}
                         </span>
                       </div>
                       <button
@@ -734,157 +1379,147 @@ export default function StaysSection({ activeId }: StaysSectionProps) {
             );
           })() : (
             <>
-              {/* Header */}
-          <motion.div variants={itemVariants} className="flex flex-col gap-1.5">
-            <h2 className="font-[family-name:var(--font-quicksand)] text-2xl sm:text-3xl font-bold tracking-tight text-[#17212B]">
-              Hotels &amp; Stays
-            </h2>
-            <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs sm:text-sm text-[#4B5563]">
-              Book verified hotels, eco-resorts, mountain lodges, and heritage homestays across Nepal.
-            </p>
-          </motion.div>
-
-          {/* Search & Filter Bar */}
-          <motion.div variants={itemVariants} className="flex flex-col gap-3">
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-              {/* Search Box */}
-              <div className="relative flex-1 max-w-md">
-                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search by hotel name, location, or amenities..."
-                  className="w-full bg-white border border-slate-200/90 rounded-full pl-10 pr-9 py-2 text-xs text-[#17212B] placeholder:text-slate-400 focus:outline-none focus:border-[#0552A2] shadow-2xs transition-colors"
-                />
-                {searchQuery && (
-                  <button
-                    onClick={() => setSearchQuery('')}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
-                  >
-                    <X className="w-3.5 h-3.5" />
-                  </button>
-                )}
-              </div>
-
-              {/* Counter / Info */}
-              <span className="text-xs text-[#64748B] shrink-0 self-center sm:self-auto">
-                Showing <strong className="text-[#0552A2]">{filteredStays.length}</strong> properties
-              </span>
-            </div>
-
-            {/* Category Filter Pills */}
-            <div className="flex flex-wrap items-center gap-1.5">
-              {CATEGORIES.map((cat) => {
-                const isActive = selectedCategory === cat.id;
-                return (
-                  <button
-                    key={cat.id}
-                    type="button"
-                    onClick={() => setSelectedCategory(cat.id)}
-                    className={`text-xs px-3.5 py-1.5 rounded-full border transition-all cursor-pointer font-semibold ${
-                      isActive
-                        ? 'bg-[#0552A2] text-white border-[#0552A2] shadow-2xs'
-                        : 'bg-white text-[#475569] border-slate-200 hover:border-slate-300 hover:bg-slate-50'
-                    }`}
-                  >
-                    {cat.label}
-                  </button>
-                );
-              })}
-            </div>
-          </motion.div>
-
-          {/* Responsive Auto-Fill Grid (3+ Columns on larger viewports, automatically adjusting) */}
-          <motion.div
-            layout="position"
-            className="grid gap-5 auto-card-grid"
-            style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))' }}
-          >
-            {filteredStays.map((stay, index) => (
+              {/* Header (left) + Search (right) — matches DashboardHome */}
               <motion.div
-                key={stay.id}
-                layout="position"
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  layout: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
-                  opacity: { duration: 0.28, delay: index * 0.03 },
-                  y: { duration: 0.28, delay: index * 0.03, ease: [0.22, 1, 0.36, 1] }
-                }}
-                onClick={() => openStayProfile(stay)}
-                className="group bg-white border border-slate-200/90 rounded-2xl overflow-hidden hover:border-[#0552A2]/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] shadow-xs cursor-pointer active:scale-[0.985] flex flex-col justify-between transform-gpu will-change-transform"
+                variants={itemVariants}
+                className="flex flex-col md:flex-row md:items-center justify-between gap-4"
               >
-                <div className="flex-1 flex flex-col">
-                  {/* Image Banner */}
-                  <div className="relative h-36 sm:h-40 overflow-hidden bg-slate-900">
-                    <img
-                      src={stay.image}
-                      alt={stay.name}
-                      loading="lazy"
-                      decoding="async"
-                      className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu will-change-transform"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent pointer-events-none" />
-
-                    {/* Top Rating & Type Badges */}
-                    <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-xs text-[11px] font-semibold text-[#0552A2] px-2.5 py-0.5 rounded-full border border-slate-200 shadow-xs flex items-center gap-1">
-                      <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                      <span>{stay.rating.toFixed(1)}</span>
-                    </div>
-
-                    <div className="absolute top-3 right-3 bg-[#0552A2] text-white text-[11px] font-semibold px-2.5 py-0.5 rounded-full shadow-xs">
-                      {stay.type}
-                    </div>
-
-                    {/* Bottom Location */}
-                    <div className="absolute bottom-2.5 left-3 text-[11px] text-white/95 font-medium flex items-center gap-1">
-                      <MapPin className="w-3 h-3 text-[#92C4EA]" />
-                      <span className="line-clamp-1">{stay.location}</span>
-                    </div>
-                  </div>
-
-                  {/* Body Content */}
-                  <div className="p-4 flex-1 flex flex-col justify-between gap-2.5">
-                    <div className="flex flex-col gap-1.5">
-                      <h3 className="font-[family-name:var(--font-quicksand)] text-sm sm:text-base font-bold text-[#17212B] group-hover:text-[#0552A2] transition-colors leading-snug line-clamp-1">
-                        {stay.name}
-                      </h3>
-                      <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs text-[#475569] leading-relaxed line-clamp-2 min-h-[2.4rem]">
-                        {stay.description}
-                      </p>
-                    </div>
-
-                    {/* Feature Notes */}
-                    <div className="flex flex-wrap items-center gap-1.5">
-                      {stay.features.slice(0, 2).map((f, idx) => (
-                        <span key={idx} className="text-[11px] text-[#475569] bg-slate-50 border border-slate-200/80 px-2 py-0.5 rounded-md line-clamp-1">
-                          {f}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
+                <div>
+                  <h2 className="font-[family-name:var(--font-quicksand)] text-2xl sm:text-3xl font-bold tracking-tight text-[#17212B]">
+                    Hotels &amp; Stays
+                  </h2>
+                  <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs sm:text-sm text-[#4B5563] mt-1">
+                    Verified heritage palaces, mountain lodges, eco-resorts, and homestays across Nepal.
+                  </p>
                 </div>
 
-                {/* Bottom Action Divider */}
-                <div className="px-4 pb-3.5 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs">
-                  <div>
-                    <span className="text-[11px] text-[#64748B] block">Starting from</span>
-                    <span className="font-[family-name:var(--font-quicksand)] font-bold text-[#0552A2] text-sm">
-                      ${stay.price} <span className="text-[11px] font-normal text-[#64748B]">/ night</span>
-                    </span>
-                  </div>
-                  <button
-                    type="button"
-                    className="font-semibold text-[#0552A2] group-hover:underline flex items-center gap-1.5 cursor-pointer text-xs"
-                  >
-                    <span>View Suites</span>
-                    <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform duration-200 ease-out" />
-                  </button>
+                <div className="relative w-full md:w-80 lg:w-96 shrink-0">
+                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search hotels, valleys, or lodges..."
+                    className="w-full bg-white border border-slate-200 rounded-full pl-10 pr-9 py-2.5 font-[family-name:var(--font-ibm-plex-sans)] text-xs sm:text-sm text-[#17212B] placeholder:text-slate-400 focus:outline-none focus:border-[#0552A2] transition-colors"
+                  />
+                  {searchQuery && (
+                    <button
+                      type="button"
+                      aria-label="Clear search"
+                      onClick={() => setSearchQuery('')}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
                 </div>
               </motion.div>
-            ))}
-          </motion.div>
+
+              {/* Category Filter Pills + Count */}
+              <motion.div
+                variants={itemVariants}
+                className="flex flex-wrap items-center justify-between gap-3"
+              >
+                <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none max-w-full">
+                  {CATEGORIES.map((cat) => {
+                    const isActive = selectedCategory === cat.id;
+                    return (
+                      <button
+                        key={cat.id}
+                        type="button"
+                        onClick={() => setSelectedCategory(cat.id)}
+                        className={`font-[family-name:var(--font-quicksand)] text-xs px-3.5 py-1.5 rounded-full font-semibold transition-colors shrink-0 cursor-pointer ${
+                          isActive
+                            ? 'bg-[#0552A2] text-white shadow-xs'
+                            : 'bg-slate-100 text-[#4B5563] hover:bg-slate-200'
+                        }`}
+                      >
+                        {cat.label}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <span className="font-[family-name:var(--font-ibm-plex-sans)] text-xs text-[#64748B] shrink-0">
+                  <strong className="text-[#17212B]">{filteredStays.length}</strong>{' '}
+                  {filteredStays.length === 1 ? 'stay' : 'stays'}
+                </span>
+              </motion.div>
+
+              {/* Clean Editorial Stays Grid */}
+              <motion.div
+                layout="position"
+                className="grid gap-5 auto-card-grid"
+                style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))' }}
+              >
+                {filteredStays.map((stay, index) => (
+                  <motion.div
+                    key={stay.id}
+                    layout="position"
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      layout: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
+                      opacity: { duration: 0.28, delay: index * 0.03 },
+                      y: { duration: 0.28, delay: index * 0.03, ease: [0.22, 1, 0.36, 1] }
+                    }}
+                    onClick={() => openStayProfile(stay)}
+                    className="group bg-white border border-slate-200/80 rounded-2xl overflow-hidden hover:border-[#0552A2]/45 hover:shadow-md transition-all duration-300 cursor-pointer flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="relative h-44 overflow-hidden bg-slate-100">
+                        <img
+                          src={stay.image}
+                          alt={stay.name}
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                        />
+                        <span className="font-[family-name:var(--font-ibm-plex-sans)] absolute top-3 right-3 bg-white/95 backdrop-blur-xs text-[11px] font-medium text-[#17212B] px-2.5 py-0.5 rounded-full shadow-xs">
+                          {stay.type}
+                        </span>
+                      </div>
+
+                      <div className="p-4 space-y-1.5">
+                        <div className="flex items-start justify-between gap-2">
+                          <h3 className="font-[family-name:var(--font-quicksand)] text-base font-bold text-[#17212B] group-hover:text-[#0552A2] transition-colors leading-snug line-clamp-1">
+                            {stay.name}
+                          </h3>
+                          <span className="font-[family-name:var(--font-ibm-plex-sans)] flex items-center gap-1 text-xs font-semibold text-[#17212B] shrink-0 pt-0.5">
+                            <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                            {stay.rating.toFixed(1)}
+                          </span>
+                        </div>
+
+                        <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs text-[#64748B] flex items-center gap-1">
+                          <MapPin className="w-3 h-3 text-[#0552A2] shrink-0" />
+                          <span className="line-clamp-1">{stay.location}</span>
+                        </p>
+
+                        <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs text-[#475569] leading-relaxed line-clamp-2 pt-1">
+                          {stay.description}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="px-4 pb-3.5 pt-3 border-t border-slate-100 flex items-center justify-between">
+                      <div>
+                        <span className="font-[family-name:var(--font-quicksand)] font-bold text-[#0552A2] text-base">
+                          ${stay.price}
+                        </span>
+                        <span className="font-[family-name:var(--font-ibm-plex-sans)] text-xs text-[#64748B]">
+                          {' '}
+                          / night
+                        </span>
+                      </div>
+                      <span className="font-[family-name:var(--font-quicksand)] font-bold text-[#0552A2] group-hover:underline flex items-center gap-1 text-xs">
+                        <span>View suites</span>
+                        <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
+                      </span>
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
 
           {filteredStays.length === 0 && (
             <div className="bg-white border border-dashed border-slate-300 rounded-2xl p-10 text-center flex flex-col items-center justify-center gap-2">

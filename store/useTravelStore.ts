@@ -177,7 +177,7 @@ const initialStays: Stay[] = [
     location: 'Kathmandu Valley',
     price: 340,
     rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=800',
+    image: '/pictures/hotels/dwarika-courtyard.jpg',
     features: ['14th-Century Newari Woodcraft', 'Courtyard Lotus Pool', 'Ayurvedic Panchakarma Spa', '6 Dining Pavilions'],
     description: 'A living museum and sanctuary preserving ancient Newari terracotta architecture. Handcrafted brickwork, courtyards, and organic Nepali royal dining.',
     coords: [27.7056, 85.3486],
@@ -189,19 +189,19 @@ const initialStays: Stay[] = [
   },
   {
     id: 's2',
-    name: 'Everest View Quantum Lodge & Domes',
+    name: 'Hotel Everest View & Panorama Suites',
     type: 'Eco Resort',
     location: 'Syangboche (3,880m)',
     price: 460,
     rating: 5.0,
-    image: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=800',
-    features: ['360° Everest Panorama', 'Pressurized Oxygen Suites', 'Heated Stone Hearth', 'Astronomy Stargazing Deck'],
-    description: 'The highest altitude luxury eco-resort in the Khumbu region. Every heated suite directly faces the summit pyramids of Mt. Everest, Lhotse, and Ama Dablam.',
+    image: '/pictures/hotels/everest-lodge-ext.jpg',
+    features: ['360° Everest Panorama', 'Supplemental Oxygen Suites', 'Heated Stone Hearth', 'Sunrise Terrace Dining'],
+    description: 'One of the highest-altitude heritage mountain hotels in the Khumbu region. Every heated suite directly faces the summit pyramids of Mt. Everest, Lhotse, and Ama Dablam.',
     coords: [27.8103, 86.7144],
     availableDates: ['2026-06-10', '2026-06-11', '2026-06-12'],
     roomPreviews: [
-      { name: 'Sagarmatha Summit Panorama Suite', price: 460, image: 'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?q=80&w=800', info: 'Direct floor-to-ceiling Everest view with medical oxygen generator.' },
-      { name: 'Ama Dablam Glacial Glass Dome', price: 620, image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=800', info: 'Polarized geodesic dome for high-altitude dark-sky milky way viewing.' }
+      { name: 'Sagarmatha Summit Panorama Suite', price: 460, image: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=800', info: 'Direct floor-to-ceiling Everest view with supplemental oxygen on request.' },
+      { name: 'Ama Dablam Ridge Room', price: 620, image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=800', info: 'Heated timber-lined corner suite with private terrace facing Ama Dablam.' }
     ]
   },
   {
@@ -211,7 +211,7 @@ const initialStays: Stay[] = [
     location: 'Pokhara Valley',
     price: 280,
     rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?q=80&w=800',
+    image: '/pictures/hotels/pokhara-eco-villa.jpg',
     features: ['100% Solar Powered', 'Infinity Valley Pool', 'Organic Farm-to-Table', 'Annapurna Range Horizon'],
     description: 'A secluded eco-luxury haven tucked away in a quiet valley outside Pokhara. Organic gardens, mountain-view infinity pools, and Ayurvedic spa treatments.',
     coords: [28.1833, 83.95],
@@ -228,13 +228,13 @@ const initialStays: Stay[] = [
     location: 'Jomsom, Mustang (2,800m)',
     price: 320,
     rating: 4.8,
-    image: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=800',
     features: ['Local Riverstone Walls', 'Himalayan Apple Cellar', 'Heated Slate Flooring', 'Tibetan Herbal Spa'],
     description: 'An architectural marvel carved into the desert canyon of Lower Mustang. Enjoy private woodstoves, local Marpha apple brandies, and Nilgiri mountain panoramas.',
     coords: [28.7844, 83.7431],
     availableDates: ['2026-05-31', '2026-06-01', '2026-06-02'],
     roomPreviews: [
-      { name: 'Nilgiri Mountain View Suite', price: 320, image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=800', info: 'Floor-to-ceiling glass facing Nilgiri peak with heated fleece bedding.' }
+      { name: 'Nilgiri Mountain View Suite', price: 320, image: 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=800', info: 'Floor-to-ceiling glass facing Nilgiri peak with heated fleece bedding.' }
     ]
   },
   {
@@ -244,7 +244,7 @@ const initialStays: Stay[] = [
     location: 'Chitwan National Park',
     price: 240,
     rating: 4.8,
-    image: 'https://images.unsplash.com/photo-1581888227599-779811939961?q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?q=80&w=800',
     features: ['Ethical Elephant Camp', 'Solar-Powered Bungalows', 'Jungle Jeep Safaris', 'Tharu Cultural Dining'],
     description: 'Pioneers of conservation tourism in Nepal. Stay in handcrafted mud-and-thatch longhouses surrounded by wild sal forests, rhinos, and Bengal tiger habitats.',
     coords: [27.5342, 84.4489],
@@ -260,13 +260,13 @@ const initialStays: Stay[] = [
     location: 'Kongde Ri, Khumbu (4,250m)',
     price: 490,
     rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=800',
+    image: '/pictures/Everest_tk_trekker_(5)-1630474503.jpg',
     features: ['World’s Highest Luxury Lodge', 'Direct Everest Face', 'Sherpa Hospitality', 'Heated Electric Blankets'],
     description: 'Perched on a cliff edge high above Namche Bazaar, this secluded mountain lodge offers the most spectacular unobstructed panoramic breakfast view of Mt. Everest.',
     coords: [27.8011, 86.6892],
     availableDates: ['2026-06-12', '2026-06-13', '2026-06-14'],
     roomPreviews: [
-      { name: 'Panoramic Summit Room', price: 490, image: 'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?q=80&w=800', info: 'Timber-lined sanctuary with down duvets, hot water bottles and Everest view.' }
+      { name: 'Panoramic Summit Room', price: 490, image: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=800', info: 'Timber-lined sanctuary with down duvets, hot water bottles and Everest view.' }
     ]
   },
   {
@@ -276,7 +276,7 @@ const initialStays: Stay[] = [
     location: 'Meghauli, Chitwan',
     price: 310,
     rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=800',
     features: ['Rapti River Waterfront', 'Private Plunge Pools', 'Canoe Birding Safaris', 'Campfire Bush Dinners'],
     description: 'Overlooking the serene Rapti river where wild one-horned rhinos drink at sunset. Luxury stone-and-wood cottages with private verandas and expert naturalists.',
     coords: [27.5812, 84.2145],
@@ -292,13 +292,13 @@ const initialStays: Stay[] = [
     location: 'Langtang Valley (3,870m)',
     price: 95,
     rating: 4.7,
-    image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800',
+    image: '/pictures/Manaslu_View_from_Lho-1624808940.jpg',
     features: ['Artisan Yak Cheese Farm', 'Glacial Moraine View', 'Wood Stove Hearth', 'Fresh Himalayan Herbs'],
     description: 'An authentic high-altitude eco lodge situated in the heart of Langtang amphitheater. Warm fire hearths, homemade apple crumble, and direct trail access to Kyanjin Ri.',
     coords: [28.2125, 85.5681],
     availableDates: ['2026-06-03', '2026-06-04', '2026-06-05'],
     roomPreviews: [
-      { name: 'Glacier Panorama Room', price: 95, image: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=800', info: 'Cozy pine room with heavy fleece quilts and view of Langtang Lirung icefalls.' }
+      { name: 'Glacier Panorama Room', price: 95, image: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=800', info: 'Cozy pine room with heavy fleece quilts and view of Langtang Lirung icefalls.' }
     ]
   },
   {
@@ -308,13 +308,13 @@ const initialStays: Stay[] = [
     location: 'Nagarkot Ridge (2,175m)',
     price: 165,
     rating: 4.8,
-    image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800',
+    image: '/pictures/poonhill_pg_adventure-1624431033.jpeg',
     features: ['Sunrise Over 5 Himalayan Ranges', 'Terraced Pine Forest', 'Heritage Terracotta', 'Organic Bakery'],
     description: 'Built in the fortified palace style with handmade red bricks and carved wood. Renowned for spectacular 180-degree sunrises stretching all the way to Mt. Everest.',
     coords: [27.7167, 85.5167],
     availableDates: ['2026-06-08', '2026-06-09', '2026-06-10'],
     roomPreviews: [
-      { name: 'Sunrise Balcony Suite', price: 165, image: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=800', info: 'Private balcony facing East for the morning golden sunrise over the peaks.' }
+      { name: 'Sunrise Balcony Suite', price: 165, image: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=800', info: 'Private balcony facing East for the morning golden sunrise over the peaks.' }
     ]
   },
   {
@@ -324,7 +324,7 @@ const initialStays: Stay[] = [
     location: 'Jomsom, Mustang (2,800m)',
     price: 890,
     rating: 5.0,
-    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=800',
+    image: '/pictures/shey-1626727697.jpeg',
     features: ['Bill Bensley Design', 'Helicopter Excursions', 'All-Inclusive Expeditions', 'Private Amchi Tibetan Doctor'],
     description: 'An extraordinary ultra-luxury sanctuary by visionary designer Bill Bensley. Blends traditional Tibetan art with dramatic raw Himalayan stone, floor heating, and fine dining.',
     coords: [28.7844, 83.7431],
@@ -340,7 +340,7 @@ const initialStays: Stay[] = [
     location: 'Bandipur Ridge (1,030m)',
     price: 110,
     rating: 4.8,
-    image: 'https://images.unsplash.com/photo-1605649487212-47bdab064df7?q=80&w=800',
+    image: '/pictures/Ghale_Gaon_Photo_001-1634812841.jpg',
     features: ['18th-Century Merchant House', 'Traffic-Free Bazaar', 'Mountain View Balcony', 'Traditional Newari Feasts'],
     description: 'Restored Newari merchant mansion with wooden shutter windows and brass lanterns. Stroll along the cobblestone promenade of ancient Bandipur under mountain silhouettes.',
     coords: [27.9333, 84.4167],
@@ -356,13 +356,13 @@ const initialStays: Stay[] = [
     location: 'Rara Lake, Mugu (2,990m)',
     price: 75,
     rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80&w=800',
+    image: '/pictures/Abctrek_sbc_trekker_(7)-1624858181.jpg',
     features: ['Lakeside Stargazing', 'Organic Buckwheat Pancakes', 'Wooden Horse Riding', 'Crystal Clear Waters'],
     description: 'Step out directly onto the tranquil shores of Nepal’s largest sapphire-blue alpine lake. Pine-scented mountain air, traditional wood fires, and unmatched remote silence.',
     coords: [29.5375, 82.0792],
     availableDates: ['2026-06-18', '2026-06-19', '2026-06-20'],
     roomPreviews: [
-      { name: 'Sapphire Shore Timber Lodge', price: 75, image: 'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?q=80&w=800', info: 'Rustic pine timber room right beside the morning water reflections.' }
+      { name: 'Sapphire Shore Timber Lodge', price: 75, image: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=800', info: 'Rustic pine timber room right beside the morning water reflections.' }
     ]
   }
 ];
