@@ -25,6 +25,7 @@ import {
   ChevronDown,
   ChevronUp,
   Download,
+  Plus,
 } from 'lucide-react';
 
 function getGuideProfileMedia(type: string) {
@@ -381,6 +382,8 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
   const { guides, permits, addPermit, addBooking } = useTravelStore();
 
   // Permits Form states
+  const [isApplyingPermit, setIsApplyingPermit] = useState(false);
+  const [permitSearch, setPermitSearch] = useState('');
   const [permitStep, setPermitStep] = useState<1 | 2 | 3>(1);
   const [permitPaymentMethod, setPermitPaymentMethod] = useState<'esewa' | 'card' | 'counter'>('esewa');
   const [paymentRefInput, setPaymentRefInput] = useState('');
@@ -500,6 +503,7 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
     });
     setDocsConfirmed(false);
     setPermitStep(1);
+    setIsApplyingPermit(false);
     setPaymentRefInput('');
     const methodLabel =
       permitPaymentMethod === 'esewa'
@@ -1738,73 +1742,84 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
       )}
 
       {/* ── PERMITS VIEW ───────────────────────────────────────────────── */}
-      {activeId === 'permits' && (
-        <div className="flex flex-col gap-6 max-w-[1440px] w-full mx-auto py-2">
-          <div className="flex flex-col gap-1 pb-3 border-b border-slate-200/70">
-            <h2 className="font-[family-name:var(--font-quicksand)] text-2xl sm:text-3xl font-bold tracking-tight text-[#17212B]">
-              Trekking &amp; Park Permits
-            </h2>
-            <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs sm:text-sm text-[#4B5563]">
-              Complete the 3-step permit application on the left and track your active passes on the right.
-            </p>
-          </div>
+      {activeId === 'permits' && (() => {
+        const pq = permitSearch.trim().toLowerCase();
+        const filteredPermits = permits.filter(
+          (p) =>
+            !pq ||
+            p.zone.toLowerCase().includes(pq) ||
+            p.type.toLowerCase().includes(pq) ||
+            p.status.toLowerCase().includes(pq) ||
+            p.passportNumber.toLowerCase().includes(pq)
+        );
 
-          {permitSubmittedMsg && (
-            <div className="bg-emerald-50 border border-emerald-200 text-emerald-900 rounded-xl px-4 py-3 text-xs font-semibold flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-              <span>{permitSubmittedMsg}</span>
-            </div>
-          )}
+        if (isApplyingPermit) {
+          const stepPercent = permitStep === 1 ? '33%' : permitStep === 2 ? '66%' : '100%';
+          return (
+            <div className="max-w-[1440px] w-full mx-auto py-2 flex flex-col gap-6">
+              {/* Top Header + Arrow Back */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-slate-200/70">
+                <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    aria-label="Back to permits"
+                    onClick={() => {
+                      setIsApplyingPermit(false);
+                      setPermitStep(1);
+                    }}
+                    className="p-1.5 text-[#17212B] hover:text-[#0552A2] transition-colors cursor-pointer shrink-0"
+                  >
+                    <ArrowLeft className="w-5 h-5" />
+                  </button>
+                  <div>
+                    <h2 className="font-[family-name:var(--font-quicksand)] text-xl sm:text-2xl font-bold tracking-tight text-[#17212B]">
+                      New Permit Application
+                    </h2>
+                    <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs text-[#64748B]">
+                      Complete each step in order to issue your Nepal trekking or park permit.
+                    </p>
+                  </div>
+                </div>
 
-          {/* Left: 3-Step Permit Application | Right: Your Permits */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-            {/* Left: Step-wise Permit Form */}
-            <div className="lg:col-span-7 bg-white border border-slate-200/90 p-5 sm:p-6 rounded-2xl flex flex-col gap-5 shadow-xs">
-              {/* Step Indicator */}
-              <div className="grid grid-cols-3 gap-2 border-b border-slate-100 pb-4">
-                {[
-                  { step: 1 as const, label: 'Permit Type' },
-                  { step: 2 as const, label: 'Applicant Details' },
-                  { step: 3 as const, label: 'Payment' },
-                ].map((s) => {
-                  const isCurrent = permitStep === s.step;
-                  const isDone = permitStep > s.step;
-                  const canJump = s.step < permitStep;
-                  return (
-                    <button
-                      key={s.step}
-                      type="button"
-                      disabled={!canJump && !isCurrent}
-                      onClick={() => canJump && setPermitStep(s.step)}
-                      className={`flex items-center gap-2 px-3 py-2 rounded-xl border text-left transition-colors ${
-                        isCurrent
-                          ? 'bg-[#0552A2]/8 border-[#0552A2] text-[#0552A2]'
-                          : isDone
-                            ? 'bg-emerald-50/70 border-emerald-200 text-emerald-800 cursor-pointer'
-                            : 'bg-slate-50/70 border-slate-200/70 text-slate-400 cursor-default'
-                      }`}
-                    >
-                      <span
-                        className={`w-5 h-5 rounded-full text-[11px] font-bold flex items-center justify-center shrink-0 ${
-                          isCurrent
-                            ? 'bg-[#0552A2] text-white'
-                            : isDone
-                              ? 'bg-emerald-600 text-white'
-                              : 'bg-slate-200 text-slate-600'
-                        }`}
-                      >
-                        {isDone ? '✓' : s.step}
-                      </span>
-                      <span className="text-xs font-semibold truncate">{s.label}</span>
-                    </button>
-                  );
-                })}
+                {/* Strict Step-by-Step Progress (cannot jump ahead) */}
+                <div className="flex flex-col gap-1.5 sm:w-80">
+                  <div className="flex items-center justify-between text-xs font-[family-name:var(--font-quicksand)] font-bold">
+                    {[
+                      { step: 1 as const, label: '1. Permit' },
+                      { step: 2 as const, label: '2. Details' },
+                      { step: 3 as const, label: '3. Payment' },
+                    ].map((s) => {
+                      const isCurrent = permitStep === s.step;
+                      const isDone = permitStep > s.step;
+                      return (
+                        <span
+                          key={s.step}
+                          className={
+                            isCurrent
+                              ? 'text-[#0552A2]'
+                              : isDone
+                                ? 'text-emerald-600'
+                                : 'text-slate-400'
+                          }
+                        >
+                          {isDone ? `✓ ${s.label}` : s.label}
+                        </span>
+                      );
+                    })}
+                  </div>
+                  <div className="h-1.5 w-full rounded-full bg-slate-100 overflow-hidden">
+                    <div
+                      className="h-full rounded-full bg-[#0552A2] transition-all duration-300"
+                      style={{ width: stepPercent }}
+                    />
+                  </div>
+                </div>
               </div>
 
-              {/* Step 1: Choose Permit Type & View Official Info */}
+              {/* Step 1: Permit Type (Full-width 2-col interactive layout) */}
               {permitStep === 1 && (
-                <div className="flex flex-col gap-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                  <div className="lg:col-span-7 divide-y divide-slate-100">
                     {PERMIT_CATALOG.map((item) => {
                       const isSelected = selectedPermitId === item.id;
                       return (
@@ -1816,55 +1831,60 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
                             setZone(item.label);
                             setPermitType(item.type);
                           }}
-                          className={`text-left p-3.5 rounded-xl border transition-all cursor-pointer flex flex-col justify-between gap-2 ${
-                            isSelected
-                              ? 'bg-[#0552A2]/[0.05] border-[#0552A2] shadow-2xs'
-                              : 'bg-white border-slate-200/90 hover:border-[#0552A2]/40'
+                          className={`w-full text-left px-3.5 py-3.5 rounded-xl flex items-center justify-between gap-3 transition-colors cursor-pointer ${
+                            isSelected ? 'bg-[#0552A2]/[0.06]' : 'hover:bg-slate-50/80'
                           }`}
                         >
-                          <div className="flex items-center justify-between gap-2">
-                            <span className="text-[10px] font-semibold text-[#0552A2] bg-[#0552A2]/10 px-2 py-0.5 rounded-full">
-                              {item.type}
+                          <div className="flex items-center gap-3 min-w-0">
+                            <span
+                              className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${
+                                isSelected ? 'border-[#0552A2]' : 'border-slate-300'
+                              }`}
+                            >
+                              {isSelected && <span className="w-2 h-2 rounded-full bg-[#0552A2]" />}
                             </span>
-                            <span className="font-[family-name:var(--font-quicksand)] text-sm font-bold text-[#17212B]">
-                              ${item.fee}
-                            </span>
+                            <div className="min-w-0">
+                              <p className="font-[family-name:var(--font-quicksand)] text-sm font-bold text-[#17212B] truncate">
+                                {item.label}
+                              </p>
+                              <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs text-[#64748B] mt-0.5">
+                                {item.type} · {item.processingTime}
+                              </p>
+                            </div>
                           </div>
-                          <h4 className="font-[family-name:var(--font-quicksand)] text-xs font-bold text-[#17212B] leading-snug">
-                            {item.label}
-                          </h4>
-                          <span className="text-[11px] text-[#64748B] flex items-center gap-1">
-                            <Clock className="w-3 h-3 text-[#0552A2] shrink-0" />
-                            {item.processingTime}
+
+                          <span className="font-[family-name:var(--font-quicksand)] text-base font-bold text-[#0552A2] shrink-0">
+                            ${item.fee}
                           </span>
                         </button>
                       );
                     })}
                   </div>
 
-                  {/* Selected Permit Official Details */}
-                  <div className="pt-3 border-t border-slate-100 space-y-2.5 text-xs">
-                    <div className="flex items-start justify-between gap-2">
-                      <div>
-                        <h4 className="font-[family-name:var(--font-quicksand)] text-sm font-bold text-[#17212B]">
-                          {selectedPermitMeta.label}
-                        </h4>
-                        <p className="text-[11px] text-[#475569] mt-0.5 leading-relaxed">
-                          {selectedPermitMeta.notes}
-                        </p>
-                      </div>
+                  {/* Live Permit Summary & Continue */}
+                  <div className="lg:col-span-5 lg:sticky lg:top-6 bg-slate-50/60 border border-slate-200/80 rounded-2xl p-5 sm:p-6 space-y-4 font-[family-name:var(--font-ibm-plex-sans)]">
+                    <div>
+                      <span className="text-[11px] font-semibold text-[#0552A2] block">
+                        {selectedPermitMeta.type}
+                      </span>
+                      <h3 className="font-[family-name:var(--font-quicksand)] text-lg font-bold text-[#17212B] mt-0.5">
+                        {selectedPermitMeta.label}
+                      </h3>
+                      <p className="text-xs text-[#475569] mt-1.5 leading-relaxed">
+                        {selectedPermitMeta.notes}
+                      </p>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2 border-t border-slate-200/70 text-[11px]">
-                      <div className="flex items-start gap-2">
-                        <Building2 className="w-3.5 h-3.5 text-[#0552A2] shrink-0 mt-0.5" />
+                    <div className="divide-y divide-slate-200/70 border-t border-slate-200/70 text-xs">
+                      <div className="py-2.5 flex items-start gap-2.5">
+                        <Building2 className="w-4 h-4 text-[#0552A2] shrink-0 mt-0.5" />
                         <div>
                           <span className="font-semibold text-[#17212B] block">Issuing Authority</span>
                           <span className="text-[#475569]">{selectedPermitMeta.authority}</span>
                         </div>
                       </div>
-                      <div className="flex items-start gap-2">
-                        <ShieldCheck className="w-3.5 h-3.5 text-[#0552A2] shrink-0 mt-0.5" />
+                      <div className="py-2.5 flex items-start gap-2.5">
+                        <ShieldCheck className="w-4 h-4 text-[#0552A2] shrink-0 mt-0.5" />
                         <div>
                           <span className="font-semibold text-[#17212B] block">Guide Policy</span>
                           <span className="text-[#475569]">{selectedPermitMeta.guideRequired}</span>
@@ -1872,189 +1892,208 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
                       </div>
                     </div>
 
-                    <div className="pt-2 border-t border-slate-200/70 text-[11px]">
-                      <span className="font-semibold text-[#17212B] block mb-1">Required Documents</span>
-                      <div className="flex flex-wrap gap-x-4 gap-y-1 text-[#475569]">
-                        {selectedPermitMeta.docs.map((doc) => (
-                          <span key={doc} className="inline-flex items-center gap-1">
-                            <CheckCircle2 className="w-3 h-3 text-emerald-600 shrink-0" />
-                            {doc}
-                          </span>
-                        ))}
-                      </div>
+                    <div className="border-t border-slate-200/70 pt-3 text-xs space-y-1.5">
+                      <span className="font-semibold text-[#17212B] block">Required Documents</span>
+                      {selectedPermitMeta.docs.map((doc) => (
+                        <div key={doc} className="flex items-center gap-1.5 text-[#475569]">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                          <span>{doc}</span>
+                        </div>
+                      ))}
                     </div>
-                  </div>
 
-                  <div className="flex items-center justify-between pt-2 border-t border-slate-100">
-                    <div className="text-xs">
-                      <span className="text-[#64748B] block text-[11px]">Base Fee</span>
-                      <span className="font-[family-name:var(--font-quicksand)] text-base font-bold text-[#0552A2]">
-                        ${selectedPermitMeta.fee}
-                      </span>
+                    <div className="border-t border-slate-200/70 pt-3 flex items-center justify-between">
+                      <div>
+                        <span className="text-[11px] text-[#64748B] block">Base Fee</span>
+                        <span className="font-[family-name:var(--font-quicksand)] text-xl font-bold text-[#0552A2]">
+                          ${selectedPermitMeta.fee}
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setPermitStep(2)}
+                        className="bg-[#0552A2] hover:bg-[#044080] text-white font-[family-name:var(--font-quicksand)] text-xs sm:text-sm font-bold px-5 py-2.5 rounded-xl transition-colors cursor-pointer"
+                      >
+                        Continue to Details
+                      </button>
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => setPermitStep(2)}
-                      className="bg-[#0552A2] hover:bg-[#044080] text-white text-xs font-semibold px-5 py-2.5 rounded-xl transition-colors cursor-pointer inline-flex items-center gap-1.5"
-                    >
-                      <span>Continue to Details</span>
-                    </button>
                   </div>
                 </div>
               )}
 
-              {/* Step 2: Applicant & Trip Details */}
+              {/* Step 2: Applicant & Trip Details + Live Pass Preview */}
               {permitStep === 2 && (
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
                     setPermitStep(3);
                   }}
-                  className="flex flex-col gap-3.5 text-xs text-left"
+                  className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start text-xs font-[family-name:var(--font-ibm-plex-sans)]"
                 >
-                  <div className="flex items-center justify-between pb-2.5 border-b border-slate-100">
-                    <div>
-                      <span className="text-[10px] font-semibold text-[#0552A2] block">Selected Permit</span>
-                      <span className="font-bold text-[#17212B]">{zone}</span>
+                  <div className="lg:col-span-7 space-y-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                      <div className="flex flex-col gap-1">
+                        <label className="font-semibold text-[#17212B]">Applicant Full Name (as on Passport)</label>
+                        <input
+                          type="text"
+                          value={applicantName}
+                          onChange={(e) => setApplicantName(e.target.value)}
+                          className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs focus:outline-none focus:border-[#0552A2] text-[#17212B]"
+                          required
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="font-semibold text-[#17212B]">Passport Number</label>
+                        <input
+                          type="text"
+                          value={passportNumber}
+                          onChange={(e) => setPassportNumber(e.target.value)}
+                          className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs focus:outline-none focus:border-[#0552A2] text-[#17212B]"
+                          required
+                        />
+                      </div>
                     </div>
-                    <span className="text-[11px] text-[#64748B]">
-                      {permitDurationDays} {permitDurationDays === 1 ? 'day' : 'days'}
-                    </span>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                      <div className="flex flex-col gap-1">
+                        <label className="font-semibold text-[#17212B]">Nationality</label>
+                        <input
+                          type="text"
+                          value={nationality}
+                          onChange={(e) => setNationality(e.target.value)}
+                          className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs focus:outline-none focus:border-[#0552A2] text-[#17212B]"
+                          required
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="font-semibold text-[#17212B]">Region / Conservation Area</label>
+                        <input
+                          type="text"
+                          value={zone}
+                          onChange={(e) => setZone(e.target.value)}
+                          className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs focus:outline-none focus:border-[#0552A2] text-[#17212B]"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                      <div className="flex flex-col gap-1">
+                        <label className="font-semibold text-[#17212B]">Entry Date</label>
+                        <input
+                          type="date"
+                          value={startDate}
+                          onChange={(e) => setStartDate(e.target.value)}
+                          className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs focus:outline-none focus:border-[#0552A2] text-[#17212B]"
+                          required
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="font-semibold text-[#17212B]">Exit Date</label>
+                        <input
+                          type="date"
+                          value={endDate}
+                          onChange={(e) => setEndDate(e.target.value)}
+                          className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs focus:outline-none focus:border-[#0552A2] text-[#17212B]"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <label className="flex items-start gap-2.5 pt-1 cursor-pointer select-none">
+                      <input
+                        type="checkbox"
+                        checked={docsConfirmed}
+                        onChange={(e) => setDocsConfirmed(e.target.checked)}
+                        required
+                        className="mt-0.5 rounded border-slate-300 text-[#0552A2] focus:ring-[#0552A2]"
+                      />
+                      <span className="text-xs text-[#475569] leading-relaxed">
+                        I confirm my passport details are accurate and I will carry original passport, visa, and required photos to the checkpoint.
+                      </span>
+                    </label>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div className="flex flex-col gap-1">
-                      <label className="font-semibold text-[#17212B]">Applicant Full Name (as on Passport)</label>
-                      <input
-                        type="text"
-                        value={applicantName}
-                        onChange={(e) => setApplicantName(e.target.value)}
-                        className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs focus:outline-none focus:border-[#0552A2] text-[#17212B]"
-                        required
-                      />
+                  {/* Live Pass Preview */}
+                  <div className="lg:col-span-5 bg-slate-50/60 border border-slate-200/80 rounded-2xl p-5 sm:p-6 space-y-4">
+                    <div className="flex items-center justify-between border-b border-slate-200/70 pb-3">
+                      <span className="font-[family-name:var(--font-quicksand)] text-sm font-bold text-[#17212B]">
+                        Live Pass Preview
+                      </span>
+                      <span className="text-[11px] font-semibold text-[#0552A2] bg-blue-50 px-2.5 py-0.5 rounded-full">
+                        {permitDurationDays} {permitDurationDays === 1 ? 'day' : 'days'}
+                      </span>
                     </div>
-                    <div className="flex flex-col gap-1">
-                      <label className="font-semibold text-[#17212B]">Passport Number</label>
-                      <input
-                        type="text"
-                        value={passportNumber}
-                        onChange={(e) => setPassportNumber(e.target.value)}
-                        className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs focus:outline-none focus:border-[#0552A2] text-[#17212B]"
-                        required
-                      />
-                    </div>
-                  </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div className="flex flex-col gap-1">
-                      <label className="font-semibold text-[#17212B]">Nationality</label>
-                      <input
-                        type="text"
-                        value={nationality}
-                        onChange={(e) => setNationality(e.target.value)}
-                        className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs focus:outline-none focus:border-[#0552A2] text-[#17212B]"
-                        required
-                      />
+                    <div className="space-y-2.5 text-xs">
+                      <div>
+                        <span className="text-[11px] text-[#64748B] block">Permit</span>
+                        <span className="font-[family-name:var(--font-quicksand)] font-bold text-[#17212B] text-sm">
+                          {zone}
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <span className="text-[11px] text-[#64748B] block">Applicant</span>
+                          <span className="font-semibold text-[#17212B]">{applicantName || '—'}</span>
+                        </div>
+                        <div>
+                          <span className="text-[11px] text-[#64748B] block">Passport</span>
+                          <span className="font-semibold text-[#17212B]">{passportNumber || '—'}</span>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <span className="text-[11px] text-[#64748B] block">Nationality</span>
+                          <span className="font-semibold text-[#17212B]">{nationality || '—'}</span>
+                        </div>
+                        <div>
+                          <span className="text-[11px] text-[#64748B] block">Dates</span>
+                          <span className="font-semibold text-[#17212B]">
+                            {startDate} → {endDate}
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex flex-col gap-1">
-                      <label className="font-semibold text-[#17212B]">Region / Conservation Area</label>
-                      <input
-                        type="text"
-                        value={zone}
-                        onChange={(e) => setZone(e.target.value)}
-                        className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs focus:outline-none focus:border-[#0552A2] text-[#17212B]"
-                        required
-                      />
-                    </div>
-                  </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div className="flex flex-col gap-1">
-                      <label className="font-semibold text-[#17212B]">Entry Date</label>
-                      <input
-                        type="date"
-                        value={startDate}
-                        onChange={(e) => setStartDate(e.target.value)}
-                        className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs focus:outline-none focus:border-[#0552A2] text-[#17212B]"
-                        required
-                      />
+                    <div className="border-t border-slate-200/70 pt-3 flex items-center justify-between">
+                      <div>
+                        <span className="text-[11px] text-[#64748B] block">Calculated Fee</span>
+                        <span className="font-[family-name:var(--font-quicksand)] text-xl font-bold text-[#0552A2]">
+                          ${computedPermitFee}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setPermitStep(1)}
+                          className="text-xs font-semibold text-[#475569] hover:text-[#17212B] px-3 py-2 rounded-lg cursor-pointer"
+                        >
+                          Back
+                        </button>
+                        <button
+                          type="submit"
+                          className="bg-[#0552A2] hover:bg-[#044080] text-white font-[family-name:var(--font-quicksand)] font-bold px-5 py-2.5 rounded-xl cursor-pointer transition-colors text-xs"
+                        >
+                          Continue to Payment
+                        </button>
+                      </div>
                     </div>
-                    <div className="flex flex-col gap-1">
-                      <label className="font-semibold text-[#17212B]">Exit Date</label>
-                      <input
-                        type="date"
-                        value={endDate}
-                        onChange={(e) => setEndDate(e.target.value)}
-                        className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs focus:outline-none focus:border-[#0552A2] text-[#17212B]"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <label className="flex items-start gap-2.5 pt-1 cursor-pointer select-none">
-                    <input
-                      type="checkbox"
-                      checked={docsConfirmed}
-                      onChange={(e) => setDocsConfirmed(e.target.checked)}
-                      required
-                      className="mt-0.5 rounded border-slate-300 text-[#0552A2] focus:ring-[#0552A2]"
-                    />
-                    <span className="text-[11px] text-[#475569] leading-relaxed">
-                      I confirm my passport details are accurate and I will carry original passport, visa, and required photos to the checkpoint.
-                    </span>
-                  </label>
-
-                  <div className="flex items-center justify-between pt-3 border-t border-slate-100">
-                    <button
-                      type="button"
-                      onClick={() => setPermitStep(1)}
-                      className="text-xs font-semibold text-[#475569] hover:text-[#17212B] px-3 py-2 rounded-lg cursor-pointer"
-                    >
-                      Back
-                    </button>
-                    <button
-                      type="submit"
-                      className="bg-[#0552A2] hover:bg-[#044080] text-white px-5 py-2.5 rounded-xl font-semibold cursor-pointer transition-colors text-xs"
-                    >
-                      Continue to Payment
-                    </button>
                   </div>
                 </form>
               )}
 
               {/* Step 3: Payment & Submit */}
               {permitStep === 3 && (
-                <form onSubmit={handleApplyPermit} className="flex flex-col gap-4 text-xs text-left">
-                  {/* Application Summary */}
-                  <div className="pb-3 border-b border-slate-100 space-y-2">
-                    <div className="flex justify-between gap-2">
-                      <span className="text-[#64748B]">Permit</span>
-                      <span className="font-semibold text-[#17212B] text-right">{zone}</span>
-                    </div>
-                    <div className="flex justify-between gap-2">
-                      <span className="text-[#64748B]">Applicant</span>
-                      <span className="font-medium text-[#17212B]">
-                        {applicantName} ({passportNumber})
-                      </span>
-                    </div>
-                    <div className="flex justify-between gap-2">
-                      <span className="text-[#64748B]">Validity</span>
-                      <span className="font-medium text-[#17212B]">
-                        {startDate} to {endDate} ({permitDurationDays}d)
-                      </span>
-                    </div>
-                    <div className="flex justify-between gap-2 pt-2 border-t border-slate-200/80">
-                      <span className="font-semibold text-[#17212B]">Total Permit Fee</span>
-                      <span className="font-[family-name:var(--font-quicksand)] text-base font-bold text-[#0552A2]">
-                        ${computedPermitFee}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Payment Method Selection */}
-                  <div className="space-y-2">
-                    <span className="font-semibold text-[#17212B] block">Select Payment Method</span>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <form
+                  onSubmit={handleApplyPermit}
+                  className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start text-xs font-[family-name:var(--font-ibm-plex-sans)]"
+                >
+                  <div className="lg:col-span-7 space-y-4">
+                    <span className="font-[family-name:var(--font-quicksand)] text-sm font-bold text-[#17212B] block">
+                      Select Payment Method
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                       {[
                         { id: 'esewa' as const, label: 'eSewa / Khalti', sub: 'Instant QR / Wallet' },
                         { id: 'card' as const, label: 'Visa / Mastercard', sub: 'International Card' },
@@ -2064,98 +2103,177 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
                           key={m.id}
                           type="button"
                           onClick={() => setPermitPaymentMethod(m.id)}
-                          className={`p-3 rounded-xl border text-left transition-colors cursor-pointer ${
+                          className={`p-3.5 rounded-xl border text-left transition-colors cursor-pointer ${
                             permitPaymentMethod === m.id
                               ? 'bg-[#0552A2]/[0.05] border-[#0552A2]'
                               : 'bg-white border-slate-200 hover:border-slate-300'
                           }`}
                         >
-                          <span className="font-semibold text-[#17212B] block">{m.label}</span>
+                          <span className="font-[family-name:var(--font-quicksand)] font-bold text-[#17212B] block">
+                            {m.label}
+                          </span>
                           <span className="text-[11px] text-[#64748B]">{m.sub}</span>
                         </button>
                       ))}
                     </div>
+
+                    {permitPaymentMethod === 'esewa' && (
+                      <div className="flex flex-col gap-1">
+                        <label className="font-semibold text-[#17212B]">eSewa / Khalti Mobile ID</label>
+                        <input
+                          type="text"
+                          value={paymentRefInput}
+                          onChange={(e) => setPaymentRefInput(e.target.value)}
+                          placeholder="98XXXXXXXX"
+                          required
+                          className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs focus:outline-none focus:border-[#0552A2] text-[#17212B]"
+                        />
+                      </div>
+                    )}
+
+                    {permitPaymentMethod === 'card' && (
+                      <div className="flex flex-col gap-1">
+                        <label className="font-semibold text-[#17212B]">Card Number</label>
+                        <input
+                          type="text"
+                          value={paymentRefInput}
+                          onChange={(e) => setPaymentRefInput(e.target.value)}
+                          placeholder="4242 •••• •••• 4242"
+                          required
+                          className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs focus:outline-none focus:border-[#0552A2] text-[#17212B]"
+                        />
+                      </div>
+                    )}
+
+                    {permitPaymentMethod === 'counter' && (
+                      <p className="text-xs text-[#475569] bg-slate-50 border border-slate-200/80 rounded-xl p-3.5 leading-relaxed">
+                        Your application will be queued for payment in NPR cash at {selectedPermitMeta.issuingLocations}.
+                      </p>
+                    )}
                   </div>
 
-                  {permitPaymentMethod === 'esewa' && (
-                    <div className="flex flex-col gap-1">
-                      <label className="font-semibold text-[#17212B]">eSewa / Khalti Mobile ID</label>
-                      <input
-                        type="text"
-                        value={paymentRefInput}
-                        onChange={(e) => setPaymentRefInput(e.target.value)}
-                        placeholder="98XXXXXXXX"
-                        required
-                        className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs focus:outline-none focus:border-[#0552A2] text-[#17212B]"
-                      />
+                  {/* Application Receipt & Submit */}
+                  <div className="lg:col-span-5 bg-slate-50/60 border border-slate-200/80 rounded-2xl p-5 sm:p-6 space-y-4">
+                    <h3 className="font-[family-name:var(--font-quicksand)] text-sm font-bold text-[#17212B] border-b border-slate-200/70 pb-3">
+                      Application Summary
+                    </h3>
+                    <div className="space-y-2">
+                      <div className="flex justify-between gap-2">
+                        <span className="text-[#64748B]">Permit</span>
+                        <span className="font-[family-name:var(--font-quicksand)] font-bold text-[#17212B] text-right">
+                          {zone}
+                        </span>
+                      </div>
+                      <div className="flex justify-between gap-2">
+                        <span className="text-[#64748B]">Applicant</span>
+                        <span className="font-medium text-[#17212B]">
+                          {applicantName} ({passportNumber})
+                        </span>
+                      </div>
+                      <div className="flex justify-between gap-2">
+                        <span className="text-[#64748B]">Validity</span>
+                        <span className="font-medium text-[#17212B]">
+                          {startDate} to {endDate} ({permitDurationDays}d)
+                        </span>
+                      </div>
+                      <div className="flex justify-between gap-2 pt-2 border-t border-slate-200/80">
+                        <span className="font-semibold text-[#17212B]">Total Fee</span>
+                        <span className="font-[family-name:var(--font-quicksand)] text-lg font-bold text-[#0552A2]">
+                          ${computedPermitFee}
+                        </span>
+                      </div>
                     </div>
-                  )}
 
-                  {permitPaymentMethod === 'card' && (
-                    <div className="flex flex-col gap-1">
-                      <label className="font-semibold text-[#17212B]">Card Number</label>
-                      <input
-                        type="text"
-                        value={paymentRefInput}
-                        onChange={(e) => setPaymentRefInput(e.target.value)}
-                        placeholder="4242 •••• •••• 4242"
-                        required
-                        className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs focus:outline-none focus:border-[#0552A2] text-[#17212B]"
-                      />
+                    <div className="flex items-center justify-between pt-2">
+                      <button
+                        type="button"
+                        onClick={() => setPermitStep(2)}
+                        className="text-xs font-semibold text-[#475569] hover:text-[#17212B] px-3 py-2 rounded-lg cursor-pointer"
+                      >
+                        Back
+                      </button>
+                      <button
+                        type="submit"
+                        className="bg-[#0552A2] hover:bg-[#044080] text-white font-[family-name:var(--font-quicksand)] font-bold px-5 py-2.5 rounded-xl cursor-pointer transition-colors text-xs"
+                      >
+                        {permitPaymentMethod === 'counter'
+                          ? 'Submit Application'
+                          : `Pay $${computedPermitFee} & Submit`}
+                      </button>
                     </div>
-                  )}
-
-                  {permitPaymentMethod === 'counter' && (
-                    <p className="text-[11px] text-[#475569] bg-slate-50 border border-slate-200/80 rounded-xl p-3 leading-relaxed">
-                      Your application will be queued for payment in NPR cash at {selectedPermitMeta.issuingLocations}.
-                    </p>
-                  )}
-
-                  <div className="flex items-center justify-between pt-3 border-t border-slate-100">
-                    <button
-                      type="button"
-                      onClick={() => setPermitStep(2)}
-                      className="text-xs font-semibold text-[#475569] hover:text-[#17212B] px-3 py-2 rounded-lg cursor-pointer"
-                    >
-                      Back
-                    </button>
-                    <button
-                      type="submit"
-                      className="bg-[#0552A2] hover:bg-[#044080] text-white px-5 py-2.5 rounded-xl font-semibold cursor-pointer transition-colors text-xs shadow-2xs"
-                    >
-                      {permitPaymentMethod === 'counter'
-                        ? 'Submit Application'
-                        : `Pay $${computedPermitFee} & Submit`}
-                    </button>
                   </div>
                 </form>
               )}
             </div>
+          );
+        }
 
-            {/* Right: Your Permits */}
-            <div className="lg:col-span-5 flex flex-col gap-3">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-                <h3 className="font-[family-name:var(--font-quicksand)] text-base font-bold text-[#17212B]">
-                  Your Permits ({permits.length})
-                </h3>
+        return (
+          <div className="flex flex-col gap-6 max-w-[1440px] w-full mx-auto pt-2 pb-0 min-h-[calc(100vh-5.5rem)]">
+            {/* Header (left) + Search (right) */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <h2 className="font-[family-name:var(--font-quicksand)] text-2xl sm:text-3xl font-bold tracking-tight text-[#17212B]">
+                  Trekking &amp; Park Permits
+                </h2>
+                <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs sm:text-sm text-[#4B5563] mt-1">
+                  Manage your active Nepal trekking passes and national park entry permits.
+                </p>
               </div>
 
-              <div className="flex flex-col gap-3">
-                {permits.map((permit) => {
+              <div className="relative w-full md:w-80 lg:w-96 shrink-0">
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                <input
+                  type="text"
+                  value={permitSearch}
+                  onChange={(e) => setPermitSearch(e.target.value)}
+                  placeholder="Search permits by region, type, or status..."
+                  className="w-full bg-white border border-slate-200 rounded-full pl-10 pr-9 py-2.5 font-[family-name:var(--font-ibm-plex-sans)] text-xs sm:text-sm text-[#17212B] placeholder:text-slate-400 focus:outline-none focus:border-[#0552A2] transition-colors"
+                />
+                {permitSearch && (
+                  <button
+                    type="button"
+                    aria-label="Clear search"
+                    onClick={() => setPermitSearch('')}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {permitSubmittedMsg && (
+              <div className="bg-emerald-50 border border-emerald-200 text-emerald-900 rounded-xl px-4 py-3 text-xs font-semibold flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>{permitSubmittedMsg}</span>
+              </div>
+            )}
+
+            {/* Clean Active Permits List */}
+            <div className="divide-y divide-slate-100 border-t border-slate-100">
+              {filteredPermits.length === 0 ? (
+                <div className="py-12 text-center space-y-2">
+                  <p className="font-[family-name:var(--font-quicksand)] text-sm font-bold text-[#17212B]">
+                    No permits found
+                  </p>
+                  <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs text-[#64748B]">
+                    Tap the + button below to apply for a trekking or national park permit.
+                  </p>
+                </div>
+              ) : (
+                filteredPermits.map((permit) => {
                   const isExpanded = expandedPermitId === permit.id;
                   return (
-                    <div
-                      key={permit.id}
-                      className="bg-white border border-slate-200/90 p-4 rounded-2xl shadow-xs flex flex-col gap-3"
-                    >
-                      <div className="flex justify-between items-start gap-3">
+                    <div key={permit.id} className="py-4 flex flex-col gap-3">
+                      <div className="flex justify-between items-start gap-4">
                         <div className="min-w-0">
                           <div className="flex flex-wrap items-center gap-2">
-                            <span className="text-[11px] font-semibold text-[#0552A2] bg-blue-50 px-2.5 py-0.5 rounded-full">
+                            <span className="font-[family-name:var(--font-ibm-plex-sans)] text-[11px] font-medium text-[#0552A2] bg-blue-50 px-2.5 py-0.5 rounded-full">
                               {permit.type}
                             </span>
                             <span
-                              className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${
+                              className={`font-[family-name:var(--font-ibm-plex-sans)] text-[11px] font-semibold px-2 py-0.5 rounded-full ${
                                 permit.status === 'Approved'
                                   ? 'bg-emerald-50 text-emerald-700'
                                   : 'bg-amber-50 text-amber-700'
@@ -2164,13 +2282,13 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
                               {permit.status}
                             </span>
                           </div>
-                          <h4 className="font-[family-name:var(--font-quicksand)] text-sm font-bold mt-2 text-[#17212B]">
+                          <h4 className="font-[family-name:var(--font-quicksand)] text-base font-bold mt-2 text-[#17212B]">
                             {permit.zone}
                           </h4>
-                          <p className="text-xs text-[#475569] mt-0.5">
+                          <p className="font-[family-name:var(--font-ibm-plex-sans)] text-xs text-[#475569] mt-0.5">
                             {permit.applicantName} · Passport: {permit.passportNumber}
                           </p>
-                          <p className="text-[11px] text-[#64748B] mt-0.5">
+                          <p className="font-[family-name:var(--font-ibm-plex-sans)] text-[11px] text-[#64748B] mt-0.5">
                             Valid: {permit.startDate} to {permit.endDate}
                           </p>
                         </div>
@@ -2183,7 +2301,7 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
                             <button
                               type="button"
                               onClick={() => handleDownloadPermit(permit)}
-                              className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#475569] hover:text-[#0552A2] cursor-pointer"
+                              className="inline-flex items-center gap-1 font-[family-name:var(--font-quicksand)] text-xs font-bold text-[#475569] hover:text-[#0552A2] cursor-pointer"
                             >
                               <Download className="w-3.5 h-3.5" />
                               <span>Download</span>
@@ -2191,7 +2309,7 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
                             <button
                               type="button"
                               onClick={() => setExpandedPermitId(isExpanded ? null : permit.id)}
-                              className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#0552A2] hover:underline cursor-pointer"
+                              className="inline-flex items-center gap-1 font-[family-name:var(--font-quicksand)] text-xs font-bold text-[#0552A2] hover:underline cursor-pointer"
                             >
                               <span>{isExpanded ? 'Hide Pass' : 'Pass Details'}</span>
                               {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
@@ -2205,23 +2323,43 @@ export default function GuidesPermitsSection({ activeId }: GuidesPermitsSectionP
                           <div className="flex items-center gap-2.5">
                             <QrCode className="w-8 h-8 text-[#0552A2] shrink-0" />
                             <div>
-                              <span className="text-[11px] text-[#64748B] block">Checkpoint Reference</span>
-                              <span className="font-mono font-semibold text-[#17212B]">{permit.qrCode}</span>
+                              <span className="font-[family-name:var(--font-ibm-plex-sans)] text-[11px] text-[#64748B] block">
+                                Checkpoint Reference
+                              </span>
+                              <span className="font-[family-name:var(--font-quicksand)] font-bold text-[#17212B]">
+                                {permit.qrCode}
+                              </span>
                             </div>
                           </div>
-                          <span className="text-[11px] text-[#475569] text-right">
+                          <span className="font-[family-name:var(--font-ibm-plex-sans)] text-[11px] text-[#475569] text-right">
                             Present with original passport at trailhead
                           </span>
                         </div>
                       )}
                     </div>
                   );
-                })}
-              </div>
+                })
+              )}
+            </div>
+
+            {/* + Issue Permit Button at Bottom-Right */}
+            <div className="mt-auto pt-4 flex justify-end">
+              <button
+                type="button"
+                aria-label="Issue permit"
+                onClick={() => {
+                  setPermitStep(1);
+                  setIsApplyingPermit(true);
+                }}
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#0552A2] hover:bg-[#044080] text-white font-[family-name:var(--font-quicksand)] text-xs sm:text-sm font-bold shadow-md transition-transform hover:scale-[1.02] active:scale-95 cursor-pointer"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Issue Permit</span>
+              </button>
             </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
     </motion.div>
   );
 }
