@@ -353,7 +353,7 @@ export default function TripCustomizer() {
   return (
     <div className="flex flex-col gap-7 max-w-[1440px] w-full mx-auto py-2 text-left">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-5 border-b border-slate-200/80">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
           <h2 className="font-[family-name:var(--font-quicksand)] text-2xl sm:text-3xl font-bold tracking-tight text-[#17212B]">
             Plan Your Nepal Trip

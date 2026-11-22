@@ -14,7 +14,6 @@ export const NAV_GROUPS: NavGroup[] = [
       { id: 'explore',     label: 'Explore',         icon: 'M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z' },
       { id: 'popular',     label: 'Popular',         icon: 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z' },
       { id: 'attractions', label: 'Attractions',     icon: 'M12 22s-8-4.5-8-11.8A8 8 0 0112 2a8 8 0 018 8.2c0 7.3-8 11.8-8 11.8z' },
-      { id: 'top5',        label: 'Top 5 Destinations', icon: 'M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01' },
     ],
   },
   {

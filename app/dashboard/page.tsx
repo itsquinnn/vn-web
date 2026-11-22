@@ -23,7 +23,6 @@ import {
   Compass,
   Flame,
   Landmark,
-  Trophy,
   Activity,
   Mountain,
   MountainSnow,
@@ -62,7 +61,6 @@ const NAV_GROUPS: NavGroup[] = [
       { id: 'explore', label: 'Explore', icon: Compass },
       { id: 'popular', label: 'Popular', icon: Flame },
       { id: 'attractions', label: 'Attractions', icon: Landmark },
-      { id: 'top5', label: 'Top 5 Destinations', icon: Trophy },
     ],
   },
   {
@@ -247,7 +245,7 @@ export default function DashboardPage() {
 
   // Dynamic weather mappings based on active section
   const getWeatherInfo = () => {
-    if (['trekking', 'mountaineering', 'top5'].includes(active)) {
+    if (['trekking', 'mountaineering'].includes(active)) {
       return { region: 'Khumbu Peak Station (5,364m)', temp: '-6°C', status: 'Clear Sky, High UV', alert: 'Altitude Warning: 5,000m+' };
     }
     if (['adventure', 'explore'].includes(active)) {
@@ -294,7 +292,7 @@ export default function DashboardPage() {
     if (active === 'profile') {
       return <ProfileSection onNavigate={handleActiveChange} />;
     }
-    if (['explore', 'popular', 'attractions', 'top5'].includes(active)) {
+    if (['explore', 'popular', 'attractions'].includes(active)) {
       return <DiscoverSection activeId={active} onNavigate={handleActiveChange} />;
     }
     if (['activities', 'trekking', 'mountaineering', 'wildlife', 'cultural', 'ecotourism', 'adventure'].includes(active)) {

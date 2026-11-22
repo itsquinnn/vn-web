@@ -880,9 +880,6 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
           {activeId === 'explore' && (
             <div className="flex flex-col gap-6 max-w-[1440px] w-full mx-auto py-4">
               <motion.div variants={itemVariants} className="flex flex-col gap-1.5">
-                <span className="text-[10px] font-mono font-bold tracking-widest text-[#0552A2] uppercase">
-                  Explore Destinations
-                </span>
                 <h2 className="text-2xl font-black tracking-tight text-[#17212B]">Discover Curated Havens</h2>
                 <p className="text-xs text-[#475569]">Select from our handpicked destinations to see local altitude grids and travel stories.</p>
               </motion.div>
@@ -951,56 +948,76 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
 
           {/* ── POPULAR VIEW ──────────────────────────────────────────────── */}
           {activeId === 'popular' && (
-            <div className="flex flex-col gap-5 max-w-5xl w-full mx-auto py-2">
-              <motion.div variants={itemVariants} className="flex flex-col gap-1">
-                <span className="text-[10px] font-mono font-bold tracking-widest text-[#0552A2] uppercase">
-                  Trending Travels
-                </span>
-                <h2 className="text-xl sm:text-2xl font-black tracking-tight text-[#17212B]">Popular Journeys</h2>
+            <div className="flex flex-col gap-6 max-w-[1440px] w-full mx-auto py-4">
+              <motion.div variants={itemVariants} className="flex flex-col gap-1.5">
+                <h2 className="text-2xl font-black tracking-tight text-[#17212B]">Popular Journeys</h2>
                 <p className="text-xs text-[#475569]">Most loved paths by worldwide travelers seeking adventure, peace, and culture.</p>
               </motion.div>
 
-              {/* Destination Cards matching design - Compact Size */}
-              <div className="flex flex-col gap-3 sm:gap-3.5 mt-1">
+              {/* Destination Cards in Responsive Grid */}
+              <motion.div
+                layout="position"
+                className="grid gap-5 auto-card-grid"
+                style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))' }}
+              >
                 {DESTINATIONS.map((d, index) => (
                   <motion.div
-                    variants={itemVariants}
                     key={d.id}
+                    layout="position"
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      layout: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
+                      opacity: { duration: 0.28, delay: index * 0.04 },
+                      y: { duration: 0.28, delay: index * 0.04, ease: [0.22, 1, 0.36, 1] }
+                    }}
                     onClick={() => onNavigate ? onNavigate(d.id) : router.push('/info/' + d.id)}
-                    className="group rounded-xl sm:rounded-2xl bg-white border border-slate-200/80 shadow-[0_2px_8px_-3px_rgba(15,42,74,0.05)] hover:shadow-md hover:border-[#0552A2]/30 transition-all duration-300 overflow-hidden flex flex-col sm:flex-row cursor-pointer"
+                    className="group bg-white border border-slate-200/90 rounded-2xl overflow-hidden hover:border-[#0552A2]/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] shadow-xs cursor-pointer active:scale-[0.985] flex flex-col justify-between transform-gpu will-change-transform"
                   >
-                    {/* Left Flush Image */}
-                    <div className="relative w-full sm:w-48 md:w-56 h-36 sm:h-auto min-h-[120px] sm:min-h-[130px] shrink-0 bg-slate-100 overflow-hidden">
-                      <img
-                        src={d.image}
-                        alt={d.name}
-                        loading="lazy"
-                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                      />
-                    </div>
-
-                    {/* Right Details */}
-                    <div className="py-3 sm:py-4 px-4 sm:px-5 md:px-6 flex-1 flex flex-col justify-center text-left">
-                      <div className="flex items-center gap-2.5">
-                        <span className="px-2.5 py-0.5 rounded-full bg-[#0552A2] text-white text-[10px] sm:text-[11px] font-bold font-mono tracking-tight shadow-2xs select-none">
-                          #{index + 1} Trending
-                        </span>
-                        <span className="text-[11px] font-mono font-semibold text-[#0552A2]">
+                    <div>
+                      <div className="relative h-36 sm:h-40 overflow-hidden bg-slate-900">
+                        <img
+                          src={d.image}
+                          alt={d.name}
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu will-change-transform"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent pointer-events-none" />
+                        <div className="absolute top-3 left-3 px-2.5 py-0.5 rounded-full bg-[#0552A2] text-white text-[10px] font-bold font-mono tracking-tight shadow-xs select-none">
+                          Trending
+                        </div>
+                        <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-xs text-[10px] font-mono font-bold text-[#0552A2] px-2.5 py-0.5 rounded-full border border-slate-200 shadow-xs">
                           {d.elevation}
-                        </span>
+                        </div>
+                        <div className="absolute bottom-2.5 left-3 text-[10px] font-mono text-white/90 font-medium">
+                          {d.region} Region
+                        </div>
                       </div>
 
-                      <h3 className="text-base sm:text-lg font-bold tracking-tight text-[#17212B] mt-1.5 group-hover:text-[#0552A2] transition-colors leading-snug">
-                        {d.name}
-                      </h3>
+                      <div className="p-4 flex flex-col gap-1.5">
+                        <h3 className="text-sm sm:text-base font-bold text-[#17212B] group-hover:text-[#0552A2] transition-colors leading-snug line-clamp-1">
+                          {d.name}
+                        </h3>
+                        <p className="text-xs text-[#475569] leading-relaxed line-clamp-2">
+                          {d.description}
+                        </p>
+                      </div>
+                    </div>
 
-                      <p className="text-xs text-[#64748B] mt-1 leading-normal line-clamp-2 max-w-2xl">
-                        {d.description}
-                      </p>
+                    <div className="px-4 pb-3.5 pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+                      <span className="text-[10px] font-mono text-slate-400">Trending Journey</span>
+                      <button
+                        type="button"
+                        className="font-bold text-[#0552A2] group-hover:underline flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <span>Explore</span>
+                        <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform duration-200 ease-out" />
+                      </button>
                     </div>
                   </motion.div>
                 ))}
-              </div>
+              </motion.div>
             </div>
           )}
 
@@ -1008,9 +1025,6 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
           {activeId === 'attractions' && (
             <div className="flex flex-col gap-6 max-w-[1440px] w-full mx-auto py-4">
               <motion.div variants={itemVariants} className="flex flex-col gap-1.5">
-                <span className="text-[10px] font-mono font-bold tracking-widest text-[#0552A2] uppercase">
-                  Sightseeing Matrix
-                </span>
                 <h2 className="text-2xl font-black tracking-tight text-[#17212B]">Iconic Landmarks</h2>
                 <p className="text-xs text-[#475569]">The spiritual monuments, ancient valleys, and high glaciers defining our geography.</p>
               </motion.div>
@@ -1074,61 +1088,6 @@ export default function DiscoverSection({ activeId, onNavigate }: DiscoverSectio
                   </motion.div>
                 ))}
               </motion.div>
-            </div>
-          )}
-
-          {/* ── TOP 5 DESTINATIONS VIEW ─────────────────────────────────────── */}
-          {activeId === 'top5' && (
-            <div className="flex flex-col gap-5 max-w-5xl w-full mx-auto py-2">
-              <motion.div variants={itemVariants} className="flex flex-col gap-1">
-                <span className="text-[10px] font-mono font-bold tracking-widest text-[#0552A2] uppercase">
-                  Curated Gold Tier
-                </span>
-                <h2 className="text-xl sm:text-2xl font-black tracking-tight text-[#17212B]">Top 5 Destinations</h2>
-                <p className="text-xs text-[#475569]">The supreme selection representing Trekking, Spiritual peace, Wildlife, Heritage, and desert camps.</p>
-              </motion.div>
-
-              {/* Destination Cards matching design - Compact Size */}
-              <div className="flex flex-col gap-3 sm:gap-3.5 mt-1">
-                {DESTINATIONS.map((d, idx) => (
-                  <motion.div
-                    variants={itemVariants}
-                    key={d.id}
-                    onClick={() => onNavigate ? onNavigate(d.id) : router.push('/info/' + d.id)}
-                    className="group rounded-xl sm:rounded-2xl bg-white border border-slate-200/80 shadow-[0_2px_8px_-3px_rgba(15,42,74,0.05)] hover:shadow-md hover:border-[#0552A2]/30 transition-all duration-300 overflow-hidden flex flex-col sm:flex-row cursor-pointer"
-                  >
-                    {/* Left Flush Image */}
-                    <div className="relative w-full sm:w-48 md:w-56 h-36 sm:h-auto min-h-[120px] sm:min-h-[130px] shrink-0 bg-slate-100 overflow-hidden">
-                      <img
-                        src={d.image}
-                        alt={d.name}
-                        loading="lazy"
-                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                      />
-                    </div>
-
-                    {/* Right Details */}
-                    <div className="py-3 sm:py-4 px-4 sm:px-5 md:px-6 flex-1 flex flex-col justify-center text-left">
-                      <div className="flex items-center gap-2.5">
-                        <span className="px-2.5 py-0.5 rounded-full bg-[#0552A2] text-white text-[10px] sm:text-[11px] font-bold font-mono tracking-tight shadow-2xs select-none">
-                          #{idx + 1} Top Pick
-                        </span>
-                        <span className="text-[11px] font-mono font-semibold text-[#0552A2]">
-                          {d.elevation}
-                        </span>
-                      </div>
-
-                      <h3 className="text-base sm:text-lg font-bold tracking-tight text-[#17212B] mt-1.5 group-hover:text-[#0552A2] transition-colors leading-snug">
-                        {d.name}
-                      </h3>
-
-                      <p className="text-xs text-[#64748B] mt-1 leading-normal line-clamp-2 max-w-2xl">
-                        {d.description}
-                      </p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
             </div>
           )}
         </motion.div>
